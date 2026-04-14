@@ -1,0 +1,223 @@
+/* --- VARIABLES ET FOND GÉNÉRAL --- */
+.root {
+    -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    -fx-background-color: #FDFBF8; /* Fond crème/blanc cassé de la photo */
+}
+
+/* --- BARRE LATÉRALE (SIDEBAR) --- */
+.sidebar {
+    -fx-background-color: #343a40; /* Gris foncé anthracite */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 10, 0, 0, 0);
+}
+
+.logo-text {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-letter-spacing: 1px;
+}
+
+/* --- BOUTONS DU MENU LATÉRAL --- */
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #adb5bd;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 15 25;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+
+.menu-button:hover {
+    -fx-background-color: #495057;
+    -fx-text-fill: white;
+}
+
+.menu-button-active {
+    -fx-background-color: #CC9933; /* Le jaune/doré de la photo */
+    -fx-text-fill: white;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 15 25;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+}
+
+/* --- CARTES DE STATISTIQUES (TOP) --- */
+.stat-card {
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 15, 0, 0, 5);
+}
+
+.stat-label {
+    -fx-text-fill: #CC9933;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.stat-value {
+    -fx-text-fill: #343a40;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+/* --- CONTENEUR DU TABLEAU --- */
+.table-container-white {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 0, 2);
+}
+
+/* --- BARRE DE RECHERCHE --- */
+.search-bar-museum {
+    -fx-background-color: #f1f3f5;
+    -fx-background-radius: 20;
+    -fx-padding: 10 15;
+    -fx-prompt-text-fill: #adb5bd;
+}
+
+/* --- TABLEVIEW STYLE --- */
+.museum-table {
+    -fx-background-color: transparent;
+    -fx-border-color: #e9ecef;
+    -fx-border-width: 1 0 0 0;
+}
+
+.museum-table .column-header-background {
+    -fx-background-color: #f8f9fa;
+}
+
+.museum-table .column-header {
+    -fx-background-color: transparent;
+    -fx-size: 45;
+}
+
+.museum-table .column-header .label {
+    -fx-text-fill: #495057;
+    -fx-font-weight: bold;
+}
+
+.museum-table .table-row-cell {
+    -fx-cell-size: 50;
+    -fx-border-color: #f1f3f5;
+    -fx-border-width: 0 0 1 0;
+}
+
+.museum-table .table-row-cell:filled:selected {
+    -fx-background-color: #fff9db;
+    -fx-text-fill: #CC9933;
+}
+
+/* --- BOUTONS D'ACTION (DORÉS) --- */
+.btn-ajouter-museum {
+    -fx-background-color: #CC9933;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+}
+
+.btn-action-yellow {
+    -fx-background-color: #CC9933;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 8 15;
+    -fx-cursor: hand;
+}
+
+.btn-action-yellow:hover {
+    -fx-background-color: #b3862b;
+}
+
+.btn-action-outline {
+    -fx-background-color: transparent;
+    -fx-border-color: #CC9933;
+    -fx-border-radius: 5;
+    -fx-text-fill: #CC9933;
+    -fx-cursor: hand;
+}
+
+/* --- BOUTON DÉCONNEXION --- */
+.logout-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #ff7675;
+    -fx-border-radius: 20;
+    -fx-text-fill: #ff7675;
+    -fx-cursor: hand;
+}
+
+.logout-button:hover {
+    -fx-background-color: #ff7675;
+    -fx-text-fill: white;
+}
+/* Fond de la barre latérale */
+.sidebar {
+    -fx-background-color: #343a40; /* Gris anthracite très foncé */
+    -fx-padding: 0;
+}
+
+/* Texte du logo */
+.logo-text {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-letter-spacing: 1px;
+}
+
+/* Boutons de menu génériques */
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #adb5bd; /* Gris clair */
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 12 20;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+    -fx-background-radius: 0;
+}
+
+.menu-button:hover {
+    -fx-text-fill: white;
+    -fx-background-color: #3e444a;
+}
+
+/* Bouton actif (celui qui est jaune sur l'image) */
+.menu-button-active {
+    -fx-background-color: #CC9933; /* Couleur dorée */
+    -fx-text-fill: white;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 12 20;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    /* Arrondi uniquement à droite comme sur la capture */
+    -fx-background-radius: 0 20 20 0;
+    -fx-margin: 0 10 0 0;
+}
+
+/* Bouton Se Déconnecter en bas */
+.logout-button-museum {
+    -fx-background-color: transparent;
+    -fx-border-color: #6c757d;
+    -fx-border-radius: 15;
+    -fx-text-fill: #adb5bd;
+    -fx-font-size: 11px;
+    -fx-cursor: hand;
+    -fx-padding: 8;
+}
+
+.logout-button-museum:hover {
+    -fx-border-color: #ff7675;
+    -fx-text-fill: #ff7675;
+}
+.btn-action-green {
+    -fx-background-color: #217346; /* Vert Excel */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.btn-action-green:hover {
+    -fx-background-color: #1a5a37;
+}

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="15.0"
+      style="-fx-background-color: white; -fx-border-color: #CC9933; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;"
+      stylesheets="@./css/style.css"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="edu.cnx.controllers.DemandeJobController">
+
+    <children>
+
+        <!-- Titre -->
+        <Label text="Nouvelle Candidature" textFill="#CC9933">
+            <font>
+                <Font name="System Bold" size="18.0"/>
+            </font>
+        </Label>
+
+        <Separator/>
+
+        <!-- ID Candidat -->
+        <VBox spacing="5.0">
+            <children>
+                <Label text="ID Candidat" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="tfCandidatId"
+                           promptText="Entrez votre identifiant"
+                           styleClass="search-bar-museum"/>
+            </children>
+        </VBox>
+
+        <!-- Offre -->
+        <VBox spacing="5.0">
+            <children>
+                <Label text="Sélectionner l'Offre" style="-fx-font-weight: bold;"/>
+                <ComboBox fx:id="comboOffres"
+                          maxWidth="Infinity"
+                          promptText="Choisir une offre..."
+                          styleClass="search-bar-museum"/>
+            </children>
+        </VBox>
+
+        <!-- CV -->
+        <VBox spacing="5.0">
+            <children>
+                <Label text="Curriculum Vitae (PDF)" style="-fx-font-weight: bold;"/>
+                <HBox spacing="10.0">
+                    <children>
+                        <TextField fx:id="tfCvUrl"
+                                   editable="false"
+                                   promptText="Aucun fichier sélectionné"
+                                   styleClass="search-bar-museum"
+                                   HBox.hgrow="ALWAYS"/>
+
+                        <!-- ✅ bouton corrigé -->
+                        <Button text="Parcourir..."
+                                onAction="#handleChoisirFichier"
+                                styleClass="btn-action-yellow"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <!-- Motivation -->
+        <VBox spacing="5.0">
+            <children>
+                <Label text="Lettre de Motivation" style="-fx-font-weight: bold;"/>
+                <TextArea fx:id="taMotivation"
+                          prefHeight="100.0"
+                          promptText="Pourquoi postulez-vous ?"
+                          styleClass="museum-table"
+                          wrapText="true"/>
+            </children>
+        </VBox>
+
+        <!-- Boutons -->
+        <HBox alignment="CENTER_RIGHT"
+              spacing="15.0"
+              style="-fx-padding: 10 0 0 0;">
+            <children>
+
+                <Button text="Annuler"
+                        onAction="#handleCancel"
+                        styleClass="btn-action-outline"/>
+
+                <Button text="Enregistrer"
+                        onAction="#handlePostuler"
+                        styleClass="btn-ajouter-museum"/>
+
+            </children>
+        </HBox>
+
+    </children>
+
+    <padding>
+        <Insets top="25.0" right="25.0" bottom="25.0" left="25.0"/>
+    </padding>
+
+</VBox>
