@@ -1,0 +1,539 @@
+/* forum_style.css - Design amélioré (TOUS LES BOUTONS VERTS → BLEUS) */
+
+.root {
+    -fx-font-family: "Segoe UI", "System", -apple-system, BlinkMacSystemFont, "Roboto", sans-serif;
+}
+
+/* ==================== SIDEBAR STYLES (DASHBOARD - BOUTONS OR) ==================== */
+.sidebar {
+    -fx-background-color: #1a1a2e;
+    -fx-padding: 20;
+}
+
+.logo-text {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+}
+
+.menu-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #adb5bd;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-pref-width: 200;
+    -fx-padding: 10 15 10 15;
+    -fx-cursor: hand;
+}
+
+.menu-btn:hover {
+    -fx-text-fill: white;
+    -fx-background-color: #252545;
+}
+
+.active {
+    -fx-background-color: #d4af37;
+    -fx-text-fill: #1a1a2e;
+    -fx-background-radius: 10;
+    -fx-font-weight: bold;
+}
+
+.logout-btn {
+    -fx-background-color: #d4af37;
+    -fx-border-color: #d4af37;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-text-fill: #1a1a2e;
+    -fx-padding: 10 15;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.logout-btn:hover {
+    -fx-background-color: #e5c45c;
+}
+
+/* ==================== BOUTONS DE TRI (FRONTEND) ==================== */
+
+.sort-container {
+    -fx-spacing: 10;
+    -fx-alignment: CENTER_RIGHT;
+}
+
+.sort-alpha-btn {
+    -fx-background-color: linear-gradient(to right, #6366f1, #8b5cf6);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 25;
+    -fx-padding: 8 18;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.3), 5, 0, 0, 1);
+    -fx-font-size: 13px;
+}
+
+.sort-alpha-btn:hover {
+    -fx-background-color: linear-gradient(to right, #4f46e5, #7c3aed);
+    -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.5), 8, 0, 0, 2);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.sort-alpha-btn:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+.sort-date-btn {
+    -fx-background-color: linear-gradient(to right, #06b6d4, #0891b2);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 25;
+    -fx-padding: 8 18;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(6,182,212,0.3), 5, 0, 0, 1);
+    -fx-font-size: 13px;
+}
+
+.sort-date-btn:hover {
+    -fx-background-color: linear-gradient(to right, #0891b2, #0e7490);
+    -fx-effect: dropshadow(gaussian, rgba(6,182,212,0.5), 8, 0, 0, 2);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.sort-date-btn:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+.sort-active {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);
+    -fx-border-color: white;
+    -fx-border-width: 1.5;
+}
+
+/* ==================== BOUTONS PRINCIPAUX (FRONTEND) - TOUS BLEUS ==================== */
+
+/* Bouton Nouveau post - BLEU */
+.btn-primary {
+    -fx-background-color: linear-gradient(to right, #3b82f6, #2563eb);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 25;
+    -fx-padding: 8 24;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.3), 5, 0, 0, 1);
+    -fx-font-size: 13px;
+}
+
+.btn-primary:hover {
+    -fx-background-color: linear-gradient(to right, #2563eb, #1d4ed8);
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.5), 8, 0, 0, 2);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.btn-primary:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Bouton Lire la suite - BLEU */
+.btn-info {
+    -fx-background-color: linear-gradient(to right, #3b82f6, #2563eb);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 6 16;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.2), 4, 0, 0, 1);
+}
+
+.btn-info:hover {
+    -fx-background-color: linear-gradient(to right, #2563eb, #1d4ed8);
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.4), 6, 0, 0, 2);
+}
+
+/* Bouton Modifier (frontend) - ORANGE (gardé) */
+.btn-edit {
+    -fx-background-color: linear-gradient(to right, #f59e0b, #d97706);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 5 14;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(245,158,11,0.2), 4, 0, 0, 1);
+}
+
+.btn-edit:hover {
+    -fx-background-color: linear-gradient(to right, #d97706, #b45309);
+    -fx-effect: dropshadow(gaussian, rgba(245,158,11,0.4), 6, 0, 0, 2);
+}
+
+/* Bouton Supprimer (frontend) - ROUGE (gardé) */
+.btn-delete {
+    -fx-background-color: linear-gradient(to right, #ef4444, #dc2626);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 5 14;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(239,68,68,0.2), 4, 0, 0, 1);
+}
+
+.btn-delete:hover {
+    -fx-background-color: linear-gradient(to right, #dc2626, #b91c1c);
+    -fx-effect: dropshadow(gaussian, rgba(239,68,68,0.4), 6, 0, 0, 2);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.btn-delete:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Bouton Ajouter commentaire - BLEU */
+.btn-success {
+    -fx-background-color: linear-gradient(to right, #3b82f6, #2563eb);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.2), 4, 0, 0, 1);
+}
+
+.btn-success:hover {
+    -fx-background-color: linear-gradient(to right, #2563eb, #1d4ed8);
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.4), 6, 0, 0, 2);
+}
+
+/* Bouton Retour - GRIS (gardé) */
+.btn-back {
+    -fx-background-color: linear-gradient(to right, #6b7280, #4b5563);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+}
+
+.btn-back:hover {
+    -fx-background-color: linear-gradient(to right, #4b5563, #374151);
+}
+
+/* Bouton Publier / Poster - BLEU */
+.btn-publish {
+    -fx-background-color: linear-gradient(to right, #3b82f6, #2563eb);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 25;
+    -fx-padding: 10 30;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.3), 5, 0, 0, 1);
+    -fx-font-size: 14px;
+}
+
+.btn-publish:hover {
+    -fx-background-color: linear-gradient(to right, #2563eb, #1d4ed8);
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.5), 8, 0, 0, 2);
+}
+
+/* Bouton Choisir image - BLEU */
+.btn-choose-image {
+    -fx-background-color: linear-gradient(to right, #3b82f6, #2563eb);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 6 16;
+    -fx-cursor: hand;
+}
+
+.btn-choose-image:hover {
+    -fx-background-color: linear-gradient(to right, #2563eb, #1d4ed8);
+}
+
+/* Bouton Annuler - GRIS (gardé) */
+.btn-cancel {
+    -fx-background-color: linear-gradient(to right, #6b7280, #4b5563);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 25;
+    -fx-padding: 10 30;
+    -fx-cursor: hand;
+}
+
+.btn-cancel:hover {
+    -fx-background-color: linear-gradient(to right, #4b5563, #374151);
+}
+
+/* Bouton Enregistrer - BLEU */
+.btn-save {
+    -fx-background-color: linear-gradient(to right, #3b82f6, #2563eb);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 25;
+    -fx-padding: 10 30;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.3), 5, 0, 0, 1);
+}
+
+.btn-save:hover {
+    -fx-background-color: linear-gradient(to right, #2563eb, #1d4ed8);
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.5), 8, 0, 0, 2);
+}
+
+/* ==================== HEADER ==================== */
+.header {
+    -fx-background-color: linear-gradient(to right, #1a1a2e, #16213e);
+}
+
+.header-title {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.header-subtitle {
+    -fx-text-fill: #d4af37;
+    -fx-font-size: 16px;
+}
+
+/* ==================== CARTES DES POSTS ==================== */
+.post-card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 2);
+    -fx-padding: 20;
+    -fx-border-color: #e8e8e8;
+    -fx-border-radius: 16;
+    -fx-border-width: 1;
+}
+
+.post-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 5);
+    -fx-translate-y: -2px;
+}
+
+.post-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1f2937;
+    -fx-padding: 0 0 8 0;
+}
+
+.post-title:hover {
+    -fx-text-fill: #3b82f6;
+    -fx-underline: true;
+}
+
+.post-excerpt {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 14px;
+    -fx-wrap-text: true;
+    -fx-line-spacing: 3;
+    -fx-padding: 0 0 12 0;
+}
+
+.post-meta {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 12px;
+    -fx-spacing: 12;
+}
+
+.post-author {
+    -fx-text-fill: #8b5cf6;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.post-author:hover {
+    -fx-text-fill: #7c3aed;
+    -fx-underline: true;
+}
+
+.post-date {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 11px;
+}
+
+.post-stats {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 12px;
+    -fx-spacing: 15;
+    -fx-border-width: 0;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+/* ==================== COMMENTAIRES ==================== */
+.comment-card {
+    -fx-background-color: #f9fafb;
+    -fx-background-radius: 12;
+    -fx-padding: 12;
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+}
+
+.comment-card:hover {
+    -fx-background-color: #f3f4f6;
+    -fx-border-color: #d1d5db;
+}
+
+.comment-text {
+    -fx-text-fill: #374151;
+    -fx-font-size: 13px;
+    -fx-wrap-text: true;
+    -fx-line-spacing: 2;
+    -fx-padding: 0 0 5 0;
+}
+
+.comment-author {
+    -fx-text-fill: #8b5cf6;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.comment-author:hover {
+    -fx-underline: true;
+}
+
+.comment-actions {
+    -fx-spacing: 10;
+    -fx-padding: 5 0 0 0;
+}
+
+.comment-action-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 11px;
+    -fx-cursor: hand;
+    -fx-padding: 4 10;
+    -fx-background-radius: 15;
+}
+
+.comment-action-btn:hover {
+    -fx-background-color: #e5e7eb;
+    -fx-text-fill: #8b5cf6;
+}
+
+/* ==================== CHAMP DE RECHERCHE ==================== */
+.search-field {
+    -fx-background-color: #f3f4f6;
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 1px;
+    -fx-padding: 10 20;
+    -fx-font-size: 13px;
+}
+
+.search-field:focused {
+    -fx-border-color: #6366f1;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.2), 8, 0, 0, 0);
+}
+
+/* ==================== LIST VIEW ==================== */
+.list-view {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 8;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 8;
+}
+
+/* ==================== SCROLL BAR ==================== */
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 8;
+}
+
+.scroll-bar:vertical .track {
+    -fx-background-color: #f3f4f6;
+    -fx-background-radius: 4;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #cbd5e1;
+    -fx-background-radius: 4;
+}
+
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #94a3b8;
+}
+
+/* ==================== TABLE VIEW (DASHBOARD) ==================== */
+.table-view {
+    -fx-background-radius: 12;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #1a1a2e;
+    -fx-background-radius: 12 12 0 0;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* ==================== TABPANE ==================== */
+.tab-pane {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+}
+
+.tab-pane .tab-header-area {
+    -fx-padding: 10 0 0 10;
+}
+
+.tab-pane .tab {
+    -fx-background-color: #f3f4f6;
+    -fx-background-radius: 10 10 0 0;
+    -fx-padding: 8 20;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: #6366f1;
+}
+
+.tab-pane .tab:selected .tab-label {
+    -fx-text-fill: white;
+}
+
+.tab-pane .tab .tab-label {
+    -fx-text-fill: #4b5563;
+    -fx-font-weight: bold;
+}
+
+/* ==================== MESSAGES - TOUS BLEUS ==================== */
+.message-success {
+    -fx-text-fill: #3b82f6;
+    -fx-font-size: 13px;
+    -fx-padding: 12;
+    -fx-background-color: #dbeafe;
+    -fx-background-radius: 8;
+}
+
+.message-error {
+    -fx-text-fill: #dc2626;
+    -fx-font-size: 13px;
+    -fx-padding: 12;
+    -fx-background-color: #fee2e2;
+    -fx-background-radius: 8;
+}
+
+.message-info {
+    -fx-text-fill: #3b82f6;
+    -fx-font-size: 13px;
+    -fx-padding: 12;
+    -fx-background-color: #dbeafe;
+    -fx-background-radius: 8;
+}

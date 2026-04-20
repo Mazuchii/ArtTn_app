@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="20.0" prefWidth="1200" prefHeight="800" stylesheets="@../css/forum_style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.Projet_java.controllers.ForumCategoriesController">
+
+    <children>
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="header" style="-fx-padding: 15;">
+            <children>
+                <Label text="🏛️ MUSEUM DIGITAL" styleClass="header-title" />
+                <Label text="| Forum" styleClass="header-subtitle" />
+                <Region HBox.hgrow="ALWAYS" />
+            </children>
+        </HBox>
+
+        <!-- Titre -->
+        <Label text="📚 Choisissez une catégorie" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-padding: 0 20;" />
+
+        <!-- Categories - FlowPane avec largeur préférée pour alignement 4 par ligne -->
+        <FlowPane fx:id="categoriesContainer"
+                  prefWidth="1100"
+                  hgap="25.0"
+                  vgap="25.0"
+                  alignment="TOP_CENTER"
+                  style="-fx-padding: 20; -fx-background-color: transparent;" />
+
+        <!-- Message -->
+        <Label fx:id="messageLabel" style="-fx-padding: 0 20 20 20;" visible="false" />
+
+    </children>
+
+</VBox>

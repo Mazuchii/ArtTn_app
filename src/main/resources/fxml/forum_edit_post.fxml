@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="20.0" stylesheets="@../css/forum_style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.Projet_java.controllers.ForumEditPostController">
+
+    <children>
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="header" style="-fx-padding: 15;">
+            <children>
+                <Label text="🏛️ MUSEUM DIGITAL" styleClass="header-title" />
+                <Label text="| Modifier le post" styleClass="header-subtitle" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button onAction="#handleCancel" styleClass="btn-cancel" text="Annuler" />
+            </children>
+        </HBox>
+
+        <!-- Form -->
+        <VBox spacing="15.0" style="-fx-padding: 30;">
+            <children>
+                <Label text="✏️ Modifier le post" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
+
+                <VBox spacing="8.0">
+                    <children>
+                        <Label text="Titre du post *" style="-fx-font-weight: bold; -fx-text-fill: #374151;" />
+                        <TextField fx:id="titleField" promptText="Titre..." prefHeight="40.0" style="-fx-background-radius: 10; -fx-padding: 0 15;" />
+                    </children>
+                </VBox>
+
+                <VBox spacing="8.0">
+                    <children>
+                        <Label text="Contenu *" style="-fx-font-weight: bold; -fx-text-fill: #374151;" />
+                        <TextArea fx:id="contentArea" promptText="Contenu..." prefHeight="200.0" style="-fx-background-radius: 10; -fx-padding: 10;" />
+                    </children>
+                </VBox>
+
+                <Label fx:id="errorLabel" style="-fx-text-fill: #ef4444;" visible="false" wrapText="true" />
+
+                <HBox spacing="10.0" alignment="CENTER_RIGHT">
+                    <children>
+                        <Button onAction="#handleSave" styleClass="btn-save" text="💾 Enregistrer" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+    </children>
+
+</VBox>

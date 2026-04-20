@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane stylesheets="@../css/forum_style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.Projet_java.controllers.ForumDashboardController">
+
+    <!-- TOP BAR -->
+    <top>
+        <VBox>
+            <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="header" style="-fx-padding: 15;">
+                <children>
+                    <Label text="🏛️ MUSEUM DIGITAL" styleClass="header-title" />
+                    <Label text="| Dashboard Forum" styleClass="header-subtitle" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="adminLabel" text="👑 Administrateur" style="-fx-text-fill: #d4af37; -fx-font-weight: bold;" />
+                    <Button onAction="#handleLogout" styleClass="btn-danger" text="🚪 Déconnexion" />
+                </children>
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- LEFT SIDEBAR -->
+    <left>
+        <VBox prefWidth="250.0" styleClass="sidebar" spacing="10.0">
+            <children>
+                <Pane prefHeight="100.0">
+                    <children>
+                        <Label text="MUSEUM DIGITAL" styleClass="logo-text" layoutX="30.0" layoutY="40.0" />
+                    </children>
+                </Pane>
+
+                <Button fx:id="btnDashboard" text="📊 Dashboard" onAction="#handleNavigation" styleClass="menu-btn" />
+                <Button fx:id="btnUtilisateurs" text="👥 Utilisateurs" onAction="#handleNavigation" styleClass="menu-btn" />
+                <Button fx:id="btnProduits" text="🛍️ Produits" onAction="#handleNavigation" styleClass="menu-btn" />
+                <Button fx:id="btnEvenements" text="📅 Événements" onAction="#handleNavigation" styleClass="menu-btn" />
+                <Button fx:id="btnForum" text="💬 Forum" onAction="#handleNavigation" styleClass="menu-btn active" />
+
+                <Region VBox.vgrow="ALWAYS" />
+
+                <Button text="🚪 Se Déconnecter" onAction="#handleLogout" styleClass="logout-btn" />
+            </children>
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10" />
+            </padding>
+        </VBox>
+    </left>
+
+    <!-- CENTER CONTENT -->
+    <center>
+        <VBox spacing="20.0" style="-fx-padding: 20; -fx-background-color: #dae0e6;">
+            <children>
+
+                <!-- Header avec titre -->
+                <HBox alignment="CENTER_LEFT">
+                    <children>
+                        <Label text="💬 Gestion du Forum" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="adminLabel2" text="👑 Administrateur" style="-fx-text-fill: #d4af37; -fx-font-weight: bold;" />
+                    </children>
+                </HBox>
+
+                <!-- Statistiques -->
+                <HBox spacing="15.0">
+                    <children>
+                        <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 15; -fx-alignment: center;" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="📝" style="-fx-font-size: 30px;" />
+                                <Label fx:id="statsPosts" text="Posts: 0" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+                            </children>
+                        </VBox>
+                        <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 15; -fx-alignment: center;" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="💬" style="-fx-font-size: 30px;" />
+                                <Label fx:id="statsComments" text="Commentaires: 0" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+                            </children>
+                        </VBox>
+                        <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 15; -fx-alignment: center;" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="🏷️" style="-fx-font-size: 30px;" />
+                                <Label fx:id="statsCategories" text="Catégories: 0" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <!-- Onglets -->
+                <TabPane>
+                    <tabs>
+                        <!-- TAB POSTS -->
+                        <Tab text="📝 Tous les posts" closable="false">
+                            <content>
+                                <VBox spacing="15.0" style="-fx-padding: 15;">
+                                    <children>
+                                        <HBox spacing="15.0">
+                                            <children>
+                                                <TextField fx:id="postSearchField" promptText="🔍 Rechercher un post..." styleClass="search-field" HBox.hgrow="ALWAYS" />
+                                                <Button onAction="#handleRefreshPosts" styleClass="btn-info" text="🔄 Actualiser" />
+                                            </children>
+                                        </HBox>
+                                        <TableView fx:id="postsTable" prefHeight="400.0">
+                                            <columns>
+                                                <TableColumn fx:id="postIdColumn" prefWidth="60.0" text="ID" />
+                                                <TableColumn fx:id="postTitleColumn" prefWidth="250.0" text="Titre" />
+                                                <TableColumn fx:id="postContentColumn" prefWidth="350.0" text="Contenu" />
+                                                <TableColumn fx:id="postDateColumn" prefWidth="150.0" text="Date" />
+                                                <TableColumn fx:id="postCommentCountColumn" prefWidth="100.0" text="Commentaires" />
+                                                <TableColumn fx:id="postActionsColumn" prefWidth="180.0" text="Actions" />
+                                            </columns>
+                                        </TableView>
+                                    </children>
+                                </VBox>
+                            </content>
+                        </Tab>
+
+                        <!-- TAB COMMENTAIRES -->
+                        <Tab text="💬 Tous les commentaires" closable="false">
+                            <content>
+                                <VBox spacing="15.0" style="-fx-padding: 15;">
+                                    <children>
+                                        <HBox spacing="15.0">
+                                            <children>
+                                                <TextField fx:id="commentSearchField" promptText="🔍 Rechercher un commentaire..." styleClass="search-field" HBox.hgrow="ALWAYS" />
+                                                <Button onAction="#handleRefreshComments" styleClass="btn-info" text="🔄 Actualiser" />
+                                            </children>
+                                        </HBox>
+                                        <TableView fx:id="commentsTable" prefHeight="400.0">
+                                            <columns>
+                                                <TableColumn fx:id="commentIdColumn" prefWidth="60.0" text="ID" />
+                                                <TableColumn fx:id="commentPostIdColumn" prefWidth="80.0" text="Post ID" />
+                                                <TableColumn fx:id="commentContentColumn" prefWidth="450.0" text="Contenu" />
+                                                <TableColumn fx:id="commentActionsColumn" prefWidth="180.0" text="Actions" />
+                                            </columns>
+                                        </TableView>
+                                    </children>
+                                </VBox>
+                            </content>
+                        </Tab>
+
+                        <!-- ✅ TAB CATÉGORIES (NOUVEAU) -->
+                        <Tab text="🏷️ Gérer les catégories" closable="false">
+                            <content>
+                                <VBox spacing="15.0" style="-fx-padding: 15;">
+                                    <children>
+                                        <HBox spacing="15.0">
+                                            <children>
+                                                <TextField fx:id="categorySearchField" promptText="🔍 Rechercher une catégorie..." styleClass="search-field" HBox.hgrow="ALWAYS" />
+                                                <Button onAction="#handleAddCategory" styleClass="btn-primary" text="➕ Ajouter une catégorie" />
+                                                <Button onAction="#handleRefreshCategories" styleClass="btn-info" text="🔄 Actualiser" />
+                                            </children>
+                                        </HBox>
+                                        <TableView fx:id="categoriesTable" prefHeight="400.0">
+                                            <columns>
+                                                <TableColumn fx:id="categoryIdColumn" prefWidth="60.0" text="ID" />
+                                                <TableColumn fx:id="categoryIconColumn" prefWidth="80.0" text="Icône" />
+                                                <TableColumn fx:id="categoryNameColumn" prefWidth="200.0" text="Nom" />
+                                                <TableColumn fx:id="categoryDescColumn" prefWidth="400.0" text="Description" />
+                                                <TableColumn fx:id="categoryActionsColumn" prefWidth="180.0" text="Actions" />
+                                            </columns>
+                                        </TableView>
+                                    </children>
+                                </VBox>
+                            </content>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+
+                <Label fx:id="messageLabel" visible="false" />
+
+            </children>
+        </VBox>
+    </center>
+
+</BorderPane>
