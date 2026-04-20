@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefWidth="900.0" prefHeight="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.produit.controllers.OrderHistoryController">
+
+    <top>
+        <VBox style="-fx-background-color: #1a1a2e; -fx-padding: 15;">
+            <children>
+                <Label text="📋 Historique des commandes" textFill="white">
+                    <font>
+                        <Font name="System Bold" size="20.0" />
+                    </font>
+                </Label>
+            </children>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="15.0" style="-fx-padding: 20;">
+            <children>
+                <HBox alignment="CENTER_RIGHT">
+                    <children>
+                        <Button onAction="#handleRefresh" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5;" text="🔄 Actualiser" />
+                    </children>
+                </HBox>
+
+                <TableView fx:id="ordersTable" prefHeight="250.0">
+                    <columns>
+                        <TableColumn fx:id="idColumn" prefWidth="80.0" text="N° Commande" />
+                        <TableColumn fx:id="dateColumn" prefWidth="180.0" text="Date" />
+                        <TableColumn fx:id="totalColumn" prefWidth="120.0" text="Total" />
+                        <TableColumn fx:id="statusColumn" prefWidth="150.0" text="Statut" />
+                    </columns>
+                </TableView>
+
+                <Separator />
+
+                <Label text="Détails de la commande :" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                <Label fx:id="orderDetailsLabel" style="-fx-text-fill: #666;" />
+                <ListView fx:id="itemsListView" prefHeight="150.0" />
+
+                <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                    <children>
+                        <Button fx:id="cancelButton" onAction="#handleCancelOrder" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-background-radius: 5;" text="❌ Annuler la commande" disable="true" />
+                        <Button fx:id="deleteButton" onAction="#handleDeleteOrder" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5;" text="🗑️ Supprimer la commande" disable="true" />
+                    </children>
+                </HBox>
+
+                <Label fx:id="messageLabel" visible="false" />
+
+            </children>
+        </VBox>
+    </center>
+
+</BorderPane>
