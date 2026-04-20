@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane fx:id="mainContainer" prefHeight="800.0" prefWidth="1200.0"
+            style="-fx-background-color: #F8F5F0;"
+            stylesheets="@../css/style.css"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.museum.controllers.UserHomeController">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-background-color: #1a1a2e; -fx-padding: 15 30;">
+            <children>
+                <Label text="🏛️ MUSEUM DIGITAL" textFill="WHITE" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <HBox alignment="CENTER" spacing="25.0">
+                    <children>
+                        <Hyperlink onAction="#handleShowHome" styleClass="nav-link-active" text="Accueil" />
+                        <Hyperlink styleClass="nav-link" text="Nos Musées" />
+                        <Hyperlink styleClass="nav-link" text="Expositions" />
+                        <Hyperlink styleClass="nav-link" text="Boutique" />
+                    </children>
+                </HBox>
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <TextField promptText="🔍 Rechercher une œuvre..." prefWidth="250.0" styleClass="search-bar-light" />
+
+                <!-- Photo de profil circulaire avec clip -->
+                <StackPane onMouseClicked="#handleShowProfilePage" style="-fx-cursor: hand;">
+                    <!-- Cercle doré extérieur -->
+                    <Circle radius="22.0" fill="#d4af37" />
+                    <!-- Cercle blanc intérieur -->
+                    <Circle radius="19.0" fill="white" />
+                    <!-- ImageView avec clip circulaire -->
+                    <ImageView fx:id="topProfileImageView" fitHeight="35.0" fitWidth="35.0" preserveRatio="true">
+                        <clip>
+                            <Circle radius="17.5" centerX="17.5" centerY="17.5" />
+                        </clip>
+                    </ImageView>
+                </StackPane>
+
+                <Button onAction="#handleShowProfilePage" styleClass="action-button-gold-small" text="👤 Mon Profil" />
+                <Button onAction="#handleLogout" styleClass="btn-logout-icon" text="🚪" />
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+            <content>
+                <StackPane>
+                    <children>
+
+                        <!-- VUE ACCUEIL -->
+                        <VBox fx:id="homeView" spacing="30.0" style="-fx-padding: 30;" visible="true">
+                            <children>
+                                <!-- Hero Banner -->
+                                <StackPane prefHeight="350.0" styleClass="hero-banner">
+                                    <children>
+                                        <ImageView fitHeight="350.0" fitWidth="1140.0" preserveRatio="false">
+                                            <image>
+                                                <Image url="@../images/login_image.png" />
+                                            </image>
+                                        </ImageView>
+                                        <VBox alignment="CENTER" spacing="15.0" style="-fx-background-color: rgba(0,0,0,0.55); -fx-background-radius: 12;">
+                                            <children>
+                                                <Label fx:id="welcomeLabel" text="Bienvenue dans l'Histoire" textFill="#d4af37">
+                                                    <font>
+                                                        <Font name="Serif Bold Italic" size="45.0" />
+                                                    </font>
+                                                </Label>
+                                                <Label text="Découvrez les trésors du patrimoine national" textFill="WHITE">
+                                                    <font>
+                                                        <Font size="20.0" />
+                                                    </font>
+                                                </Label>
+                                                <Button prefHeight="45.0" prefWidth="220.0" styleClass="action-button-gold" text="Découvrir les Collections" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </StackPane>
+
+                                <!-- Section Nos Musées -->
+                                <VBox spacing="20.0">
+                                    <children>
+                                        <HBox alignment="CENTER_LEFT">
+                                            <children>
+                                                <Label text="Nos Établissements Prestigieux" textFill="#2c3e50">
+                                                    <font>
+                                                        <Font name="System Bold" size="26.0" />
+                                                    </font>
+                                                </Label>
+                                                <Region HBox.hgrow="ALWAYS" />
+                                                <Hyperlink text="Voir tous les musées (3) ➔" textFill="#B8860B" />
+                                            </children>
+                                        </HBox>
+
+                                        <TilePane hgap="30.0" prefColumns="3" tileAlignment="TOP_LEFT" vgap="30.0">
+                                            <children>
+                                                <VBox prefWidth="340.0" styleClass="museum-card">
+                                                    <children>
+                                                        <ImageView fitHeight="220.0" fitWidth="340.0" preserveRatio="false">
+                                                            <image>
+                                                                <Image url="@../images/museum_bardo.jpg" />
+                                                            </image>
+                                                        </ImageView>
+                                                        <VBox spacing="10.0" style="-fx-padding: 20;">
+                                                            <children>
+                                                                <Label text="Musée National du Bardo" style="-fx-font-weight: bold; -fx-font-size: 18px;" textFill="#2d3436" />
+                                                                <Label text="Le plus grand trésor de mosaïques romaines au monde." textFill="#636e72" wrapText="true" />
+                                                                <Button styleClass="action-button-gold-small" text="Visiter ➔" />
+                                                            </children>
+                                                        </VBox>
+                                                    </children>
+                                                </VBox>
+
+                                                <VBox prefWidth="340.0" styleClass="museum-card">
+                                                    <children>
+                                                        <ImageView fitHeight="220.0" fitWidth="340.0" preserveRatio="false">
+                                                            <image>
+                                                                <Image url="@../images/museum_carthage.jpg" />
+                                                            </image>
+                                                        </ImageView>
+                                                        <VBox spacing="10.0" style="-fx-padding: 20;">
+                                                            <children>
+                                                                <Label text="Musée de Carthage" style="-fx-font-weight: bold; -fx-font-size: 18px;" textFill="#2d3436" />
+                                                                <Label text="Explorez l'histoire de la cité punique sur la colline de Byrsa." textFill="#636e72" wrapText="true" />
+                                                                <Button styleClass="action-button-gold-small" text="Visiter ➔" />
+                                                            </children>
+                                                        </VBox>
+                                                    </children>
+                                                </VBox>
+
+                                                <VBox prefWidth="340.0" styleClass="museum-card">
+                                                    <children>
+                                                        <ImageView fitHeight="220.0" fitWidth="340.0" preserveRatio="false">
+                                                            <image>
+                                                                <Image url="@../images/museum_sousset.jpg" />
+                                                            </image>
+                                                        </ImageView>
+                                                        <VBox spacing="10.0" style="-fx-padding: 20;">
+                                                            <children>
+                                                                <Label text="Musée de Sousse" style="-fx-font-weight: bold; -fx-font-size: 18px;" textFill="#2d3436" />
+                                                                <Label text="Découvrez les mosaïques dans la Kasbah médiévale." textFill="#636e72" wrapText="true" />
+                                                                <Button styleClass="action-button-gold-small" text="Visiter ➔" />
+                                                            </children>
+                                                        </VBox>
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </TilePane>
+                                    </children>
+                                </VBox>
+
+                                <!-- Footer -->
+                                <HBox alignment="CENTER" prefHeight="80.0" style="-fx-background-color: #1a1a2e; -fx-background-radius: 12 12 0 0;">
+                                    <children>
+                                        <Label text="© 2026 Museum Digital Corporation. L'excellence au service de la culture." textFill="#a0a0a0" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+
+                        <!-- VUE PROFIL -->
+                        <VBox fx:id="profileView" spacing="25.0" style="-fx-padding: 30; -fx-background-color: #F8F5F0;" visible="false">
+                            <children>
+                                <Label text="👤 Mon Profil" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                                <Label text="Gérez vos informations personnelles" textFill="#7f8c8d" />
+
+                                <VBox spacing="25.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 30; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+                                    <children>
+                                        <!-- Photo de profil circulaire dans la vue profil -->
+                                        <HBox alignment="CENTER_LEFT" spacing="25.0">
+                                            <children>
+                                                <StackPane>
+                                                    <!-- Cercle doré extérieur -->
+                                                    <Circle radius="55.0" fill="#d4af37" />
+                                                    <!-- Cercle blanc intérieur -->
+                                                    <Circle radius="52.0" fill="white" />
+                                                    <!-- ImageView avec clip circulaire -->
+                                                    <ImageView fx:id="profileImageView" fitHeight="100.0" fitWidth="100.0" preserveRatio="true">
+                                                        <clip>
+                                                            <Circle radius="50.0" centerX="50.0" centerY="50.0" />
+                                                        </clip>
+                                                    </ImageView>
+                                                </StackPane>
+                                                <VBox spacing="10.0">
+                                                    <children>
+                                                        <Button onAction="#handleChangeProfilePicture" style="-fx-background-color: #d4af37; -fx-background-radius: 20; -fx-text-fill: #2c3e50; -fx-font-weight: bold; -fx-cursor: hand;" text="📷 Changer la photo" />
+                                                        <Label text="Formats: PNG, JPG, JPEG (max 5MB)" style="-fx-text-fill: #999; -fx-font-size: 11px;" />
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </HBox>
+
+                                        <Separator />
+
+                                        <Label text="Informations personnelles" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+
+                                        <GridPane hgap="20.0" vgap="15.0">
+                                            <columnConstraints>
+                                                <ColumnConstraints prefWidth="150.0" />
+                                                <ColumnConstraints prefWidth="350.0" />
+                                            </columnConstraints>
+                                            <children>
+                                                <Label text="Nom complet:" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-weight: bold;" />
+                                                <TextField fx:id="fullNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" prefHeight="40.0" />
+
+                                                <Label text="Nom d'utilisateur:" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-font-weight: bold;" />
+                                                <TextField fx:id="usernameField" GridPane.columnIndex="1" GridPane.rowIndex="1" prefHeight="40.0" />
+
+                                                <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-font-weight: bold;" />
+                                                <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="2" prefHeight="40.0" />
+                                            </children>
+                                        </GridPane>
+
+                                        <Separator />
+
+                                        <Label text="Changer le mot de passe" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+
+                                        <GridPane hgap="20.0" vgap="15.0">
+                                            <columnConstraints>
+                                                <ColumnConstraints prefWidth="150.0" />
+                                                <ColumnConstraints prefWidth="350.0" />
+                                            </columnConstraints>
+                                            <children>
+                                                <Label text="Nouveau mot de passe:" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-weight: bold;" />
+                                                <PasswordField fx:id="newPasswordField" GridPane.columnIndex="1" GridPane.rowIndex="0" prefHeight="40.0" promptText="Laisser vide pour ne pas changer" />
+
+                                                <Label text="Confirmer:" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-font-weight: bold;" />
+                                                <PasswordField fx:id="confirmPasswordField" GridPane.columnIndex="1" GridPane.rowIndex="1" prefHeight="40.0" promptText="Confirmer le nouveau mot de passe" />
+                                            </children>
+                                        </GridPane>
+
+                                        <Label fx:id="profileMessageLabel" visible="false" />
+
+                                        <HBox spacing="15.0">
+                                            <children>
+                                                <Button onAction="#handleCancel" style="-fx-background-color: transparent; -fx-border-color: #ddd; -fx-border-radius: 8; -fx-text-fill: #666; -fx-cursor: hand;" text="Annuler" />
+                                                <Button onAction="#handleSaveChanges" style="-fx-background-color: #27ae60; -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="💾 Enregistrer" />
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+
+                    </children>
+                </StackPane>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>
