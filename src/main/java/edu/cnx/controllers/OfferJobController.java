@@ -1,9 +1,11 @@
 package edu.cnx.controllers;
 
 import edu.cnx.entités.OfferJob;
+import edu.cnx.services.GeminiOfferDescriptionService;
 import edu.cnx.services.OfferJobService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,7 +32,9 @@ public class OfferJobController implements Initializable {
     @FXML
     private TextField tfTitre, tfSalaire, tfRecherche;
     @FXML
-    private TextArea taDescription;
+    private TextArea taDescription, taPromptIa;
+    @FXML
+    private Button btnGenerateIa;
     @FXML
     private TableView<OfferJob> tableOffers;
     @FXML
@@ -41,6 +45,7 @@ public class OfferJobController implements Initializable {
     private TableColumn<OfferJob, Void> colAction;
 
     private final OfferJobService service = new OfferJobService();
+    private final GeminiOfferDescriptionService descriptionGenerator = new GeminiOfferDescriptionService();
     private OfferJob selectedOffer = null;
     private ObservableList<OfferJob> masterData = FXCollections.observableArrayList();
     private boolean ascendant = true;
@@ -70,6 +75,7 @@ public class OfferJobController implements Initializable {
     private void remplirChamps(OfferJob o) {
         if (tfTitre != null) tfTitre.setText(o.getTitre());
         if (taDescription != null) taDescription.setText(o.getDescription());
+        if (taPromptIa != null) taPromptIa.clear();
         if (tfSalaire != null) tfSalaire.setText(String.valueOf(o.getSalaire()));
     }
 
@@ -91,6 +97,76 @@ public class OfferJobController implements Initializable {
         rafraichirTable();
         Stage stage = (Stage) tfTitre.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    void handleGenerateDescription() {
+        if (taPromptIa == null || taDescription == null) {
+            return;
+        }
+
+        String titre = tfTitre.getText() == null ? "" : tfTitre.getText().trim();
+        String promptUtilisateur = taPromptIa.getText() == null ? "" : taPromptIa.getText().trim();
+        if (promptUtilisateur.isEmpty()) {
+            showAlert("Prompt requis", "Veuillez ecrire un prompt de generation avant de lancer l'IA.");
+            return;
+        }
+
+        String descriptionActuelle = taDescription.getText() == null ? "" : taDescription.getText().trim();
+        if (!descriptionActuelle.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Remplacer la description");
+            alert.setHeaderText(null);
+            alert.setContentText("Une description existe deja. Voulez-vous la remplacer par une version generee ?");
+
+            ButtonType remplacer = new ButtonType("Remplacer", ButtonBar.ButtonData.OK_DONE);
+            ButtonType annuler = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+            alert.getButtonTypes().setAll(remplacer, annuler);
+
+            if (alert.showAndWait().orElse(annuler) != remplacer) {
+                return;
+            }
+        }
+
+        Task<String> generationTask = new Task<>() {
+            @Override
+            protected String call() throws Exception {
+                return descriptionGenerator.generateOffer(titre, promptUtilisateur);
+            }
+        };
+
+        generationTask.setOnRunning(event -> {
+            if (btnGenerateIa != null) {
+                btnGenerateIa.setDisable(true);
+                btnGenerateIa.setText("Generation...");
+            }
+        });
+
+        generationTask.setOnSucceeded(event -> {
+            taDescription.setText(generationTask.getValue());
+            if (btnGenerateIa != null) {
+                btnGenerateIa.setDisable(false);
+                btnGenerateIa.setText("Generer avec IA");
+            }
+        });
+
+        generationTask.setOnFailed(event -> {
+            if (btnGenerateIa != null) {
+                btnGenerateIa.setDisable(false);
+                btnGenerateIa.setText("Generer avec IA");
+            }
+
+            Throwable error = generationTask.getException();
+            String message = error == null ? "Erreur inconnue pendant la generation." : error.getMessage();
+            if (message != null && message.contains("503")) {
+                message = "Le service Gemini est temporairement surcharge. L'application a deja effectue plusieurs tentatives automatiques. Merci de reessayer dans quelques instants.";
+            }
+            showAlert("Generation impossible", message);
+        });
+
+        Thread generationThread = new Thread(generationTask, "gemini-offer-generation");
+        generationThread.setDaemon(true);
+        generationThread.start();
     }
 
     @FXML

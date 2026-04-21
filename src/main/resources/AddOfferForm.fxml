@@ -20,14 +20,30 @@
         <VBox spacing="5.0">
             <children>
                 <Label text="Titre de la mission" style="-fx-font-weight: bold;" />
-                <TextField fx:id="tfTitre" promptText="Ex: Designer Graphique" styleClass="search-bar-museum" />
+                <TextField fx:id="tfTitre" promptText="Ex: Developpeur Java Senior" styleClass="search-bar-museum" />
             </children>
         </VBox>
 
         <VBox spacing="5.0">
             <children>
-                <Label text="Description" style="-fx-font-weight: bold;" />
-                <TextArea fx:id="taDescription" prefHeight="100.0" promptText="Détails de l'offre..." styleClass="museum-table" wrapText="true" />
+                <Label text="Prompt IA" style="-fx-font-weight: bold;" />
+                <TextArea fx:id="taPromptIa"
+                          prefHeight="120.0"
+                          promptText="Ex: Genere une offre claire pour un developpeur Java backend senior avec Spring Boot, SQL, microservices, API REST, Git, tests unitaires, travail en equipe, autonomie et communication."
+                          styleClass="museum-table"
+                          wrapText="true" />
+                <Button fx:id="btnGenerateIa"
+                        mnemonicParsing="false"
+                        onAction="#handleGenerateDescription"
+                        styleClass="btn-action-yellow"
+                        text="Generer l'offre avec IA" />
+            </children>
+        </VBox>
+
+        <VBox spacing="5.0">
+            <children>
+                <Label text="Description generee" style="-fx-font-weight: bold;" />
+                <TextArea fx:id="taDescription" prefHeight="180.0" promptText="Le contenu genere apparaitra ici..." styleClass="museum-table" wrapText="true" />
             </children>
         </VBox>
 

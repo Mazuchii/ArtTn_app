@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
@@ -30,8 +31,10 @@ import javafx.stage.Stage;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,7 +82,7 @@ public class DemandeJobController implements Initializable {
         colOffre.setCellValueFactory(new PropertyValueFactory<>("offreId"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        if (colAction != null) ajouterBoutonVoirCV();
+        if (colAction != null) ajouterBoutonsAction();
 
         tableDemandes.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
@@ -268,6 +271,14 @@ public class DemandeJobController implements Initializable {
             selectedDemande.setStatus(statut);
             service.modifier(selectedDemande);
             rafraichirTable();
+
+            if ("Accepted".equalsIgnoreCase(statut)) {
+                showAlert(
+                        "Lien Meet genere",
+                        "Lien Jitsi du rendez-vous :\n" + construireLienJitsi(selectedDemande),
+                        Alert.AlertType.INFORMATION
+                );
+            }
         }
     }
 
@@ -367,22 +378,69 @@ public class DemandeJobController implements Initializable {
         a.show();
     }
 
-    private void ajouterBoutonVoirCV() {
+    private void ajouterBoutonsAction() {
         colAction.setCellFactory(p -> new TableCell<>() {
-            private final Button btn = new Button("Voir CV");
+            private final Button btnCv = new Button("Voir CV");
+            private final Button btnMeet = new Button("Meet");
+            private final HBox actions = new HBox(8, btnCv, btnMeet);
             {
-                btn.getStyleClass().add("btn-action-yellow");
-                btn.setOnAction(e -> {
+                btnCv.getStyleClass().add("btn-action-yellow");
+                btnMeet.getStyleClass().add("btn-action-green");
+
+                btnCv.setOnAction(e -> {
                     DemandeJob d = getTableView().getItems().get(getIndex());
                     try { Desktop.getDesktop().open(new File(d.getCvUrl())); }
                     catch (Exception ex) { showAlert("Erreur", "Fichier introuvable."); }
                 });
+
+                btnMeet.setOnAction(e -> {
+                    DemandeJob d = getTableView().getItems().get(getIndex());
+                    ouvrirMeetJitsi(d);
+                });
             }
+
             @Override protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                setGraphic(empty ? null : btn);
+                if (empty) {
+                    setGraphic(null);
+                    return;
+                }
+
+                DemandeJob d = getTableView().getItems().get(getIndex());
+                btnMeet.setDisable(!"Accepted".equalsIgnoreCase(d.getStatus()));
+                setGraphic(actions);
             }
         });
+    }
+
+    private void ouvrirMeetJitsi(DemandeJob demande) {
+        if (demande == null) {
+            showAlert("Selection requise", "Veuillez selectionner une candidature.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        if (!"Accepted".equalsIgnoreCase(demande.getStatus())) {
+            showAlert("Meet indisponible", "Le lien Jitsi n'est disponible que pour une candidature acceptee.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        String lien = construireLienJitsi(demande);
+        try {
+            Desktop.getDesktop().browse(URI.create(lien));
+        } catch (Exception e) {
+            LOGGER.log(Level.WARNING, "Impossible d'ouvrir le lien Jitsi", e);
+            showAlert("Lien Meet", lien, Alert.AlertType.INFORMATION);
+        }
+    }
+
+    private String construireLienJitsi(DemandeJob demande) {
+        String candidat = demande.getCandidatId() == null ? "candidat" : demande.getCandidatId();
+        String salle = ("admin-candidat-" + demande.getOffreId() + "-" + candidat + "-" + demande.getId())
+                .toLowerCase(Locale.ROOT)
+                .replaceAll("[^a-z0-9-]", "-")
+                .replaceAll("-+", "-")
+                .replaceAll("^-|-$", "");
+        return "https://meet.jit.si/" + salle;
     }
     private void showAlert(String title, String content, Alert.AlertType type) {
         Alert alert = new Alert(type); // Utilise le type passé en paramètre (ERROR, WARNING, etc.)

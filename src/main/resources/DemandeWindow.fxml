@@ -79,7 +79,7 @@
                                 <TableColumn fx:id="colCandidat" prefWidth="150.0" text="Candidat (ID)" />
                                 <TableColumn fx:id="colOffre" prefWidth="100.0" text="Offre liée" />
                                 <TableColumn fx:id="colStatus" prefWidth="120.0" text="Statut actuel" />
-                                <TableColumn fx:id="colAction" prefWidth="130.0" text="Documents" />
+                                <TableColumn fx:id="colAction" prefWidth="200.0" text="Documents / Meet" />
                             </columns>
                             <columnResizePolicy>
                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
