@@ -305,7 +305,7 @@ public class UserHomeController {
                     javafx.scene.Scene scene = new javafx.scene.Scene(loader.load());
                     javafx.stage.Stage stage = (javafx.stage.Stage) profileImageView.getScene().getWindow();
                     stage.setScene(scene);
-                    stage.setTitle("Connexion - Museum Digital");
+                    stage.setTitle("Connexion - ART.TN");
                     stage.centerOnScreen();
                 } catch (IOException e) {
                     e.printStackTrace();

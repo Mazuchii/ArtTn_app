@@ -3,15 +3,38 @@ package tn.esprit.museum.controllers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
 import tn.esprit.museum.entities.User;
 import tn.esprit.museum.services.UserService;
+import tn.esprit.museum.utils.FraudDetectionService;
+import tn.esprit.museum.utils.PDFExporter;
 
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import java.util.Date;
+
+import tn.esprit.museum.utils.FraudDetectionService;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+
+import java.io.File;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 public class DashboardController {
@@ -33,6 +56,10 @@ public class DashboardController {
 
     @FXML private TextField searchField;
     @FXML private ComboBox<String> roleFilterCombo;
+
+    // Graphiques
+    @FXML private PieChart rolePieChart;
+    @FXML private BarChart<String, Number> statsBarChart;
 
     private UserService userService;
     private User currentUser;
@@ -61,6 +88,7 @@ public class DashboardController {
 
         loadUsers();
         updateStats();
+        updateCharts();
 
         // Ajouter l'effet de survol pour la carte des comptes désactivés
         addHoverEffectToInactiveCard();
@@ -126,6 +154,47 @@ public class DashboardController {
 
     private int countInactiveUsers() throws SQLException {
         return (int) userService.getAll().stream().filter(u -> !u.isActive()).count();
+    }
+
+    private void updateCharts() {
+        try {
+            int totalUsers = userService.getAll().size();
+            int admins = countAdmins();
+            int regularUsers = totalUsers - admins;
+            int activeUsers = countActiveUsers();
+            int inactiveUsers = totalUsers - activeUsers;
+
+            // Mettre à jour le PieChart (répartition des rôles)
+            ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                    new PieChart.Data("Administrateurs (" + admins + ")", admins),
+                    new PieChart.Data("Utilisateurs (" + regularUsers + ")", regularUsers)
+            );
+            rolePieChart.setData(pieChartData);
+            rolePieChart.setTitle("Répartition des rôles");
+            rolePieChart.setClockwise(true);
+            rolePieChart.setLabelLineLength(10);
+            rolePieChart.setLabelsVisible(true);
+
+            // Mettre à jour le BarChart (statut des comptes)
+            statsBarChart.getData().clear();
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            series.setName("Nombre d'utilisateurs");
+            series.getData().add(new XYChart.Data<>("Actifs", activeUsers));
+            series.getData().add(new XYChart.Data<>("Inactifs", inactiveUsers));
+
+            statsBarChart.getData().add(series);
+            statsBarChart.setTitle("Statut des comptes");
+            statsBarChart.setLegendVisible(false);
+            statsBarChart.setAnimated(true);
+
+            // Appliquer les couleurs
+            if (!series.getData().isEmpty()) {
+                // Les couleurs seront appliquées automatiquement par JavaFX
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void addHoverEffectToInactiveCard() {
@@ -216,6 +285,7 @@ public class DashboardController {
                             userService.activate(selected.getId());
                             loadUsers();
                             updateStats();
+                            updateCharts();
                             showAlert("Succès", "✅ Compte de " + selected.getFullName() + " réactivé avec succès!");
                             dialog.close();
                         } catch (SQLException ex) {
@@ -284,6 +354,7 @@ public class DashboardController {
                 userService.delete(selected.getId());
                 loadUsers();
                 updateStats();
+                updateCharts();
                 showAlert("Succès", "Utilisateur supprimé avec succès!");
             } catch (SQLException e) {
                 showAlert("Erreur", "Impossible de supprimer: " + e.getMessage());
@@ -309,6 +380,7 @@ public class DashboardController {
             }
             loadUsers();
             updateStats();
+            updateCharts();
         } catch (SQLException e) {
             showAlert("Erreur", "Impossible de modifier le statut: " + e.getMessage());
         }
@@ -338,7 +410,7 @@ public class DashboardController {
     }
 
     /**
-     * Dialogue pour ajouter uniquement un ADMIN avec mot de passe
+     * Dialogue pour ajouter un ADMIN
      */
     private void showAdminDialog() {
         Dialog<User> dialog = new Dialog<>();
@@ -360,17 +432,17 @@ public class DashboardController {
         grid.add(titleLabel, 0, 0);
 
         TextField usernameField = new TextField();
-        usernameField.setPromptText("ex: john_doe");
+        usernameField.setPromptText("ex: mohamed ben mohamed");
         usernameField.setPrefHeight(45);
         usernameField.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #dcdde1; -fx-border-radius: 10; -fx-padding: 0 15; -fx-font-size: 14px;");
 
         TextField emailField = new TextField();
-        emailField.setPromptText("ex: john@museum.com");
+        emailField.setPromptText("ex: mohamed@museum.com");
         emailField.setPrefHeight(45);
         emailField.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #dcdde1; -fx-border-radius: 10; -fx-padding: 0 15; -fx-font-size: 14px;");
 
         TextField fullNameField = new TextField();
-        fullNameField.setPromptText("ex: John Doe");
+        fullNameField.setPromptText("ex: Mohamed Ben Mohamed");
         fullNameField.setPrefHeight(45);
         fullNameField.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #dcdde1; -fx-border-radius: 10; -fx-padding: 0 15; -fx-font-size: 14px;");
 
@@ -555,6 +627,7 @@ public class DashboardController {
                 userService.insert(result);
                 loadUsers();
                 updateStats();
+                updateCharts();
 
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Succès");
@@ -687,6 +760,7 @@ public class DashboardController {
                 }
                 loadUsers();
                 updateStats();
+                updateCharts();
                 showAlert("Succès", "Utilisateur modifié avec succès!");
             } catch (SQLException e) {
                 showAlert("Erreur", "Impossible de modifier: " + e.getMessage());
@@ -701,4 +775,317 @@ public class DashboardController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+    @FXML
+    private void handleExportPDF() {
+        try {
+            ObservableList<User> usersToExport = usersTable.getItems();
+
+            if (usersToExport.isEmpty()) {
+                showAlert("Information", "Aucun utilisateur à exporter.");
+                return;
+            }
+
+            boolean success = PDFExporter.exportUsersToPDF(usersToExport,
+                    (Stage) usersTable.getScene().getWindow());
+
+            if (success) {
+                showAlert("Succès", "✅ Le fichier PDF a été généré avec succès !");
+            } else {
+                showAlert("Erreur", "❌ L'exportation a été annulée.");
+            }
+
+        } catch (Exception e) {
+            showAlert("Erreur", "Erreur lors de l'exportation: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleExportStats() {
+        try {
+            int totalUsers = Integer.parseInt(statsTotalUsers.getText());
+            int activeUsers = Integer.parseInt(statsActiveUsers.getText());
+            int admins = Integer.parseInt(statsAdmins.getText());
+
+            boolean success = PDFExporter.exportStatsToPDF(totalUsers, activeUsers, admins,
+                    (Stage) usersTable.getScene().getWindow());
+
+            if (success) {
+                showAlert("Succès", "✅ Les statistiques ont été exportées avec succès !");
+            }
+
+        } catch (Exception e) {
+            showAlert("Erreur", "Erreur lors de l'exportation: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handleFraudDetection() {
+        try {
+            List<FraudDetectionService.FraudReport> reports = new ArrayList<>();
+
+            for (User user : userList) {
+                FraudDetectionService.FraudReport report =
+                        FraudDetectionService.getDetailedReport(user);
+                if (report.isFraudulent()) {
+                    reports.add(report);
+                }
+            }
+
+            if (reports.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("🔐 Détection de fraude");
+                alert.setHeaderText("Résultat de l'analyse");
+                alert.setContentText("✅ Aucun compte suspect détecté !\n\nTous les comptes sont considérés comme légitimes.");
+                alert.showAndWait();
+                return;
+            }
+
+            // Créer un Dialog personnalisé
+            Dialog<Void> dialog = new Dialog<>();
+            dialog.setTitle("🔐 Détection de fraude");
+            dialog.setHeaderText(null);
+
+            // Appliquer le style CSS
+            dialog.getDialogPane().getStylesheets().add(
+                    getClass().getResource("/css/style.css").toExternalForm()
+            );
+            dialog.getDialogPane().getStyleClass().add("fraud-dialog");
+
+            // Créer le contenu principal
+            VBox mainContent = new VBox(15);
+            mainContent.setStyle("-fx-background-color: #F8F5F0; -fx-padding: 20;");
+
+            // En-tête
+            Label headerLabel = new Label("🚨 " + reports.size() + " compte(s) suspect(s) détecté(s)");
+            headerLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
+
+            Label subHeaderLabel = new Label("Voici la liste des comptes présentant un comportement suspect :");
+            subHeaderLabel.setStyle("-fx-text-fill: #7f8c8d; -fx-font-size: 13px;");
+
+            mainContent.getChildren().addAll(headerLabel, subHeaderLabel);
+
+            // ScrollPane pour contenir tous les comptes
+            ScrollPane scrollPane = new ScrollPane();
+            scrollPane.setFitToWidth(true);
+            scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
+
+            VBox accountsContainer = new VBox(15);
+            accountsContainer.setStyle("-fx-padding: 10 0 10 0;");
+
+            // Créer une carte pour chaque compte suspect
+            for (FraudDetectionService.FraudReport report : reports) {
+                VBox accountCard = createAccountCard(report);
+                accountsContainer.getChildren().add(accountCard);
+            }
+
+            scrollPane.setContent(accountsContainer);
+            scrollPane.setPrefHeight(450);
+            mainContent.getChildren().add(scrollPane);
+
+            // Boutons en bas
+            HBox buttonBox = new HBox(15);
+            buttonBox.setAlignment(Pos.CENTER_RIGHT);
+            buttonBox.setStyle("-fx-padding: 15 0 0 0;");
+
+            Button exportButton = new Button("📄 Exporter le rapport");
+            exportButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 10 20; -fx-cursor: hand;");
+            exportButton.setOnAction(e -> exportFraudReport(reports));
+
+            Button closeButton = new Button("Fermer");
+            closeButton.setStyle("-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 10 20; -fx-cursor: hand;");
+            closeButton.setOnAction(e -> dialog.close());
+
+            buttonBox.getChildren().addAll(exportButton, closeButton);
+            mainContent.getChildren().add(buttonBox);
+
+            dialog.getDialogPane().setContent(mainContent);
+            dialog.getDialogPane().setPrefWidth(700);
+            dialog.getDialogPane().setPrefHeight(650);
+            dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+
+            // Cacher le bouton par défaut
+            Node closeButtonDefault = dialog.getDialogPane().lookupButton(ButtonType.CLOSE);
+            closeButtonDefault.setVisible(false);
+
+            dialog.showAndWait();
+
+        } catch (Exception e) {
+            showAlert("Erreur", "Erreur lors de la détection: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Crée une carte pour un compte suspect
+     */
+    private VBox createAccountCard(FraudDetectionService.FraudReport report) {
+        VBox card = new VBox(10);
+        card.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);");
+
+        // En-tête de la carte avec le nom d'utilisateur et le score
+        HBox headerBox = new HBox(10);
+        headerBox.setAlignment(Pos.CENTER_LEFT);
+
+        Label usernameLabel = new Label("👤 " + report.getUsername());
+        usernameLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2c3e50;");
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        // Badge de score
+        Label scoreBadge = new Label(report.getRiskScore() + "%");
+        scoreBadge.setStyle(
+                "-fx-background-color: " + (report.getRiskScore() >= 70 ? "#e74c3c" : "#f39c12") + "; " +
+                        "-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 5 10; -fx-background-radius: 15;"
+        );
+
+        headerBox.getChildren().addAll(usernameLabel, spacer, scoreBadge);
+        card.getChildren().add(headerBox);
+
+        // Détails du compte
+        GridPane detailsGrid = new GridPane();
+        detailsGrid.setHgap(15);
+        detailsGrid.setVgap(8);
+        detailsGrid.setStyle("-fx-padding: 5 0 5 20;");
+
+        // Email
+        Label emailIcon = new Label("📧");
+        emailIcon.setStyle("-fx-font-size: 12px;");
+        Label emailLabel = new Label(report.getEmail());
+        emailLabel.setStyle("-fx-text-fill: #555; -fx-font-size: 12px;");
+        detailsGrid.add(emailIcon, 0, 0);
+        detailsGrid.add(emailLabel, 1, 0);
+
+        // Niveau de risque
+        Label riskIcon = new Label("⚠️");
+        riskIcon.setStyle("-fx-font-size: 12px;");
+        Label riskLabel = new Label(report.getRiskLevelLabel());
+        riskLabel.setStyle(
+                "-fx-text-fill: " + (report.getRiskLevelLabel().contains("CRITIQUE") ? "#e74c3c" : "#f39c12") + "; " +
+                        "-fx-font-weight: bold; -fx-font-size: 12px;"
+        );
+        detailsGrid.add(riskIcon, 0, 1);
+        detailsGrid.add(riskLabel, 1, 1);
+
+        card.getChildren().add(detailsGrid);
+
+        // Drapeaux rouges (si présents)
+        if (report.getRedFlags() != null && !report.getRedFlags().isEmpty()) {
+            Separator sep = new Separator();
+            sep.setStyle("-fx-background-color: #e0e0e0;");
+            card.getChildren().add(sep);
+
+            Label flagsTitle = new Label("🚩 Drapeaux rouges :");
+            flagsTitle.setStyle("-fx-font-weight: bold; -fx-text-fill: #e74c3c; -fx-font-size: 12px;");
+            card.getChildren().add(flagsTitle);
+
+            VBox flagsBox = new VBox(5);
+            flagsBox.setStyle("-fx-padding: 0 0 0 20;");
+            for (String flag : report.getRedFlags()) {
+                Label flagLabel = new Label("• " + flag);
+                flagLabel.setStyle("-fx-text-fill: #555; -fx-font-size: 11px;");
+                flagsBox.getChildren().add(flagLabel);
+            }
+            card.getChildren().add(flagsBox);
+        }
+
+        // Boutons d'action
+        HBox actionBox = new HBox(10);
+        actionBox.setAlignment(Pos.CENTER_RIGHT);
+        actionBox.setStyle("-fx-padding: 10 0 0 0;");
+
+        Button viewButton = new Button("👁️ Voir le compte");
+        viewButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 5 15; -fx-cursor: hand;");
+        viewButton.setOnAction(e -> {
+            User selectedUser = userList.stream()
+                    .filter(u -> u.getId() == report.getId())
+                    .findFirst()
+                    .orElse(null);
+            if (selectedUser != null) {
+                usersTable.getSelectionModel().select(selectedUser);
+                usersTable.scrollTo(selectedUser);
+                // Fermer le dialog
+                Stage stage = (Stage) viewButton.getScene().getWindow();
+                stage.close();
+            }
+        });
+
+        Button disableButton = new Button("🔒 Désactiver");
+        disableButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 5 15; -fx-cursor: hand;");
+        disableButton.setOnAction(e -> {
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            confirm.setTitle("Confirmation");
+            confirm.setHeaderText(null);
+            confirm.setContentText("Êtes-vous sûr de vouloir désactiver le compte " + report.getUsername() + " ?");
+            if (confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+                try {
+                    userService.deactivate(report.getId());
+                    loadUsers();
+                    updateStats();
+                    showAlert("Succès", "✅ Compte désactivé avec succès !");
+                    // Fermer le dialog
+                    Stage stage = (Stage) disableButton.getScene().getWindow();
+                    stage.close();
+                } catch (SQLException ex) {
+                    showAlert("Erreur", ex.getMessage());
+                }
+            }
+        });
+
+        actionBox.getChildren().addAll(viewButton, disableButton);
+        card.getChildren().add(actionBox);
+
+        return card;
+    }
+
+    /**
+     * Exporte le rapport de fraude
+     */
+    private void exportFraudReport(List<FraudDetectionService.FraudReport> reports) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("RAPPORT DE DÉTECTION DE FRAUDE\n");
+        sb.append("=".repeat(50)).append("\n");
+        sb.append("Date: ").append(new Date()).append("\n\n");
+
+        for (FraudDetectionService.FraudReport report : reports) {
+            sb.append("ID: ").append(report.getId()).append("\n");
+            sb.append("Utilisateur: ").append(report.getUsername()).append("\n");
+            sb.append("Email: ").append(report.getEmail()).append("\n");
+            sb.append("Score de risque: ").append(report.getRiskScore()).append("%\n");
+            sb.append("Niveau: ").append(report.getRiskLevelLabel()).append("\n");
+            if (report.getRedFlags() != null && !report.getRedFlags().isEmpty()) {
+                sb.append("Drapeaux rouges:\n");
+                for (String flag : report.getRedFlags()) {
+                    sb.append("  - ").append(flag).append("\n");
+                }
+            }
+            sb.append("\n").append("-".repeat(50)).append("\n");
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Exporter le rapport");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Fichier texte", "*.txt")
+        );
+        fileChooser.setInitialFileName("rapport_fraude_" + System.currentTimeMillis() + ".txt");
+
+        File file = fileChooser.showSaveDialog(usersTable.getScene().getWindow());
+        if (file != null) {
+            try (java.io.FileWriter fw = new java.io.FileWriter(file)) {
+                fw.write(sb.toString());
+                showAlert("Succès", "✅ Rapport exporté avec succès !");
+            } catch (Exception e) {
+                showAlert("Erreur", "Erreur lors de l'export: " + e.getMessage());
+            }
+        }
+    }
+
+
+
+
+
+
+
 }

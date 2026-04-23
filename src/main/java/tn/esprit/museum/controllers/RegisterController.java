@@ -156,7 +156,7 @@ public class RegisterController {
 
         if (selectedFile != null) {
             if (selectedFile.length() > 5 * 1024 * 1024) {
-                errorLabel.setText("❌ La photo ne doit pas dépasser 5MB");
+                errorLabel.setText(" La photo ne doit pas dépasser 5MB");
                 errorLabel.setVisible(true);
                 return;
             }
@@ -176,12 +176,12 @@ public class RegisterController {
                 Image image = new Image(selectedFile.toURI().toString());
                 profileImageView.setImage(image);
 
-                photoLabel.setText("✅ Photo choisie");
+                photoLabel.setText(" Photo choisie");
                 photoLabel.setStyle("-fx-text-fill: #27ae60;");
                 errorLabel.setVisible(false);
 
             } catch (IOException e) {
-                errorLabel.setText("❌ Erreur lors de l'upload: " + e.getMessage());
+                errorLabel.setText(" Erreur lors de l'upload: " + e.getMessage());
                 errorLabel.setVisible(true);
                 e.printStackTrace();
             }
@@ -225,13 +225,13 @@ public class RegisterController {
 
         try {
             if (userService.isUsernameTaken(username)) {
-                errorLabel.setText("❌ Ce nom d'utilisateur est déjà pris");
+                errorLabel.setText(" Ce nom d'utilisateur est déjà pris");
                 errorLabel.setVisible(true);
                 return;
             }
 
             if (userService.isEmailTaken(email)) {
-                errorLabel.setText("❌ Cet email est déjà utilisé");
+                errorLabel.setText(" Cet email est déjà utilisé");
                 errorLabel.setVisible(true);
                 return;
             }
@@ -254,13 +254,13 @@ public class RegisterController {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Succès");
             alert.setHeaderText(null);
-            alert.setContentText("✅ Compte créé avec succès !\nBienvenue " + newUser.getFullName());
+            alert.setContentText(" Compte créé avec succès !\nBienvenue " + newUser.getFullName());
             alert.showAndWait();
 
             handleLogin();
 
         } catch (SQLException e) {
-            errorLabel.setText("❌ Erreur : " + e.getMessage());
+            errorLabel.setText(" Erreur : " + e.getMessage());
             errorLabel.setVisible(true);
             e.printStackTrace();
         }

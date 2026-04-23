@@ -580,3 +580,141 @@
     -fx-font-size: 11px;
     -fx-padding: 8 0 0 0;
 }
+
+
+/* ============================================
+   STYLES POUR LES GRAPHIQUES (CHARTS)
+   ============================================ */
+
+/* Conteneur des graphiques */
+.chart-container {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 15;
+}
+
+/* Style pour le PieChart */
+.pie-chart {
+    -fx-pie-label-visible: true;
+    -fx-label-line-length: 15;
+    -fx-label-line-stroke: #2c3e50;
+}
+
+.pie-chart .chart-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.pie-chart .chart-legend {
+    -fx-font-size: 12px;
+}
+
+.pie-chart .chart-legend-item {
+    -fx-text-fill: #2c3e50;
+}
+
+/* Labels du PieChart */
+.chart-pie-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-fill: #2c3e50;
+    -fx-stroke: white;
+    -fx-stroke-width: 0.5;
+}
+
+/* Style pour le BarChart */
+.bar-chart {
+    -fx-bar-fill: #d4af37;
+}
+
+.bar-chart .chart-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.bar-chart .chart-legend {
+    -fx-font-size: 12px;
+}
+
+.bar-chart .axis-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.bar-chart .axis-tick-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #555;
+}
+
+/* Couleurs des barres */
+.default-color0.chart-bar {
+    -fx-bar-fill: #27ae60;
+}
+
+.default-color1.chart-bar {
+    -fx-bar-fill: #e74c3c;
+}
+
+/* Tooltip pour les graphiques */
+.chart-pie-label-line {
+    -fx-stroke: #2c3e50;
+    -fx-stroke-width: 1;
+}
+
+.chart-pie-label-line:hover {
+    -fx-stroke-width: 2;
+}
+
+
+/* Style pour le dialog de détection de fraude */
+.fraud-dialog {
+    -fx-background-color: #F8F5F0;
+    -fx-background-radius: 15;
+    -fx-border-color: #d4af37;
+    -fx-border-radius: 15;
+    -fx-border-width: 2;
+}
+
+.fraud-dialog .dialog-pane {
+    -fx-background-color: #F8F5F0;
+    -fx-background-radius: 15;
+}
+
+.fraud-dialog .titled-pane {
+    -fx-skin: "com.sun.javafx.scene.control.skin.TitledPaneSkin";
+    -fx-text-fill: #2c3e50;
+}
+
+.fraud-dialog .titled-pane > .title {
+    -fx-background-color: #f12b4f;
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+}
+
+.fraud-dialog .titled-pane > .title > .text {
+    -fx-fill: white;
+    -fx-font-weight: bold;
+}
+
+.fraud-dialog .titled-pane > .content {
+    -fx-background-color: white;
+    -fx-background-radius: 0 0 10 10;
+    -fx-border-color: #1a1a2e;
+    -fx-border-width: 0 1 1 1;
+    -fx-border-radius: 0 0 10 10;
+}
+
+.fraud-dialog .progress-bar .bar {
+    -fx-background-radius: 10;
+}
+
+.fraud-dialog .button:hover {
+    -fx-opacity: 0.85;
+    -fx-cursor: hand;
+}

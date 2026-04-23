@@ -77,10 +77,10 @@ public class ResetPasswordController {
             if (emailSent) {
                 step1Container.setVisible(false);
                 step2Container.setVisible(true);
-                showSuccess("✅ Un code a été envoyé à " + email);
+                showSuccess("Un code a été envoyé à " + email);
                 codeField.clear();
             } else {
-                showError("❌ Erreur lors de l'envoi. Code: " + generatedCode);
+                showError("Erreur lors de l'envoi. Code: " + generatedCode);
             }
 
         } catch (SQLException e) {
@@ -121,7 +121,7 @@ public class ResetPasswordController {
 
         step2Container.setVisible(false);
         step3Container.setVisible(true);
-        showSuccess("✅ Code vérifié !");
+        showSuccess(" Code vérifié !");
         newPasswordField.clear();
         confirmPasswordField.clear();
     }
@@ -155,7 +155,7 @@ public class ResetPasswordController {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Succès");
             alert.setHeaderText(null);
-            alert.setContentText("✅ Mot de passe modifié avec succès !");
+            alert.setContentText(" Mot de passe modifié avec succès !");
             alert.showAndWait();
 
             Stage stage = (Stage) emailField.getScene().getWindow();
@@ -177,7 +177,7 @@ public class ResetPasswordController {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
             Stage stage = (Stage) emailField.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("Connexion - Museum Digital");
+            stage.setTitle("Connexion - ART.TN");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -54,7 +54,7 @@ public class EmailService {
                             "<body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 40px;'>" +
                             "<div style='max-width: 500px; margin: 0 auto; background-color: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1);'>" +
                             "<div style='background-color: #1a1a2e; padding: 20px; text-align: center;'>" +
-                            "<h1 style='color: #d4af37; margin: 0;'>🏛️ MUSEUM DIGITAL</h1>" +
+                            "<h1 style='color: #d4af37; margin: 0;'>🏛️ ART.TN</h1>" +
                             "</div>" +
                             "<div style='padding: 30px;'>" +
                             "<h2 style='color: #2c3e50;'>Réinitialisation du mot de passe</h2>" +
@@ -77,11 +77,11 @@ public class EmailService {
 
             message.setContent(htmlContent, "text/html; charset=utf-8");
             Transport.send(message);
-            System.out.println("✅ Email envoyé à: " + to + " avec code: " + resetCode);
+            System.out.println(" Email envoyé à: " + to + " avec code: " + resetCode);
             return true;
 
         } catch (Exception e) {
-            System.err.println("❌ Erreur lors de l'envoi de l'email: " + e.getMessage());
+            System.err.println(" Erreur lors de l'envoi de l'email: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
@@ -107,9 +107,9 @@ public class EmailService {
 
         try {
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(EMAIL_FROM, "Museum Digital Support"));
+            message.setFrom(new InternetAddress(EMAIL_FROM, "ART.TN Support"));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-            message.setSubject("✅ Votre mot de passe a été modifié - Museum Digital");
+            message.setSubject(" Votre mot de passe a été modifié - Museum Digital");
 
             String htmlContent =
                     "<!DOCTYPE html>" +

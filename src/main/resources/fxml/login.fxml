@@ -59,8 +59,11 @@
                                 <Label fx:id="errorLabel" style="-fx-text-fill: #e74c3c;" visible="false" />
 
                                 <Button onAction="#handleLogin" prefHeight="50.0" maxWidth="380.0" style="-fx-background-color: #d4af37; -fx-background-radius: 10; -fx-text-fill: #2c3e50; -fx-font-weight: bold; -fx-font-size: 14px;" text="Login" />
+                                <!-- Bouton Login Google -->
 
-                                <HBox alignment="CENTER" spacing="5.0">
+                                <Button fx:id="googleLoginButton" onAction="#handleGoogleLogin" prefHeight="50.0" maxWidth="380.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #ddd; -fx-border-radius: 10; -fx-text-fill: #555; -fx-font-weight: bold;" text="🅶 Se connecter avec Google">
+                                    <VBox.margin><Insets top="10.0" /></VBox.margin>
+                                </Button>                                <HBox alignment="CENTER" spacing="5.0">
                                     <children>
                                         <Label text="Don't have an account?" textFill="#666666" />
                                         <Hyperlink onAction="#handleSignup" text="Sign up now!" style="-fx-text-fill: #d4af37; -fx-font-weight: bold;" />
