@@ -1,10 +1,10 @@
-import tn.esprit.produit.entities.Order;
-import tn.esprit.produit.entities.OrderItem;
-import tn.esprit.produit.entities.Product;
-import tn.esprit.produit.entities.User;
-import tn.esprit.produit.services.OrderService;
-import tn.esprit.produit.services.ProductService;
-import tn.esprit.produit.utils.SessionManager;
+import tn.esprit.museum.entities.Order;
+import tn.esprit.museum.entities.OrderItem;
+import tn.esprit.museum.entities.Product;
+import tn.esprit.museum.entities.User;
+import tn.esprit.museum.services.OrderService;
+import tn.esprit.museum.services.ProductService;
+import tn.esprit.museum.utils.SessionManager;
 
 import java.sql.SQLException;
 import java.util.List;

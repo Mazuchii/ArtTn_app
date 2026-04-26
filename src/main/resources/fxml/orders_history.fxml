@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefWidth="900.0" prefHeight="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.produit.controllers.OrderHistoryController">
+<BorderPane prefWidth="900.0" prefHeight="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.museum.controllers.OrderHistoryController">
 
     <top>
         <VBox style="-fx-background-color: #1a1a2e; -fx-padding: 15;">

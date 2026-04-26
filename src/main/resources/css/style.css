@@ -1,40 +1,720 @@
-.root { -fx-font-family: "Segoe UI", "System", sans-serif; }
+/* ============================================
+   STYLE.CSS - MUSEUM DIGITAL
+   Version optimisée avec meilleur contraste
+   ============================================ */
 
-.button { -fx-background-radius: 8px; -fx-cursor: hand; }
-.button:hover { -fx-opacity: 0.85; -fx-scale-x: 1.02; -fx-scale-y: 1.02; }
-.button:pressed { -fx-scale-x: 0.98; -fx-scale-y: 0.98; }
-
-.text-field, .password-field, .text-area {
-    -fx-background-radius: 8px;
-    -fx-border-radius: 8px;
-    -fx-border-color: #dddddd;
-    -fx-border-width: 1.5px;
-    -fx-padding: 8px 12px;
+/* --------------------------------------------
+   GLOBAL STYLES
+   -------------------------------------------- */
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
 }
-.text-field:focused, .password-field:focused, .text-area:focused {
+
+/* --------------------------------------------
+   SPLITPANE (Login)
+   -------------------------------------------- */
+.split-pane {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.split-pane *.split-pane-divider {
+    -fx-padding: 0 1 0 1;
+    -fx-background-color: transparent;
+}
+
+/* --------------------------------------------
+   LOGIN & REGISTER INPUTS
+   -------------------------------------------- */
+.login-input {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 8;
+    -fx-padding: 10 15;
+}
+
+.login-input:focused {
     -fx-border-color: #d4af37;
-    -fx-effect: dropshadow(gaussian, rgba(212,175,55,0.2), 5, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(212, 175, 55, 0.2), 5, 0, 0, 0);
 }
 
-.table-view { -fx-background-color: white; -fx-background-radius: 10px; }
-.table-view .column-header-background { -fx-background-color: #1a1a2e; -fx-background-radius: 10px 10px 0 0; }
-.table-view .column-header .label { -fx-text-fill: white; -fx-font-weight: bold; }
-.table-row-cell:selected { -fx-background-color: #f5f0e0; }
+/* Champs de texte génériques */
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #d4af37;
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(three-pass-box, rgba(212, 175, 55, 0.2), 5, 0, 0, 0);
+}
 
-.combo-box { -fx-background-radius: 8px; -fx-border-radius: 8px; -fx-border-color: #dddddd; }
+/* --------------------------------------------
+   BUTTONS
+   -------------------------------------------- */
+.button:hover {
+    -fx-opacity: 0.9;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(212, 175, 55, 0.4), 10, 0, 0, 0);
+}
 
-.check-box .box { -fx-background-color: white; -fx-border-color: #cccccc; -fx-border-radius: 4px; }
-.check-box:selected .mark { -fx-background-color: #d4af37; }
-.check-box:selected .box { -fx-border-color: #d4af37; }
+/* Bouton Login Doré (Grand) */
+.action-button-gold-large {
+    -fx-background-color: #d4af37;
+    -fx-background-radius: 10;
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
 
-.split-pane { -fx-background-color: transparent; }
-.split-pane-divider { -fx-padding: 0; -fx-background-color: transparent; }
+.action-button-gold-large:hover {
+    -fx-background-color: #b8860b;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
 
-.scroll-pane { -fx-background-color: transparent; -fx-background: transparent; }
-.scroll-pane .viewport { -fx-background-color: transparent; }
+/* Bouton Doré (Moyen) */
+.action-button-gold {
+    -fx-background-color: #d4af37;
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-padding: 10 20;
+}
 
-.scroll-bar:vertical { -fx-pref-width: 8px; }
-.scroll-bar:vertical .track { -fx-background-color: #f0f0f0; -fx-background-radius: 4px; }
-.scroll-bar:vertical .thumb { -fx-background-color: #d4af37; -fx-background-radius: 4px; }
+.action-button-gold:hover {
+    -fx-background-color: #b8860b;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(184, 134, 11, 0.4), 10, 0, 0, 0);
+}
 
-.tooltip { -fx-background-color: #2c3e50; -fx-text-fill: white; -fx-background-radius: 5px; }
+/* Bouton Doré (Petit) */
+.action-button-gold-small {
+    -fx-background-color: #d4af37;
+    -fx-text-fill: #1a1a2e;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-background-radius: 5;
+    -fx-padding: 8 15;
+    -fx-cursor: hand;
+}
+
+.action-button-gold-small:hover {
+    -fx-background-color: #b8860b;
+    -fx-text-fill: white;
+}
+
+/* Bouton Déconnexion */
+.logout-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #ff7675;
+    -fx-text-fill: #ff7675;
+    -fx-border-radius: 25;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+    -fx-padding: 8 15;
+}
+
+.logout-button:hover {
+    -fx-background-color: #ff7675;
+    -fx-text-fill: white;
+}
+
+.btn-logout-icon {
+    -fx-background-color: transparent;
+    -fx-text-fill: rgba(255, 255, 255, 0.6);
+    -fx-font-size: 18px;
+    -fx-cursor: hand;
+}
+
+.btn-logout-icon:hover {
+    -fx-text-fill: #f44336;
+}
+
+/* --------------------------------------------
+   HYPERLINKS
+   -------------------------------------------- */
+.hyperlink:hover {
+    -fx-underline: true;
+    -fx-text-fill: #b8860b;
+}
+
+/* --------------------------------------------
+   CHECKBOX
+   -------------------------------------------- */
+.check-box .box {
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 3px;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #d4af37;
+}
+
+.check-box:selected .box {
+    -fx-background-color: white;
+    -fx-border-color: #d4af37;
+}
+
+/* --------------------------------------------
+   SIDEBAR (DASHBOARD)
+   -------------------------------------------- */
+.sidebar {
+    -fx-background-color: #1e1e2f;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 10, 0, 0, 0);
+}
+
+.logo-icon {
+    -fx-font-size: 35px;
+    -fx-text-fill: #d4af37;
+}
+
+.logo-text {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.logo-icon-dark {
+    -fx-font-size: 35px;
+    -fx-text-fill: #343a40;
+}
+
+.logo-text-dark {
+    -fx-text-fill: #343a40;
+    -fx-font-weight: bold;
+    -fx-letter-spacing: 2px;
+}
+
+/* Menu Buttons */
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #a0a0b0;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;
+    -fx-alignment: baseline-left;
+    -fx-padding: 10 15;
+}
+
+.menu-button:hover {
+    -fx-background-color: #2d2d40;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+}
+
+.menu-button-active {
+    -fx-background-color: #d4af37;
+    -fx-text-fill: #1e1e2f;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-padding: 10 15;
+}
+
+/* --------------------------------------------
+   STATS CARDS (DASHBOARD)
+   -------------------------------------------- */
+.stat-card {
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.15), 10, 0, 0, 3);
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 15;
+    -fx-border-width: 1;
+}
+
+.stat-label {
+    -fx-text-fill: #b8860b;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.stat-value {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+/* --------------------------------------------
+   TABLE CONTAINER (DASHBOARD)
+   -------------------------------------------- */
+.table-container {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 8, 0, 0, 2);
+    -fx-border-color: #d4af37;
+    -fx-border-radius: 15;
+    -fx-border-width: 1;
+}
+
+/* --------------------------------------------
+   SEARCH BAR
+   -------------------------------------------- */
+.search-bar-integrated {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 25;
+    -fx-padding: 0 15;
+    -fx-font-size: 13px;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 25;
+    -fx-border-width: 1;
+}
+
+.search-bar-integrated:focused {
+    -fx-border-color: #d4af37;
+    -fx-border-width: 2;
+}
+
+.search-bar-light {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 20;
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-radius: 20;
+    -fx-padding: 8 15;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: rgba(255, 255, 255, 0.6);
+}
+
+.search-bar-light:focused {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-border-color: #d4af37;
+}
+
+/* Custom ComboBox */
+.custom-combo {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 25;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 25;
+    -fx-border-width: 1;
+}
+
+/* --------------------------------------------
+   TABLEAU AMÉLIORÉ - STYLES
+   -------------------------------------------- */
+.enhanced-table {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-color: #e9ecef;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+}
+
+/* En-têtes de colonnes */
+.enhanced-table .column-header {
+    -fx-background-color: #2c3e50;
+    -fx-pref-height: 45;
+    -fx-border-color: #34495e;
+    -fx-border-width: 0 0 1 0;
+}
+
+.enhanced-table .column-header-background {
+    -fx-background-color: #2c3e50;
+    -fx-background-radius: 12 12 0 0;
+}
+
+.enhanced-table .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 10 0 10;
+}
+
+/* Cellules du tableau */
+.enhanced-table .table-row-cell {
+    -fx-pref-height: 50;
+    -fx-border-color: #f0f0f0;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 5 0 5 0;
+}
+
+.enhanced-table .table-row-cell:hover {
+    -fx-background-color: #fff8e7;
+    -fx-cursor: hand;
+}
+
+.enhanced-table .table-row-cell:selected {
+    -fx-background-color: #d4af37;
+}
+
+.enhanced-table .table-row-cell:selected .text {
+    -fx-fill: #1e1e2f;
+}
+
+/* Cellules spécifiques */
+.enhanced-table .table-cell {
+    -fx-padding: 8 12 8 12;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2c3e50;
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* Style pour la colonne Rôle */
+.role-admin {
+    -fx-background-color: #d4af37;
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
+    -fx-background-radius: 15;
+    -fx-padding: 4 12 4 12;
+}
+
+.role-user {
+    -fx-background-color: #e9ecef;
+    -fx-text-fill: #6c757d;
+    -fx-background-radius: 15;
+    -fx-padding: 4 12 4 12;
+}
+
+/* Indicateur de statut */
+.status-badge-active {
+    -fx-background-color: #27ae60;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 4 12 4 12;
+    -fx-font-size: 11px;
+}
+
+.status-badge-inactive {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 4 12 4 12;
+    -fx-font-size: 11px;
+}
+
+/* Barre de défilement du tableau */
+.enhanced-table .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 8;
+}
+
+.enhanced-table .scroll-bar:vertical .thumb {
+    -fx-background-color: #d4af37;
+    -fx-background-radius: 10;
+}
+
+.enhanced-table .scroll-bar:vertical .track {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 10;
+}
+
+/* --------------------------------------------
+   NAVIGATION LINKS (USER HOME)
+   -------------------------------------------- */
+.nav-link {
+    -fx-background-color: transparent;
+    -fx-text-fill: #a0a0a0;
+    -fx-font-size: 14px;
+    -fx-underline: false;
+}
+
+.nav-link:hover {
+    -fx-text-fill: white;
+}
+
+.nav-link-active {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-underline: false;
+}
+
+/* --------------------------------------------
+   HERO BANNER
+   -------------------------------------------- */
+.hero-banner {
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #d4af37;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 15, 0, 0, 5);
+}
+
+/* --------------------------------------------
+   MUSEUM CARDS
+   -------------------------------------------- */
+.museum-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #dcdde1;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 5);
+}
+
+.museum-card:hover {
+    -fx-effect: dropshadow(three-pass-box, #d4af37, 10, 0, 0, 0);
+}
+
+/* --------------------------------------------
+   IMAGE OVERLAY TEXTS
+   -------------------------------------------- */
+.image-overlay {
+    -fx-background-color: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 50%);
+}
+
+.image-text-large {
+    -fx-font-family: "System";
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #d4af37;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 10, 0, 0, 0);
+}
+
+.image-text-small {
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 5, 0, 0, 0);
+}
+
+/* --------------------------------------------
+   DIALOG STYLES
+   -------------------------------------------- */
+.dialog-pane {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: #d4af37;
+    -fx-background-radius: 12 12 0 0;
+}
+
+.dialog-pane .header-panel .label {
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+.dialog-pane .content.label {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 14px;
+}
+
+/* --------------------------------------------
+   SCROLLPANE
+   -------------------------------------------- */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+
+/* --------------------------------------------
+   DIALOG CUSTOM STYLES
+   -------------------------------------------- */
+.custom-dialog {
+    -fx-background-color: transparent;
+    -fx-background-radius: 15;
+}
+
+.custom-dialog .dialog-pane {
+    -fx-background-color: #F8F5F0;
+    -fx-background-radius: 15;
+    -fx-border-color: #d4af37;
+    -fx-border-radius: 15;
+    -fx-border-width: 2;
+}
+
+.custom-dialog .dialog-pane .header-panel {
+    -fx-background-color: #d4af37;
+    -fx-background-radius: 13 13 0 0;
+}
+
+.custom-dialog .dialog-pane .header-panel .label {
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+.custom-dialog .dialog-pane .content.label {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 14px;
+}
+
+/* Effet de survol pour les boutons du dialog */
+.custom-dialog .button:hover {
+    -fx-opacity: 0.85;
+    -fx-effect: dropshadow(three-pass-box, rgba(212, 175, 55, 0.3), 8, 0, 0, 0);
+}
+
+/* Carte des comptes désactivés */
+.stat-card-inactive {
+    -fx-background-color: #e74c3c;
+    -fx-background-radius: 15;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s;
+}
+
+.stat-card-inactive:hover {
+    -fx-background-color: #c0392b;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 15, 0, 0, 5);
+}
+
+.stat-label-inactive {
+    -fx-text-fill: rgba(255,255,255,0.8);
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.stat-value-inactive {
+    -fx-text-fill: white;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+}
+
+.stat-click-hint {
+    -fx-text-fill: rgba(255,255,255,0.6);
+    -fx-font-size: 11px;
+    -fx-padding: 8 0 0 0;
+}
+
+
+/* ============================================
+   STYLES POUR LES GRAPHIQUES (CHARTS)
+   ============================================ */
+
+/* Conteneur des graphiques */
+.chart-container {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 15;
+}
+
+/* Style pour le PieChart */
+.pie-chart {
+    -fx-pie-label-visible: true;
+    -fx-label-line-length: 15;
+    -fx-label-line-stroke: #2c3e50;
+}
+
+.pie-chart .chart-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.pie-chart .chart-legend {
+    -fx-font-size: 12px;
+}
+
+.pie-chart .chart-legend-item {
+    -fx-text-fill: #2c3e50;
+}
+
+/* Labels du PieChart */
+.chart-pie-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-fill: #2c3e50;
+    -fx-stroke: white;
+    -fx-stroke-width: 0.5;
+}
+
+/* Style pour le BarChart */
+.bar-chart {
+    -fx-bar-fill: #d4af37;
+}
+
+.bar-chart .chart-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.bar-chart .chart-legend {
+    -fx-font-size: 12px;
+}
+
+.bar-chart .axis-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.bar-chart .axis-tick-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #555;
+}
+
+/* Couleurs des barres */
+.default-color0.chart-bar {
+    -fx-bar-fill: #27ae60;
+}
+
+.default-color1.chart-bar {
+    -fx-bar-fill: #e74c3c;
+}
+
+/* Tooltip pour les graphiques */
+.chart-pie-label-line {
+    -fx-stroke: #2c3e50;
+    -fx-stroke-width: 1;
+}
+
+.chart-pie-label-line:hover {
+    -fx-stroke-width: 2;
+}
+
+
+/* Style pour le dialog de détection de fraude */
+.fraud-dialog {
+    -fx-background-color: #F8F5F0;
+    -fx-background-radius: 15;
+    -fx-border-color: #d4af37;
+    -fx-border-radius: 15;
+    -fx-border-width: 2;
+}
+
+.fraud-dialog .dialog-pane {
+    -fx-background-color: #F8F5F0;
+    -fx-background-radius: 15;
+}
+
+.fraud-dialog .titled-pane {
+    -fx-skin: "com.sun.javafx.scene.control.skin.TitledPaneSkin";
+    -fx-text-fill: #2c3e50;
+}
+
+.fraud-dialog .titled-pane > .title {
+    -fx-background-color: #f12b4f;
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+}
+
+.fraud-dialog .titled-pane > .title > .text {
+    -fx-fill: white;
+    -fx-font-weight: bold;
+}
+
+.fraud-dialog .titled-pane > .content {
+    -fx-background-color: white;
+    -fx-background-radius: 0 0 10 10;
+    -fx-border-color: #1a1a2e;
+    -fx-border-width: 0 1 1 1;
+    -fx-border-radius: 0 0 10 10;
+}
+
+.fraud-dialog .progress-bar .bar {
+    -fx-background-radius: 10;
+}
+
+.fraud-dialog .button:hover {
+    -fx-opacity: 0.85;
+    -fx-cursor: hand;
+}

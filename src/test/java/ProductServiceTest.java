@@ -1,5 +1,5 @@
-import tn.esprit.produit.entities.Product;
-import tn.esprit.produit.services.ProductService;
+import tn.esprit.museum.entities.Product;
+import tn.esprit.museum.services.ProductService;
 import org.junit.jupiter.api.*;
 
 import java.sql.SQLException;
