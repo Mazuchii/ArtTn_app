@@ -5,6 +5,7 @@ import edu.Projet_java.entities.Posts;
 import edu.Projet_java.entities.commentaire;
 import edu.Projet_java.services.PostServices;
 import edu.Projet_java.services.CommentServices;
+import edu.Projet_java.services.TranslationService;
 import edu.Projet_java.utils.SessionManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +20,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.io.File;
@@ -40,12 +43,24 @@ public class ForumPostDetailController {
     @FXML private Button likeButton;
     @FXML private Button dislikeButton;
     @FXML private ImageView postImageView;
+    @FXML private Button translateButton;
+    @FXML private Button translateCommentsButton;
+    @FXML private Button originalButton;
+    @FXML private HBox translationButtons;
+    @FXML private ComboBox<String> languageCombo;
+
 
     private Posts currentPost;
     private PostServices postService;
     private CommentServices commentService;
     private ObservableList<VBox> commentItems;
     private ForumPostsController parentController;
+    private String originalTitle;
+    private String originalContent;
+    private List<String> originalCommentsText = new ArrayList<>();
+    private List<commentaire> originalCommentsList = new ArrayList<>();
+    private boolean isTranslated = false;
+    private String selectedLanguage = "Français";
 
     private int currentUserId = 1; // ID par défaut (à remplacer par l'utilisateur connecté)
     private String userReaction = null;
@@ -59,6 +74,15 @@ public class ForumPostDetailController {
 
         // Récupérer l'ID de l'utilisateur connecté
         currentUserId = SessionManager.getCurrentUserId();
+        if (translationButtons != null) {
+            translationButtons.setVisible(true);
+        }
+        languageCombo.getItems().addAll("Français", "English");
+        languageCombo.setValue("Français");
+        languageCombo.valueProperty().addListener((obs, oldLang, newLang) -> {
+            selectedLanguage = newLang;
+        });
+
     }
 
     public void setPost(Posts post, ForumPostsController parent) {
@@ -112,6 +136,9 @@ public class ForumPostDetailController {
     }
 
     private void displayPostDetails() {
+        originalTitle = currentPost.getPost_titre();
+        originalContent = currentPost.getPost_contenu();
+
         postTitleLabel.setText(currentPost.getPost_titre());
         postContentLabel.setText(currentPost.getPost_contenu());
         postAuthorLabel.setText("👤 Auteur #" + currentPost.getAuthor_id());
@@ -210,9 +237,13 @@ public class ForumPostDetailController {
         try {
             List<commentaire> comments = commentService.getCommentsByPostId(currentPost.getPost_id());
 
+            // ✅ Sauvegarder les commentaires originaux
+            originalCommentsList.clear();
+            originalCommentsList.addAll(comments);
+
             commentItems.clear();
             for (commentaire c : comments) {
-                commentItems.add(createCommentCard(c));
+                commentItems.add(createCommentCard(c, false));
             }
 
             if (comments.isEmpty()) {
@@ -224,7 +255,7 @@ public class ForumPostDetailController {
         }
     }
 
-    private VBox createCommentCard(commentaire comment) {
+    private VBox createCommentCard(commentaire comment, boolean isTranslated) {
         VBox card = new VBox(8);
         card.getStyleClass().add("comment-card");
         card.setMaxWidth(Double.MAX_VALUE);
@@ -234,9 +265,11 @@ public class ForumPostDetailController {
         authorLabel.getStyleClass().add("comment-author");
         metaBox.getChildren().add(authorLabel);
 
-        Label textLabel = new Label(comment.getContenu());
+        // ✅ Texte du commentaire (traduit ou original)
+        Label textLabel = new Label(isTranslated ? comment.getContenuTraduit() : comment.getContenu());
         textLabel.getStyleClass().add("comment-text");
 
+        // Actions
         HBox actionsBox = new HBox(10);
         actionsBox.getStyleClass().add("comment-actions");
 
@@ -315,6 +348,45 @@ public class ForumPostDetailController {
             parentController.refreshPosts();
         }
     }
+
+    @FXML
+    private void handleSpeakPost() {
+        String textToRead = currentPost.getPost_titre() + ". " + currentPost.getPost_contenu();
+
+        new Thread(() -> {
+            try {
+                String voiceCommand = getVoiceCommand(textToRead, selectedLanguage);
+                ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", voiceCommand);
+                pb.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+    private String getVoiceCommand(String text, String language) {
+        String escapedText = text.replace("'", "''");
+
+        switch (language) {
+            case "English":
+                return "PowerShell -Command \"Add-Type –AssemblyName System.Speech; " +
+                        "$speak = New-Object System.Speech.Synthesis.SpeechSynthesizer; " +
+                        "$speak.SelectVoice('Microsoft Zira Desktop'); " +
+                        "$speak.Speak('" + escapedText + "')\"";
+
+            case "Français":
+                // Tentative voix française, sinon fallback Zira
+                return "PowerShell -Command \"Add-Type –AssemblyName System.Speech; " +
+                        "$speak = New-Object System.Speech.Synthesis.SpeechSynthesizer; " +
+                        "try { $speak.SelectVoice('Microsoft Hortense Desktop') } catch { $speak.SelectVoice('Microsoft Zira Desktop') }; " +
+                        "$speak.Speak('" + escapedText + "')\"";
+
+            default:
+                return "PowerShell -Command \"Add-Type –AssemblyName System.Speech; " +
+                        "$speak = New-Object System.Speech.Synthesis.SpeechSynthesizer; " +
+                        "$speak.Speak('" + escapedText + "')\"";
+        }
+    }
+
 
     private void openEditCommentDialog(commentaire comment) {
         TextInputDialog dialog = new TextInputDialog(comment.getContenu());
@@ -470,5 +542,77 @@ public class ForumPostDetailController {
             try { Thread.sleep(3000); } catch (InterruptedException e) {}
             javafx.application.Platform.runLater(() -> messageLabel.setVisible(false));
         }).start();
+    }
+    @FXML
+    private void handleTranslateToArabic() {
+        if (isTranslated) return;
+
+        showMessage("🔄 Traduction en cours vers l'arabe...", "info");
+
+        new Thread(() -> {
+            // Traduire le titre
+            String translatedTitle = TranslationService.translateToArabic(originalTitle);
+
+            // Traduire le contenu
+            String translatedContent = TranslationService.translateToArabic(originalContent);
+
+            // ✅ Traduire les commentaires
+            List<String> translatedComments = new ArrayList<>();
+            for (commentaire c : originalCommentsList) {
+                String translated = TranslationService.translateToArabic(c.getContenu());
+                translatedComments.add(translated);
+            }
+
+            javafx.application.Platform.runLater(() -> {
+                // Mettre à jour le post
+                postTitleLabel.setText(translatedTitle);
+                postContentLabel.setText(translatedContent);
+
+                // ✅ Mettre à jour les commentaires avec les versions traduites
+                commentItems.clear();
+                for (int i = 0; i < originalCommentsList.size(); i++) {
+                    commentaire original = originalCommentsList.get(i);
+                    commentaire translatedComment = new commentaire();
+                    translatedComment.setComment_id(original.getComment_id());
+                    translatedComment.setPost_id(original.getPost_id());
+                    translatedComment.setAuthor_id(original.getAuthor_id());
+                    translatedComment.setContenu(original.getContenu());
+                    translatedComment.setContenuTraduit(translatedComments.get(i));
+                    commentItems.add(createCommentCard(translatedComment, true));
+                }
+
+                isTranslated = true;
+                originalButton.setVisible(true);
+                translateButton.setVisible(false);
+                showMessage("✅ Traduit en arabe", "success");
+            });
+        }).start();
+    }
+
+    @FXML
+    private void handleShowOriginal() {
+        postTitleLabel.setText(originalTitle);
+        postContentLabel.setText(originalContent);
+
+        // ✅ Recharger les commentaires originaux
+        commentItems.clear();
+        for (commentaire c : originalCommentsList) {
+            commentItems.add(createCommentCard(c, false));
+        }
+
+        isTranslated = false;
+        originalButton.setVisible(false);
+        translateButton.setVisible(true);
+        showMessage("🔙 Version originale restaurée", "info");
+    }
+
+    public void setTranslatedVersion(String translatedTitle, String translatedContent) {
+        if (postTitleLabel != null) {
+            postTitleLabel.setText(translatedTitle);
+            postContentLabel.setText(translatedContent);
+            isTranslated = true;
+            if (originalButton != null) originalButton.setVisible(true);
+            if (translateButton != null) translateButton.setVisible(false);
+        }
     }
 }

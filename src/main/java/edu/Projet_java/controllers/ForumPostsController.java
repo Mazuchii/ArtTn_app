@@ -4,6 +4,8 @@ import edu.Projet_java.entities.Posts;
 import edu.Projet_java.services.CommentServices;
 import edu.Projet_java.services.PostServices;
 import edu.Projet_java.services.CategoryServices;
+import edu.Projet_java.services.TranslationService;
+import edu.Projet_java.utils.SessionManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -234,7 +236,15 @@ public class ForumPostsController {
         readButton.getStyleClass().add("btn-info");
         readButton.setOnAction(e -> openPostDetail(post));
 
-        actionBar.getChildren().addAll(commentLabel, readButton);
+        Button reportButton = new Button("🚩 Signaler");
+        reportButton.setStyle("-fx-background-color: transparent; -fx-text-fill: #ef4444; -fx-font-size: 11px; -fx-cursor: hand;");
+        reportButton.setOnAction(e -> openReportDialog(post));
+
+        Button translateBtn = new Button("🌐 ترجمة");
+        translateBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #10b981; -fx-font-size: 11px; -fx-cursor: hand;");
+        translateBtn.setOnAction(e -> translatePostAndComments(post));
+
+        actionBar.getChildren().addAll(commentLabel, readButton, reportButton);
 
         content.getChildren().addAll(metaTop, titleLabel, excerptLabel, statsBox, actionBar);
         card.getChildren().add(content);
@@ -257,6 +267,31 @@ public class ForumPostsController {
 
         } catch (IOException e) {
             showMessage("Erreur: " + e.getMessage(), "error");
+        }
+    }
+
+    private void openReportDialog(Posts post) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/report_dialog.fxml"));
+            Parent root = loader.load();
+
+            ReportDialogController controller = loader.getController();
+            controller.setPostId(post.getPost_id());
+            controller.setUserId(SessionManager.getCurrentUserId());
+            controller.setOnReportSuccess(() -> {
+                // ✅ CORRECTION: utiliser refreshPosts() au lieu de loadPosts()
+                refreshPosts();
+            });
+
+            Stage stage = new Stage();
+            stage.setTitle("Signaler un post");
+            stage.setScene(new Scene(root));
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (IOException ex) {
+            showMessage("Erreur: " + ex.getMessage(), "error");
+            ex.printStackTrace();
         }
     }
 
@@ -308,4 +343,37 @@ public class ForumPostsController {
             javafx.application.Platform.runLater(() -> messageLabel.setVisible(false));
         }).start();
     }
+    private void translatePostAndComments(Posts post) {
+        // Afficher un indicateur de chargement
+        showMessage("🔄 Traduction en cours vers l'arabe...", "info");
+
+        new Thread(() -> {
+            String translatedTitle = TranslationService.translateToArabic(post.getPost_titre());
+            String translatedContent = TranslationService.translateToArabic(post.getPost_contenu());
+
+            javafx.application.Platform.runLater(() -> {
+                // Ouvrir le post en mode traduction
+                openTranslatedPostDetail(post, translatedTitle, translatedContent);
+            });
+        }).start();
+    }
+    private void openTranslatedPostDetail(Posts post, String translatedTitle, String translatedContent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/forum_post_detail.fxml"));
+            Parent root = loader.load();
+
+            ForumPostDetailController controller = loader.getController();
+            controller.setPost(post, this);
+            controller.setTranslatedVersion(translatedTitle, translatedContent);
+
+            Stage stage = new Stage();
+            stage.setTitle("Post - Forum (Traduit en Arabe)");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            showMessage("Erreur: " + e.getMessage(), "error");
+        }
+    }
+
 }

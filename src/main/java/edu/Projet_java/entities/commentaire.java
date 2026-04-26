@@ -7,6 +7,8 @@ public class commentaire {
     private int post_id;
     private String contenu;
     private int author_id;
+    private String contenuTraduit;
+
 
     public commentaire() {}
 
@@ -25,6 +27,9 @@ public class commentaire {
     public void setContenu(String contenu) { this.contenu = contenu; }
     public int getAuthor_id() { return author_id; }
     public void setAuthor_id(int author_id) { this.author_id = author_id; }
+    public String getContenuTraduit() { return contenuTraduit; }
+    public void setContenuTraduit(String contenuTraduit) { this.contenuTraduit = contenuTraduit; }
+
 
     @Override
     public String toString() {

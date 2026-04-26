@@ -2,10 +2,12 @@ package edu.Projet_java.controllers;
 
 import edu.Projet_java.entities.Category;
 import edu.Projet_java.entities.Posts;
+import edu.Projet_java.entities.Report;
 import edu.Projet_java.entities.commentaire;
 import edu.Projet_java.services.CategoryServices;
 import edu.Projet_java.services.PostServices;
 import edu.Projet_java.services.CommentServices;
+import edu.Projet_java.services.ReportServices;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -36,6 +38,7 @@ public class ForumDashboardController {
     @FXML private Label statsPosts;
     @FXML private Label statsComments;
     @FXML private Label statsCategories;
+    @FXML private Label statsReports;
     @FXML private Label adminLabel;
     @FXML private Label messageLabel;
 
@@ -46,6 +49,7 @@ public class ForumDashboardController {
     @FXML private TableColumn<Posts, String> postContentColumn;
     @FXML private TableColumn<Posts, String> postDateColumn;
     @FXML private TableColumn<Posts, Integer> postCommentCountColumn;
+    @FXML private TableColumn<Posts, Integer> postReportCountColumn;
     @FXML private TableColumn<Posts, Void> postActionsColumn;
     @FXML private TextField postSearchField;
 
@@ -66,13 +70,27 @@ public class ForumDashboardController {
     @FXML private TableColumn<Category, Void> categoryActionsColumn;
     @FXML private TextField categorySearchField;
 
+    // ==================== TABLE SIGNALEMENTS ====================
+    @FXML private TableView<Report> reportsTable;
+    @FXML private TableColumn<Report, Integer> reportIdColumn;
+    @FXML private TableColumn<Report, Integer> reportPostIdColumn;
+    @FXML private TableColumn<Report, String> reportPostTitleColumn;
+    @FXML private TableColumn<Report, String> reportReasonColumn;
+    @FXML private TableColumn<Report, String> reportDetailsColumn;
+    @FXML private TableColumn<Report, String> reportStatusColumn;
+    @FXML private TableColumn<Report, String> reportDateColumn;
+    @FXML private TableColumn<Report, Void> reportActionsColumn;
+    @FXML private TextField reportSearchField;
+
     private CategoryServices categoryService;
     private ObservableList<Category> categoryList;
 
     private PostServices postService;
     private CommentServices commentService;
+    private ReportServices reportService;
     private ObservableList<Posts> postList;
     private ObservableList<commentaire> commentList;
+    private ObservableList<Report> reportList;
 
     // Style OR pour tous les boutons
     private static final String GOLD_STYLE = "-fx-background-color: #d4af37; -fx-text-fill: #1a1a2e; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand; -fx-padding: 6 12;";
@@ -83,10 +101,12 @@ public class ForumDashboardController {
         postService = new PostServices();
         commentService = new CommentServices();
         categoryService = new CategoryServices();
+        reportService = new ReportServices();
 
         postList = FXCollections.observableArrayList();
         commentList = FXCollections.observableArrayList();
         categoryList = FXCollections.observableArrayList();
+        reportList = FXCollections.observableArrayList();
 
         // ==================== CONFIGURATION POSTS ====================
         postIdColumn.setCellValueFactory(new PropertyValueFactory<>("post_id"));
@@ -99,6 +119,9 @@ public class ForumDashboardController {
                         () -> commentService.countCommentsByPostId(cellData.getValue().getPost_id())
                 ).asObject()
         );
+
+        postReportCountColumn.setCellValueFactory(new PropertyValueFactory<>("reportCount"));
+
         setupPostActionsColumn();
 
         // ==================== CONFIGURATION COMMENTAIRES ====================
@@ -113,25 +136,62 @@ public class ForumDashboardController {
         categoryNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         categoryDescColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-        // ✅ AJOUTER CETTE LIGNE (elle était manquante)
         setupCategoryActionsColumn();
+
+        // ==================== CONFIGURATION SIGNALEMENTS ====================
+        reportIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        reportPostIdColumn.setCellValueFactory(new PropertyValueFactory<>("postId"));
+        reportReasonColumn.setCellValueFactory(new PropertyValueFactory<>("reason"));
+        reportDetailsColumn.setCellValueFactory(new PropertyValueFactory<>("details"));
+        reportStatusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        reportDateColumn.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
+
+        // Titre du post
+        reportPostTitleColumn.setCellValueFactory(cellData -> {
+            Report report = cellData.getValue();
+            Posts post = postService.getPostById(report.getPostId());
+            return new javafx.beans.property.SimpleStringProperty(post != null ? post.getPost_titre() : "Post supprimé");
+        });
+
+        setupReportActionsColumn();
 
         // ==================== FILTRES ====================
         postSearchField.textProperty().addListener((obs, old, val) -> filterPosts());
         commentSearchField.textProperty().addListener((obs, old, val) -> filterComments());
         categorySearchField.textProperty().addListener((obs, old, val) -> filterCategories());
+        reportSearchField.textProperty().addListener((obs, old, val) -> filterReports());
 
         // ==================== CHARGEMENT DES DONNÉES ====================
         loadPosts();
         loadComments();
         loadCategories();
+        loadReports();
         updateStats();
 
         // Mettre en évidence le bouton Forum actif
         btnForum.getStyleClass().add("active");
+
+        // Appliquer le surlignage pour les posts avec +3 signalements
+        setupPostHighlighting();
     }
 
     // ==================== POSTS ====================
+    private void setupPostHighlighting() {
+        postsTable.setRowFactory(tv -> new TableRow<Posts>() {
+            @Override
+            protected void updateItem(Posts item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setStyle("");
+                } else if (item.getReportCount() >= 3) {
+                    setStyle("-fx-background-color: #fee2e2; -fx-border-color: #ef4444;");
+                } else {
+                    setStyle("");
+                }
+            }
+        });
+    }
+
     private void setupPostActionsColumn() {
         postActionsColumn.setCellFactory(param -> new TableCell<Posts, Void>() {
             private final Button editBtn = new Button("✏️ Modifier");
@@ -233,6 +293,7 @@ public class ForumDashboardController {
                 showMessage("✅ Post supprimé avec succès !", "success");
                 loadPosts();
                 loadComments();
+                loadReports();
                 updateStats();
             } catch (Exception e) {
                 showMessage("Erreur: " + e.getMessage(), "error");
@@ -348,7 +409,6 @@ public class ForumDashboardController {
             private final HBox buttons = new HBox(10, editBtn, deleteBtn);
 
             {
-                // ✅ BOUTONS EN OR (comme pour les posts et commentaires)
                 editBtn.setStyle(GOLD_STYLE);
                 deleteBtn.setStyle(GOLD_STYLE);
 
@@ -371,11 +431,7 @@ public class ForumDashboardController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(buttons);
-                }
+                setGraphic(empty ? null : buttons);
             }
         });
     }
@@ -525,16 +581,144 @@ public class ForumDashboardController {
         showMessage("Liste des commentaires actualisée", "success");
     }
 
+    // ==================== SIGNALEMENTS ====================
+    private void setupReportActionsColumn() {
+        reportActionsColumn.setCellFactory(param -> new TableCell<Report, Void>() {
+            private final Button viewBtn = new Button("👁️ Voir");
+            private final Button resolveBtn = new Button("✅ Résoudre");
+            private final Button deleteBtn = new Button("🗑️ Supprimer");
+            private final HBox buttons = new HBox(10, viewBtn, resolveBtn, deleteBtn);
+
+            {
+                viewBtn.setStyle(GOLD_STYLE);
+                resolveBtn.setStyle("-fx-background-color: #10b981; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand; -fx-padding: 6 12;");
+                deleteBtn.setStyle("-fx-background-color: #ef4444; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand; -fx-padding: 6 12;");
+
+                viewBtn.setOnAction(event -> {
+                    Report report = getTableView().getItems().get(getIndex());
+                    viewReportedPost(report.getPostId());
+                });
+
+                resolveBtn.setOnAction(event -> {
+                    Report report = getTableView().getItems().get(getIndex());
+                    resolveReport(report);
+                });
+
+                deleteBtn.setOnAction(event -> {
+                    Report report = getTableView().getItems().get(getIndex());
+                    deleteReportedPost(report);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : buttons);
+            }
+        });
+    }
+
+    private void loadReports() {
+        try {
+            List<Report> reports = reportService.getAllReports();
+            reportList.setAll(reports);
+            reportsTable.setItems(reportList);
+        } catch (Exception e) {
+            showMessage("Erreur chargement signalements: " + e.getMessage(), "error");
+        }
+    }
+
+    private void filterReports() {
+        String search = reportSearchField.getText().toLowerCase();
+        if (search.isEmpty()) {
+            reportsTable.setItems(reportList);
+        } else {
+            ObservableList<Report> filtered = FXCollections.observableArrayList();
+            for (Report r : reportList) {
+                if (String.valueOf(r.getPostId()).contains(search) ||
+                        r.getReason().toLowerCase().contains(search) ||
+                        r.getStatus().toLowerCase().contains(search)) {
+                    filtered.add(r);
+                }
+            }
+            reportsTable.setItems(filtered);
+        }
+    }
+
+    @FXML
+    private void handleRefreshReports() {
+        loadReports();
+        updateStats();
+        showMessage("Liste des signalements actualisée", "success");
+    }
+
+    private void viewReportedPost(int postId) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/forum_post_detail.fxml"));
+            Parent root = loader.load();
+
+            Posts post = postService.getPostById(postId);
+            if (post == null) {
+                showMessage("Ce post n'existe plus", "error");
+                return;
+            }
+
+            Stage stage = new Stage();
+            stage.setTitle("Post signalé");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            showMessage("Erreur: " + e.getMessage(), "error");
+        }
+    }
+
+    private void resolveReport(Report report) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Résoudre le signalement");
+        confirm.setHeaderText(null);
+        confirm.setContentText("Ce signalement a-t-il été traité ?");
+
+        if (confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            reportService.updateReportStatus(report.getId(), "RESOLVED");
+            loadReports();
+            updateStats();
+            showMessage("✅ Signalement marqué comme résolu", "success");
+        }
+    }
+
+    private void deleteReportedPost(Report report) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Supprimer le post");
+        confirm.setHeaderText(null);
+        confirm.setContentText("Supprimer le post signalé et tous ses commentaires ?");
+
+        if (confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            try {
+                postService.deletepost(report.getPostId());
+                reportService.deleteReport(report.getId());
+                loadReports();
+                loadPosts();
+                loadComments();
+                updateStats();
+                showMessage("✅ Post supprimé avec succès", "success");
+            } catch (Exception e) {
+                showMessage("Erreur: " + e.getMessage(), "error");
+            }
+        }
+    }
+
     // ==================== STATISTIQUES ====================
     private void updateStats() {
         try {
             int postCount = postList.size();
             int commentCount = commentList.size();
             int categoryCount = categoryList.size();
+            int reportCount = reportList.size();
 
             statsPosts.setText("Posts: " + postCount);
             statsComments.setText("Commentaires: " + commentCount);
             statsCategories.setText("Catégories: " + categoryCount);
+            statsReports.setText("Signalements: " + reportCount);
         } catch (Exception e) {
             System.err.println("Erreur stats: " + e.getMessage());
         }

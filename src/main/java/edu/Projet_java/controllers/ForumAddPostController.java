@@ -2,6 +2,7 @@ package edu.Projet_java.controllers;
 
 import edu.Projet_java.entities.Posts;
 import edu.Projet_java.services.PostServices;
+import edu.Projet_java.services.ModerationService;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -67,7 +68,6 @@ public class ForumAddPostController {
         if (selectedFile != null) {
             selectedImageFile = selectedFile;
 
-            // Afficher l'aperçu
             try {
                 Image image = new Image(selectedFile.toURI().toString());
                 imagePreview.setImage(image);
@@ -129,16 +129,6 @@ public class ForumAddPostController {
             return;
         }
 
-        // ========== VÉRIFICATION DOUBLON DE TITRE ==========
-        try {
-            if (postService.isTitleExists(title, 1)) {
-                showMessage("❌ Vous avez déjà un post avec ce titre. Veuillez choisir un titre différent.", "error");
-                return;
-            }
-        } catch (Exception e) {
-            System.err.println("Erreur vérification titre: " + e.getMessage());
-        }
-
         // ========== VALIDATION DU CONTENU ==========
         if (content.isEmpty()) {
             showMessage("❌ Le contenu est obligatoire", "error");
@@ -149,17 +139,44 @@ public class ForumAddPostController {
             return;
         }
 
-        // ========== VÉRIFICATION DOUBLON DE CONTENU ==========
+        // ========== VÉRIFICATION DOUBLON ==========
         try {
+            if (postService.isTitleExists(title, 1)) {
+                showMessage("❌ Vous avez déjà un post avec ce titre.", "error");
+                return;
+            }
             if (postService.isContentExists(content, 1)) {
-                showMessage("❌ Vous avez déjà un post avec ce contenu similaire. Veuillez modifier votre message.", "error");
+                showMessage("❌ Vous avez déjà un post avec ce contenu similaire.", "error");
                 return;
             }
         } catch (Exception e) {
-            System.err.println("Erreur vérification contenu: " + e.getMessage());
+            System.err.println("Erreur vérification: " + e.getMessage());
         }
 
-        // ========== SAUVEGARDE ==========
+        // ========== 🤖 MODÉRATION AI ==========
+        showMessage("🔍 Analyse du contenu par l'IA...", "info");
+
+        new Thread(() -> {
+            String fullText = title + " " + content;
+            ModerationService.ModerationResult result = ModerationService.moderateText(fullText);
+
+            javafx.application.Platform.runLater(() -> {
+                if (result.isToxic()) {
+                    showMessage("❌ Désolé, votre message contient des propos inappropriés. (" + result.getLabel() + ")", "error");
+                    return;
+                }
+                if (result.isSpam()) {
+                    showMessage("❌ Désolé, votre message a été détecté comme spam. (" + result.getLabel() + ")", "error");
+                    return;
+                }
+
+                // Si tout est OK, sauvegarder
+                savePost(title, content);
+            });
+        }).start();
+    }
+
+    private void savePost(String title, String content) {
         try {
             String imagePath = saveImage();
 
@@ -174,7 +191,6 @@ public class ForumAddPostController {
                 parentController.refreshPosts();
             }
 
-            // Fermer la fenêtre après 1.5 secondes
             new Thread(() -> {
                 try { Thread.sleep(1500); } catch (InterruptedException e) {}
                 javafx.application.Platform.runLater(this::closeWindow);

@@ -16,6 +16,8 @@ public class Posts {
     private int likes;
     private int dislikes;
     private String imageUrl;
+    private int reportCount;
+
 
     public Posts() {}
 
@@ -42,6 +44,7 @@ public class Posts {
     public int getLikes() { return likes; }
     public int getDislikes() { return dislikes; }
     public String getImageUrl() { return imageUrl; }
+    public int getReportCount() { return reportCount; }
 
     // === SETTERS ===
     public void setPost_id(int post_id) { this.post_id = post_id; }
@@ -56,6 +59,8 @@ public class Posts {
     public void setLikes(int likes) { this.likes = likes; }
     public void setDislikes(int dislikes) { this.dislikes = dislikes; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public void setReportCount(int reportCount) { this.reportCount = reportCount; }
+
 
     public String getFormattedDate() {
         if (date_creation == null) return "Date inconnue";

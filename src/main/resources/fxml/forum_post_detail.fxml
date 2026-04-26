@@ -52,21 +52,32 @@
 
                                         <Region HBox.hgrow="ALWAYS" />
 
-                                        <Button fx:id="likeButton" onAction="#handleLike" style="-fx-background-color: transparent; -fx-text-fill: #27ae60; -fx-font-size: 16px; -fx-cursor: hand;" text="👍" />
-                                        <Label fx:id="likesCountLabel" style="-fx-text-fill: #27ae60; -fx-font-weight: bold;" />
+                                        <Button fx:id="likeButton" onAction="#handleLike" style="-fx-background-color: transparent; -fx-text-fill: #3b82f6; -fx-font-size: 16px; -fx-cursor: hand;" text="👍" />
+                                        <Label fx:id="likesCountLabel" style="-fx-text-fill: #3b82f6; -fx-font-weight: bold;" />
 
-                                        <Button fx:id="dislikeButton" onAction="#handleDislike" style="-fx-background-color: transparent; -fx-text-fill: #e74c3c; -fx-font-size: 16px; -fx-cursor: hand;" text="👎" />
-                                        <Label fx:id="dislikesCountLabel" style="-fx-text-fill: #e74c3c; -fx-font-weight: bold;" />
+                                        <Button fx:id="dislikeButton" onAction="#handleDislike" style="-fx-background-color: transparent; -fx-text-fill: #ef4444; -fx-font-size: 16px; -fx-cursor: hand;" text="👎" />
+                                        <Label fx:id="dislikesCountLabel" style="-fx-text-fill: #ef4444; -fx-font-weight: bold;" />
                                     </children>
                                 </HBox>
 
-                                <!-- Actions -->
-                                <HBox spacing="10.0">
+                                <!-- Actions Modifier/Supprimer + Combo Langue -->
+                                <HBox spacing="10.0" alignment="CENTER_LEFT">
                                     <children>
                                         <Button onAction="#handleEditPost" styleClass="btn-edit" text="✏️ Modifier" />
                                         <Button onAction="#handleDeletePost" styleClass="btn-delete" text="🗑️ Supprimer" />
+                                        <Button onAction="#handleSpeakPost" styleClass="btn-info" text="🔊 Lire le post" />
+                                        <ComboBox fx:id="languageCombo" prefWidth="130.0" promptText="🌐 Langue" />
                                     </children>
                                 </HBox>
+
+                                <!-- BOUTONS DE TRADUCTION -->
+                                <HBox spacing="10.0" alignment="CENTER_RIGHT">
+                                    <children>
+                                        <Button fx:id="translateButton" onAction="#handleTranslateToArabic" styleClass="btn-info" text="🌐 ترجمة إلى العربية" />
+                                        <Button fx:id="originalButton" onAction="#handleShowOriginal" styleClass="btn-info" text="🔙 Version originale" visible="false" />
+                                    </children>
+                                </HBox>
+
                             </children>
                         </VBox>
 
@@ -91,5 +102,4 @@
         </ScrollPane>
 
     </children>
-
 </VBox>

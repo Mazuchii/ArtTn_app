@@ -154,6 +154,7 @@ public class PostServices implements IPostServices<Posts> {
         p.setLikes(rs.getInt("likes"));
         p.setDislikes(rs.getInt("dislikes"));
         p.setImageUrl(rs.getString("image_url"));
+        p.setReportCount(rs.getInt("report_count"));
 
         Timestamp timestamp = rs.getTimestamp("date_creation");
         if (timestamp != null) {

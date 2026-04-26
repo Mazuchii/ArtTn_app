@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15.0" prefWidth="400" prefHeight="350" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.Projet_java.controllers.ReportDialogController">
+
+    <children>
+        <Label text="🚩 Signaler ce post" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;">
+            <VBox.margin>
+                <Insets top="10" />
+            </VBox.margin>
+        </Label>
+
+        <Separator />
+
+        <Label text="Pourquoi signalez-vous ce post ?" style="-fx-font-weight: bold;" />
+
+        <VBox spacing="8.0">
+            <children>
+                <CheckBox fx:id="reasonSpam" text="📢 Spam / Publicité" />
+                <CheckBox fx:id="reasonToxic" text="🤬 Contenu toxique / Harcèlement" />
+                <CheckBox fx:id="reasonViolence" text="💢 Incitation à la violence" />
+                <CheckBox fx:id="reasonIllegal" text="⚖️ Contenu illégal" />
+                <CheckBox fx:id="reasonOffensive" text="😡 Propos offensants" />
+                <CheckBox fx:id="reasonOther" text="📝 Autre" />
+            </children>
+        </VBox>
+
+        <TextArea fx:id="detailsArea" promptText="Détails supplémentaires (optionnel)" prefHeight="80" visible="false" managed="false" />
+
+        <Label fx:id="errorLabel" style="-fx-text-fill: #ef4444;" visible="false" />
+
+        <HBox spacing="10.0" alignment="CENTER_RIGHT">
+            <children>
+                <Button onAction="#handleCancel" text="Annuler" styleClass="btn-cancel" />
+                <Button onAction="#handleReport" text="Signaler" styleClass="btn-danger" />
+            </children>
+        </HBox>
+    </children>
+
+    <padding>
+        <Insets bottom="15" left="15" right="15" top="15" />
+    </padding>
+
+</VBox>
