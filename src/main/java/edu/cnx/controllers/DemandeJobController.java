@@ -4,6 +4,7 @@ import edu.cnx.entités.DemandeJob;
 import edu.cnx.entités.OfferJob;
 import edu.cnx.services.DemandeJobService;
 import edu.cnx.services.OfferJobService;
+import edu.cnx.services.PythonCandidateMatchingService;
 import edu.cnx.tools.ExcelExporter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +15,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.PieChart;
+import javafx.geometry.Pos;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
@@ -25,6 +30,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -54,6 +60,7 @@ public class DemandeJobController implements Initializable {
 
     private final DemandeJobService service = new DemandeJobService();
     private final OfferJobService offerService = new OfferJobService();
+    private final PythonCandidateMatchingService matchingService = new PythonCandidateMatchingService();
 
     private static DemandeJob selectedDemande = null;
     private ObservableList<DemandeJob> masterData = FXCollections.observableArrayList();
@@ -81,6 +88,7 @@ public class DemandeJobController implements Initializable {
         colCandidat.setCellValueFactory(new PropertyValueFactory<>("candidatId"));
         colOffre.setCellValueFactory(new PropertyValueFactory<>("offreId"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        configurerRenduColonnes();
 
         if (colAction != null) ajouterBoutonsAction();
 
@@ -90,6 +98,135 @@ public class DemandeJobController implements Initializable {
             }
         });
     }
+
+    private void configurerRenduColonnes() {
+        colCandidat.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                    setGraphic(null);
+                    setText(null);
+                    return;
+                }
+
+                DemandeJob demande = (DemandeJob) getTableRow().getItem();
+
+                Label titre = new Label("Candidat");
+                titre.getStyleClass().add("admin-cell-label");
+
+                Label valeur = new Label(demande.getCandidatId());
+                valeur.getStyleClass().add("admin-cell-value");
+                valeur.setWrapText(true);
+
+                Label info = new Label(aUnCv(demande) ? "CV disponible" : "CV manquant");
+                info.getStyleClass().add("admin-cell-meta");
+
+                VBox box = new VBox(2, titre, valeur, info);
+                box.getStyleClass().add("admin-cell-card");
+                setGraphic(box);
+                setText(null);
+            }
+        });
+
+        colOffre.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(Integer item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                    setGraphic(null);
+                    setText(null);
+                    return;
+                }
+
+                DemandeJob demande = (DemandeJob) getTableRow().getItem();
+                OfferJob offre = offerService.recupererParId(demande.getOffreId());
+                String titreOffre = offre == null ? "Offre inconnue" : offre.getTitre();
+                String descriptionOffre = offre == null || offre.getDescription() == null || offre.getDescription().isBlank()
+                        ? "Description non disponible"
+                        : offre.getDescription();
+
+                Label titre = new Label(titreOffre);
+                titre.getStyleClass().add("admin-cell-value");
+                titre.setWrapText(true);
+
+                Label info = new Label("Offre #" + demande.getOffreId());
+                info.getStyleClass().add("admin-cell-meta");
+
+                Label description = new Label(descriptionOffre);
+                description.getStyleClass().add("admin-cell-description");
+                description.setWrapText(true);
+                description.setMaxHeight(32);
+                description.setText(resumerDescription(descriptionOffre));
+                description.setTooltip(new Tooltip(descriptionOffre));
+
+                VBox box = new VBox(2, titre, info, description);
+                box.getStyleClass().add("admin-cell-card");
+                setGraphic(box);
+                setText(null);
+            }
+        });
+
+        colStatus.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                    setText(null);
+                    return;
+                }
+
+                Label badge = new Label(normaliserStatut(item));
+                badge.getStyleClass().add("candidature-status-badge");
+                badge.getStyleClass().add(styleStatut(item));
+
+                VBox wrap = new VBox(badge);
+                wrap.setAlignment(Pos.TOP_LEFT);
+                wrap.getStyleClass().add("admin-status-wrap");
+                setGraphic(wrap);
+                setText(null);
+            }
+        });
+    }
+
+    private String normaliserStatut(String statut) {
+        if (statut == null || statut.isBlank()) {
+            return "En attente";
+        }
+
+        return switch (statut.toLowerCase(Locale.ROOT)) {
+            case "accepted" -> "Acceptee";
+            case "declined" -> "Refusee";
+            case "pending", "en attente" -> "En attente";
+            default -> statut;
+        };
+    }
+
+    private String styleStatut(String statut) {
+        if (statut == null) {
+            return "status-pending";
+        }
+
+        return switch (statut.toLowerCase(Locale.ROOT)) {
+            case "accepted" -> "status-accepted";
+            case "declined" -> "status-declined";
+            default -> "status-pending";
+        };
+    }
+
+    private String resumerDescription(String description) {
+        if (description == null) {
+            return "";
+        }
+
+        String texte = description.trim().replaceAll("\\s+", " ");
+        if (texte.length() <= 85) {
+            return texte;
+        }
+        return texte.substring(0, 82) + "...";
+    }
+
 
     private void chargerDonneesInitiales() {
         if (tfOffreId != null) tfOffreId.setEditable(false);
@@ -295,6 +432,47 @@ public class DemandeJobController implements Initializable {
 
     @FXML void handleAccepter() { modifierStatut("Accepted"); }
     @FXML void handleRefuser() { modifierStatut("Declined"); }
+    @FXML
+    void handleScoreMatching() {
+        DemandeJob selected = tableDemandes.getSelectionModel().getSelectedItem();
+        afficherScoreMatchingPourDemande(selected);
+    }
+
+    private void afficherScoreMatchingPourDemande(DemandeJob selected) {
+
+        if (selected == null) {
+            showAlert("Selection requise",
+                    "Veuillez selectionner une candidature pour calculer son score matching.",
+                    Alert.AlertType.WARNING);
+            return;
+        }
+
+        if (!aUnCv(selected)) {
+            showAlert("CV requis",
+                    "Cette candidature ne possede pas de CV. L'analyse matching est impossible.",
+                    Alert.AlertType.WARNING);
+            return;
+        }
+
+        OfferJob offer = offerService.recupererParId(selected.getOffreId());
+        if (offer == null) {
+            showAlert("Offre introuvable",
+                    "Impossible de retrouver l'offre liee a cette candidature.",
+                    Alert.AlertType.ERROR);
+            return;
+        }
+
+        try {
+            String report = matchingService.analyzeCandidateForOffer(offer, selected);
+            afficherRapportMatching(offer, 1, report);
+        } catch (IOException | InterruptedException e) {
+            LOGGER.log(Level.SEVERE, "Erreur lors du score matching", e);
+            showAlert("Score matching impossible",
+                    "Le calcul a echoue. Verifiez que Python est installe et que le script est accessible.",
+                    Alert.AlertType.ERROR);
+        }
+    }
+
     @FXML void handleSupprimer() {
         DemandeJob selected = tableDemandes.getSelectionModel().getSelectedItem();
 
@@ -382,10 +560,12 @@ public class DemandeJobController implements Initializable {
         colAction.setCellFactory(p -> new TableCell<>() {
             private final Button btnCv = new Button("Voir CV");
             private final Button btnMeet = new Button("Meet");
-            private final HBox actions = new HBox(8, btnCv, btnMeet);
+            private final Button btnScore = new Button("Score");
+            private final HBox actions = new HBox(8, btnCv, btnMeet, btnScore);
             {
                 btnCv.getStyleClass().add("btn-action-yellow");
                 btnMeet.getStyleClass().add("btn-action-green");
+                btnScore.getStyleClass().add("btn-action-outline");
 
                 btnCv.setOnAction(e -> {
                     DemandeJob d = getTableView().getItems().get(getIndex());
@@ -396,6 +576,11 @@ public class DemandeJobController implements Initializable {
                 btnMeet.setOnAction(e -> {
                     DemandeJob d = getTableView().getItems().get(getIndex());
                     ouvrirMeetJitsi(d);
+                });
+
+                btnScore.setOnAction(e -> {
+                    DemandeJob d = getTableView().getItems().get(getIndex());
+                    afficherScoreMatchingPourDemande(d);
                 });
             }
 
@@ -408,9 +593,16 @@ public class DemandeJobController implements Initializable {
 
                 DemandeJob d = getTableView().getItems().get(getIndex());
                 btnMeet.setDisable(!"Accepted".equalsIgnoreCase(d.getStatus()));
+                btnScore.setDisable(!aUnCv(d));
                 setGraphic(actions);
             }
         });
+    }
+
+    private boolean aUnCv(DemandeJob demande) {
+        return demande != null
+                && demande.getCvUrl() != null
+                && !demande.getCvUrl().trim().isEmpty();
     }
 
     private void ouvrirMeetJitsi(DemandeJob demande) {
@@ -449,6 +641,119 @@ public class DemandeJobController implements Initializable {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+    private void afficherRapportMatching(OfferJob offer, int nombreCandidatures, String report) {
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Score Matching Candidats / Poste");
+
+        Label titre = new Label("Analyse matching score");
+        titre.getStyleClass().add("matching-stage-title");
+
+        Label sousTitre = new Label("Visualisation du classement des candidats pour l'offre selectionnee.");
+        sousTitre.getStyleClass().add("matching-stage-subtitle");
+
+        VBox heroText = new VBox(6, titre, sousTitre);
+
+        Label badge = new Label("Rapport IA");
+        badge.getStyleClass().add("matching-stage-badge");
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        HBox hero = new HBox(16, heroText, spacer, badge);
+        hero.setAlignment(Pos.CENTER_LEFT);
+
+        VBox cardOffre = creerCarteResume("Offre analysee", offer == null ? "Offre inconnue" : offer.getTitre());
+        VBox cardVolume = creerCarteResume("Candidatures comparees", String.valueOf(nombreCandidatures));
+        int nombreLignes = report == null || report.isBlank() ? 0 : report.split("\\R").length;
+        VBox cardLignes = creerCarteResume("Lignes du rapport", String.valueOf(nombreLignes));
+
+        HBox cards = new HBox(14, cardOffre, cardVolume, cardLignes);
+
+        Label aide = new Label("Le panneau ci-dessous met davantage en valeur les sections du rapport pour faciliter la lecture des scores, du classement et des recommandations.");
+        aide.getStyleClass().add("matching-stage-callout");
+        aide.setWrapText(true);
+
+        VBox reportBox = new VBox(10);
+        reportBox.getStyleClass().add("matching-report-box");
+        reportBox.getChildren().addAll(construireBlocsRapport(report));
+
+        ScrollPane scrollPane = new ScrollPane(reportBox);
+        scrollPane.setFitToWidth(true);
+        scrollPane.getStyleClass().add("matching-report-scroll");
+        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+
+        Button btnFermer = new Button("Fermer");
+        btnFermer.getStyleClass().add("btn-ajouter-museum");
+        btnFermer.setOnAction(e -> stage.close());
+
+        HBox footer = new HBox(btnFermer);
+        footer.setAlignment(Pos.CENTER_RIGHT);
+
+        VBox root = new VBox(18, hero, cards, aide, scrollPane, footer);
+        root.setPadding(new Insets(24));
+        root.getStyleClass().add("matching-stage-root");
+
+        Scene scene = new Scene(root, 940, 720);
+        URL cssUrl = getClass().getResource("/css/style.css");
+        if (cssUrl != null) {
+            scene.getStylesheets().add(cssUrl.toExternalForm());
+        }
+
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
+
+    private VBox creerCarteResume(String label, String valeur) {
+        Label titre = new Label(label);
+        titre.getStyleClass().add("matching-card-label");
+
+        Label contenu = new Label(valeur);
+        contenu.getStyleClass().add("matching-card-value");
+        contenu.setWrapText(true);
+
+        VBox card = new VBox(8, titre, contenu);
+        card.getStyleClass().add("matching-summary-card");
+        HBox.setHgrow(card, Priority.ALWAYS);
+        return card;
+    }
+
+    private List<VBox> construireBlocsRapport(String report) {
+        String contenu = report == null ? "" : report.trim();
+        if (contenu.isEmpty()) {
+            Label vide = new Label("Aucun contenu de matching n'a ete retourne.");
+            vide.getStyleClass().add("matching-line-body");
+            VBox bloc = new VBox(vide);
+            bloc.getStyleClass().add("matching-report-block");
+            return List.of(bloc);
+        }
+
+        return contenu.lines()
+                .map(String::trim)
+                .filter(line -> !line.isEmpty())
+                .filter(line -> !line.toLowerCase(Locale.ROOT).contains("meilleur candidat"))
+                .map(this::creerBlocRapport)
+                .collect(Collectors.toList());
+    }
+
+    private VBox creerBlocRapport(String line) {
+        VBox block = new VBox(6);
+        block.getStyleClass().add("matching-report-block");
+
+        boolean isHeading = line.endsWith(":")
+                || line.toLowerCase(Locale.ROOT).contains("score")
+                || line.toLowerCase(Locale.ROOT).contains("classement")
+                || line.toLowerCase(Locale.ROOT).contains("top")
+                || line.startsWith("#");
+
+        Label text = new Label(line.replaceFirst("^[-*]\\s*", ""));
+        text.setWrapText(true);
+        text.getStyleClass().add(isHeading ? "matching-line-heading" : "matching-line-body");
+
+        block.getChildren().add(text);
+        return block;
+    }
+
     @FXML
     void handleExportExcel() {
         FileChooser fileChooser = new FileChooser();

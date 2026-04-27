@@ -109,4 +109,56 @@ public class DemandeJobService implements IService<DemandeJob> {
 
         return data;
     }
+
+    public List<DemandeJob> afficherParOffre(int offreId) {
+        List<DemandeJob> data = new ArrayList<>();
+        String requete = "SELECT * FROM demande_job WHERE offre_id = ?";
+
+        try {
+            PreparedStatement pst = mc.getCnx().prepareStatement(requete);
+            pst.setInt(1, offreId);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                DemandeJob d = new DemandeJob();
+                d.setId(rs.getInt("id"));
+                d.setCandidatId(rs.getString("candidat_id"));
+                d.setOffreId(rs.getInt("offre_id"));
+                d.setCvUrl(rs.getString("cv_url"));
+                d.setLettreMotivation(rs.getString("lettre_motivation"));
+                d.setStatus(rs.getString("status"));
+                data.add(d);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des candidatures par offre : " + e.getMessage());
+        }
+
+        return data;
+    }
+
+    public List<DemandeJob> afficherParCandidatId(String candidatId) {
+        List<DemandeJob> data = new ArrayList<>();
+        String requete = "SELECT * FROM demande_job WHERE candidat_id = ?";
+
+        try {
+            PreparedStatement pst = mc.getCnx().prepareStatement(requete);
+            pst.setString(1, candidatId);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                DemandeJob d = new DemandeJob();
+                d.setId(rs.getInt("id"));
+                d.setCandidatId(rs.getString("candidat_id"));
+                d.setOffreId(rs.getInt("offre_id"));
+                d.setCvUrl(rs.getString("cv_url"));
+                d.setLettreMotivation(rs.getString("lettre_motivation"));
+                d.setStatus(rs.getString("status"));
+                data.add(d);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des candidatures du candidat : " + e.getMessage());
+        }
+
+        return data;
+    }
 }

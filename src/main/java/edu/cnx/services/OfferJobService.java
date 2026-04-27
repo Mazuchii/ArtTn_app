@@ -104,4 +104,27 @@ public class OfferJobService implements IService<OfferJob> {
 
         return data;
     }
+
+    public OfferJob recupererParId(int id) {
+        String requete = "SELECT * FROM offer_job WHERE id = ?";
+
+        try {
+            PreparedStatement pst = mc.getCnx().prepareStatement(requete);
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                OfferJob o = new OfferJob();
+                o.setId(rs.getInt("id"));
+                o.setTitre(rs.getString("titre"));
+                o.setDescription(rs.getString("description"));
+                o.setSalaire(rs.getDouble("salaire"));
+                return o;
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération de l'offre : " + e.getMessage());
+        }
+
+        return null;
+    }
 }

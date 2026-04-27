@@ -44,6 +44,10 @@
             <children>
                 <Label text="Description generee" style="-fx-font-weight: bold;" />
                 <TextArea fx:id="taDescription" prefHeight="180.0" promptText="Le contenu genere apparaitra ici..." styleClass="museum-table" wrapText="true" />
+                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                    <Button fx:id="btnTranslateToEnglish" text="Traduire en Anglais" onAction="#handleTranslateToEnglish" styleClass="btn-action-yellow" />
+                    <Button fx:id="btnTranslateToFrench" text="Traduire en Français" onAction="#handleTranslateToFrench" styleClass="btn-action-yellow" />
+                </HBox>
             </children>
         </VBox>
 
