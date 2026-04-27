@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="900.0" prefWidth="1200.0"
+            style="-fx-background-color: #F8F5F0;"
+            stylesheets="@./css/style.css"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.cnx.controllers.MesCandidaturesController">
+
+    <top>
+        <VBox spacing="16.0">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="20.0"
+                      style="-fx-background-color: #1a1a2e; -fx-padding: 15 30;">
+                    <children>
+                        <Label text="ART.TN DIGITAL"
+                               textFill="#d4af37"
+                               style="-fx-font-weight: bold; -fx-font-size: 20px;" />
+
+                        <Region HBox.hgrow="ALWAYS" />
+
+                        <HBox alignment="CENTER" spacing="18.0">
+                            <children>
+                                <Hyperlink styleClass="nav-link" text="Offres d'Emploi" onAction="#handleRetourOffres" />
+                                <Button text="Mes candidatures"
+                                        style="-fx-background-color: transparent; -fx-text-fill: #d4af37; -fx-border-color: #d4af37; -fx-border-radius: 14; -fx-background-radius: 14; -fx-cursor: hand;" />
+                            </children>
+                        </HBox>
+
+                        <Region HBox.hgrow="ALWAYS" />
+
+                        <Button text="Retour aux offres"
+                                onAction="#handleRetourOffres"
+                                style="-fx-background-color: transparent; -fx-border-color: #d4af37; -fx-text-fill: #d4af37; -fx-border-radius: 5; -fx-cursor: hand;" />
+                    </children>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="12.0" style="-fx-padding: 0 30 0 30;">
+                    <children>
+                        <TextField fx:id="tfSuiviCandidatId"
+                                   prefWidth="320.0"
+                                   promptText="Entrez votre identifiant candidat"
+                                   styleClass="search-bar-light" />
+                        <Button text="Charger mes candidatures"
+                                onAction="#handleChargerMesCandidatures"
+                                styleClass="btn-action-yellow" />
+                        <Button text="Analyser ma candidature"
+                                onAction="#handleAnalyserMaCandidature"
+                                styleClass="btn-ajouter-museum" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+
+    <center>
+        <HBox spacing="24.0" style="-fx-padding: 30 40;">
+            <children>
+                <VBox spacing="14.0" styleClass="table-container-white candidature-list-panel" prefWidth="340.0">
+                    <padding>
+                        <Insets top="18.0" right="18.0" bottom="18.0" left="18.0" />
+                    </padding>
+                    <children>
+                        <Label text="Mes candidatures" styleClass="section-title" />
+                        <Label text="Choisissez une candidature pour lancer une lecture detaillee de votre CV par rapport a l'offre visee."
+                               styleClass="section-subtitle"
+                               wrapText="true" />
+                        <Label fx:id="lblInfo" styleClass="info-chip" wrapText="true" />
+                        <ListView fx:id="listMesCandidatures" prefHeight="520.0" styleClass="candidature-list-view" />
+                    </children>
+                </VBox>
+
+                <VBox spacing="16.0" styleClass="table-container-white analyse-panel" HBox.hgrow="ALWAYS">
+                    <padding>
+                        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0" />
+                    </padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT">
+                            <children>
+                                <VBox spacing="6.0">
+                                    <children>
+                                        <Label text="Analyse CV et matching"
+                                               styleClass="section-title" />
+                                        <Label text="Le rapport met en avant votre adequation avec l'offre, les faiblesses detectees et les ameliorations prioritaires."
+                                               styleClass="section-subtitle"
+                                               wrapText="true" />
+                                    </children>
+                                </VBox>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label text="Rapport IA" styleClass="analysis-badge" />
+                            </children>
+                        </HBox>
+
+                        <VBox spacing="10.0" styleClass="analysis-callout">
+                            <children>
+                                <Label text="Conseil"
+                                       styleClass="callout-title" />
+                                <Label text="Chargez d'abord vos candidatures, selectionnez-en une, puis lancez l'analyse pour obtenir un retour plus exploitable."
+                                       wrapText="true"
+                                       styleClass="callout-body" />
+                            </children>
+                        </VBox>
+
+                        <TextArea fx:id="taAnalyseCandidature"
+                                  prefHeight="520.0"
+                                  wrapText="true"
+                                  editable="false"
+                                  promptText="Le resultat de l'analyse s'affichera ici..."
+                                  styleClass="analysis-textarea" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </center>
+
+</BorderPane>
