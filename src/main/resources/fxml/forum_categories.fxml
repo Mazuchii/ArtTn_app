@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="20.0" xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.museum.controllers.ForumCategoriesController">
+
+    <children>
+        <!-- Titre -->
+        <Label text="📚 Choisissez une catégorie"
+               style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-padding: 20 0 0 20;" />
+
+        <!-- Conteneur des catégories -->
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+            <content>
+                <FlowPane fx:id="categoriesContainer"
+                          hgap="25.0"
+                          vgap="25.0"
+                          alignment="TOP_CENTER"
+                          style="-fx-padding: 20;" />
+            </content>
+        </ScrollPane>
+
+        <Label fx:id="messageLabel" style="-fx-padding: 0 20 20 20;" visible="false" />
+    </children>
+
+</VBox>
