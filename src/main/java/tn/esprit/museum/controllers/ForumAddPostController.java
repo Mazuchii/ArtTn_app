@@ -1,0 +1,236 @@
+package tn.esprit.museum.controllers;
+
+import tn.esprit.museum.entities.Posts;
+import tn.esprit.museum.services.PostServices;
+import tn.esprit.museum.services.ModerationService;
+import tn.esprit.museum.utils.SessionManager;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+
+public class ForumAddPostController {
+
+    @FXML private TextField titleField;
+    @FXML private TextArea contentArea;
+    @FXML private Label errorLabel;
+    @FXML private Button deleteImageBtn;
+    @FXML private ImageView imagePreview;
+    @FXML private VBox imagePreviewContainer;
+
+    private PostServices postService;
+    private ForumPostsController parentController;
+    private int categoryId = 0;
+    private String savedImagePath = null;
+    private File selectedImageFile = null;
+
+    private static final String IMAGES_DIR = "src/main/resources/images/posts/";
+
+    @FXML
+    public void initialize() {
+        postService = new PostServices();
+
+        File dir = new File(IMAGES_DIR);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+    }
+
+    public void setParentController(ForumPostsController parent) {
+        this.parentController = parent;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    @FXML
+    private void handleChooseImage() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choisir une image");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp")
+        );
+
+        Stage stage = (Stage) titleField.getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+
+        if (selectedFile != null) {
+            selectedImageFile = selectedFile;
+
+            try {
+                Image image = new Image(selectedFile.toURI().toString());
+                imagePreview.setImage(image);
+                imagePreviewContainer.setVisible(true);
+                imagePreviewContainer.setManaged(true);
+                deleteImageBtn.setDisable(false);
+                showMessage("✅ Image chargée : " + selectedFile.getName(), "success");
+            } catch (Exception e) {
+                showMessage("❌ Impossible de charger l'image", "error");
+            }
+        }
+    }
+
+    @FXML
+    private void handleDeleteImage() {
+        selectedImageFile = null;
+        savedImagePath = null;
+        imagePreview.setImage(null);
+        imagePreviewContainer.setVisible(false);
+        imagePreviewContainer.setManaged(false);
+        deleteImageBtn.setDisable(true);
+        showMessage("🗑️ Image supprimée", "success");
+    }
+
+    private String saveImage() {
+        if (selectedImageFile == null) {
+            return null;
+        }
+
+        try {
+            String fileName = System.currentTimeMillis() + "_" + selectedImageFile.getName();
+            Path destination = Path.of(IMAGES_DIR, fileName);
+            Files.copy(selectedImageFile.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
+            return "/images/posts/" + fileName;
+        } catch (Exception e) {
+            System.err.println("Erreur sauvegarde image: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @FXML
+    private void handleSave() {
+        String title = titleField.getText().trim();
+        String content = contentArea.getText().trim();
+
+        // Vérifier si l'utilisateur est connecté
+        if (!SessionManager.isLoggedIn()) {
+            showMessage("❌ Veuillez vous connecter pour poster", "error");
+            return;
+        }
+
+        int currentUserId = SessionManager.getCurrentUserId();
+        if (currentUserId == -1) {
+            showMessage("❌ Erreur: Utilisateur non trouvé", "error");
+            return;
+        }
+
+        // Validation du titre
+        if (title.isEmpty()) {
+            showMessage("❌ Le titre est obligatoire", "error");
+            return;
+        }
+        if (title.length() > 100) {
+            showMessage("❌ Le titre ne doit pas dépasser 100 caractères", "error");
+            return;
+        }
+        if (title.length() < 3) {
+            showMessage("❌ Le titre doit contenir au moins 3 caractères", "error");
+            return;
+        }
+
+        // Validation du contenu
+        if (content.isEmpty()) {
+            showMessage("❌ Le contenu est obligatoire", "error");
+            return;
+        }
+        if (content.length() < 10) {
+            showMessage("❌ Le contenu doit contenir au moins 10 caractères", "error");
+            return;
+        }
+
+        // Vérification doublon (utilise l'ID utilisateur réel)
+        try {
+            if (postService.isTitleExists(title, currentUserId)) {
+                showMessage("❌ Vous avez déjà un post avec ce titre.", "error");
+                return;
+            }
+            if (postService.isContentExists(content, currentUserId)) {
+                showMessage("❌ Vous avez déjà un post avec ce contenu similaire.", "error");
+                return;
+            }
+        } catch (Exception e) {
+            System.err.println("Erreur vérification: " + e.getMessage());
+        }
+
+        // Modération AI
+        showMessage("🔍 Analyse du contenu par l'IA...", "info");
+
+        new Thread(() -> {
+            String fullText = title + " " + content;
+            ModerationService.ModerationResult result = ModerationService.moderateText(fullText);
+
+            javafx.application.Platform.runLater(() -> {
+                if (result.isToxic()) {
+                    showMessage("❌ Désolé, votre message contient des propos inappropriés. (" + result.getLabel() + ")", "error");
+                    return;
+                }
+                if (result.isSpam()) {
+                    showMessage("❌ Désolé, votre message a été détecté comme spam. (" + result.getLabel() + ")", "error");
+                    return;
+                }
+
+                savePost(title, content, currentUserId);
+            });
+        }).start();
+    }
+
+    private void savePost(String title, String content, int userId) {
+        try {
+            String imagePath = saveImage();
+
+            Posts post = new Posts(title, content, userId);  // ✅ Utilise le vrai userId
+            post.setCategoryId(categoryId);
+            post.setImageUrl(imagePath);
+
+            postService.addpost(post);
+            showMessage("✅ Post ajouté avec succès !", "success");
+
+            if (parentController != null) {
+                parentController.refreshPosts();
+            }
+
+            new Thread(() -> {
+                try { Thread.sleep(1500); } catch (InterruptedException e) {}
+                javafx.application.Platform.runLater(this::closeWindow);
+            }).start();
+
+        } catch (Exception e) {
+            showMessage("❌ Erreur: " + e.getMessage(), "error");
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleCancel() {
+        closeWindow();
+    }
+
+    private void closeWindow() {
+        Stage stage = (Stage) titleField.getScene().getWindow();
+        stage.close();
+    }
+
+    private void showMessage(String message, String type) {
+        errorLabel.setText(message);
+        if (type.equals("error")) {
+            errorLabel.setStyle("-fx-text-fill: #ef4444;");
+        } else {
+            errorLabel.setStyle("-fx-text-fill: #10b981;");
+        }
+        errorLabel.setVisible(true);
+
+        new Thread(() -> {
+            try { Thread.sleep(3000); } catch (InterruptedException e) {}
+            javafx.application.Platform.runLater(() -> errorLabel.setVisible(false));
+        }).start();
+    }
+}

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="20.0" prefWidth="600" prefHeight="750" stylesheets="@../css/forum_style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.museum.controllers.ForumAddPostController">
+
+    <children>
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="header" style="-fx-padding: 15;">
+            <children>
+                <Label text="🏛️ MUSEUM DIGITAL" styleClass="header-title" />
+                <Label text="| Nouveau post" styleClass="header-subtitle" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button onAction="#handleCancel" styleClass="btn-cancel" text="Annuler" />
+            </children>
+        </HBox>
+
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+            <content>
+                <VBox spacing="15.0" style="-fx-padding: 30;">
+                    <children>
+                        <Label text="✏️ Créer un nouveau post" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
+
+                        <!-- Titre -->
+                        <VBox spacing="8.0">
+                            <children>
+                                <Label text="Titre du post *" style="-fx-font-weight: bold; -fx-text-fill: #374151;" />
+                                <TextField fx:id="titleField" promptText="Entrez le titre..." prefHeight="40.0" style="-fx-background-radius: 10; -fx-padding: 0 15;" />
+                            </children>
+                        </VBox>
+
+                        <!-- Contenu -->
+                        <VBox spacing="8.0">
+                            <children>
+                                <Label text="Contenu *" style="-fx-font-weight: bold; -fx-text-fill: #374151;" />
+                                <TextArea fx:id="contentArea" promptText="Écrivez votre message..." prefHeight="200.0" style="-fx-background-radius: 10; -fx-padding: 10;" />
+                            </children>
+                        </VBox>
+
+                        <!-- Image (upload) -->
+                        <VBox spacing="8.0">
+                            <children>
+                                <Label text="🖼️ Image (optionnel)" style="-fx-font-weight: bold; -fx-text-fill: #374151;" />
+
+                                <HBox spacing="10.0">
+                                    <children>
+                                        <Button onAction="#handleChooseImage" styleClass="btn-primary" text="📁 Choisir une image" />
+                                        <Button fx:id="deleteImageBtn" onAction="#handleDeleteImage" styleClass="btn-danger" text="🗑️ Supprimer" disable="true" />
+                                    </children>
+                                </HBox>
+
+                                <!-- Aperçu de l'image -->
+                                <VBox spacing="5.0" fx:id="imagePreviewContainer" visible="false" managed="false">
+                                    <children>
+                                        <Label text="Aperçu :" style="-fx-text-fill: #374151; -fx-font-size: 12px;" />
+                                        <ImageView fx:id="imagePreview" fitWidth="200" fitHeight="150" preserveRatio="true" style="-fx-background-color: #f3f4f6; -fx-background-radius: 10; -fx-border-color: #e5e7eb; -fx-border-radius: 10;" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+
+                        <Label fx:id="errorLabel" style="-fx-text-fill: #ef4444;" visible="false" wrapText="true" />
+
+                        <HBox spacing="10.0" alignment="CENTER_RIGHT">
+                            <children>
+                                <Button onAction="#handleSave" styleClass="btn-publish" text="✅ Publier" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+
+    </children>
+
+</VBox>

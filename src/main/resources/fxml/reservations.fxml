@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane style="-fx-background-color: #e8eef2;"
+            stylesheets="@../css/style.css"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.museum.controllers.ReservationController">
+
+    <left>
+        <VBox prefWidth="220.0"
+              style="-fx-background-color: #1a1a2e; -fx-min-width: 220px;">
+
+            <!-- Logo -->
+            <VBox alignment="CENTER" prefHeight="90.0" spacing="5.0"
+                  style="-fx-background-color: #16213e; -fx-padding: 20 10;">
+                <Label text="🏛️" style="-fx-font-size: 32px;" />
+                <Label text="MUSEUM DIGITAL"
+                       style="-fx-font-size: 11px; -fx-text-fill: #D4AF37;
+                              -fx-font-weight: bold;" />
+            </VBox>
+
+            <!-- Menu -->
+            <VBox spacing="5.0" VBox.vgrow="ALWAYS"
+                  style="-fx-padding: 15 10 10 10;">
+
+                <Button alignment="BASELINE_LEFT"
+                        maxWidth="1.7976931348623157E308"
+                        prefHeight="42.0" disable="true"
+                        text="📊  Dashboard"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #636e72;
+                               -fx-font-size: 13px; -fx-font-weight: bold;
+                               -fx-padding: 10 15; -fx-background-radius: 8;
+                               -fx-alignment: BASELINE_LEFT;" />
+
+                <Button alignment="BASELINE_LEFT"
+                        maxWidth="1.7976931348623157E308"
+                        prefHeight="42.0"
+                        onAction="#handleShowEvents"
+                        text="📅  Événements"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #b2bec3;
+                               -fx-font-size: 13px; -fx-font-weight: bold;
+                               -fx-padding: 10 15; -fx-background-radius: 8;
+                               -fx-border-color: transparent;
+                               -fx-alignment: BASELINE_LEFT;
+                               -fx-cursor: hand;" />
+
+                <!-- Réservations - actif -->
+                <Button alignment="BASELINE_LEFT"
+                        maxWidth="1.7976931348623157E308"
+                        prefHeight="42.0" disable="true"
+                        text="🎟️  Réservations"
+                        style="-fx-background-color: #D4AF37;
+                               -fx-text-fill: #1a1a2e;
+                               -fx-font-size: 13px; -fx-font-weight: bold;
+                               -fx-padding: 10 15; -fx-background-radius: 8;
+                               -fx-border-color: transparent;
+                               -fx-alignment: BASELINE_LEFT;" />
+            </VBox>
+
+            <!-- Logout -->
+            <VBox alignment="CENTER" prefHeight="75.0"
+                  style="-fx-background-color: #0d0d1a; -fx-padding: 10;">
+                <Button onAction="#handleLogout"
+                        prefWidth="170.0" prefHeight="38.0"
+                        text="🚪  Se Déconnecter"
+                        style="-fx-background-color: #e74c3c;
+                               -fx-text-fill: white;
+                               -fx-font-size: 12px; -fx-font-weight: bold;
+                               -fx-background-radius: 8; -fx-cursor: hand;" />
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true"
+                    style="-fx-background: #e8eef2; -fx-background-color: #e8eef2;
+                           -fx-border-color: transparent;">
+            <VBox style="-fx-padding: 20; -fx-background-color: #e8eef2;"
+                  VBox.vgrow="ALWAYS">
+
+                <!-- Header -->
+                <HBox alignment="CENTER_LEFT" spacing="10.0"
+                      style="-fx-padding: 0 0 15 0;">
+                    <VBox>
+                        <Label fx:id="titleLabel"
+                               text="🎟️ Gestion des Réservations"
+                               style="-fx-font-size: 22px; -fx-font-weight: bold;
+                                      -fx-text-fill: #2c3e50;" />
+                        <Label fx:id="eventInfoLabel" text=""
+                               style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Circle fill="#D4AF37" radius="10.0"
+                            stroke="#c49b29" strokeWidth="2" />
+                    <Label text="Admin"
+                           style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                </HBox>
+
+                <!-- Stats -->
+                <HBox spacing="15.0" style="-fx-padding: 0 0 15 0;">
+                    <VBox alignment="CENTER" styleClass="stat-card"
+                          HBox.hgrow="ALWAYS" style="-fx-padding: 20;">
+                        <Label text="🎫" style="-fx-font-size: 22px;" />
+                        <Label text="Total Réservations"
+                               style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                        <Label fx:id="dashboardStatsReservations" text="0"
+                               style="-fx-font-size: 26px; -fx-font-weight: bold;
+                                      -fx-text-fill: #2c3e50;" />
+                    </VBox>
+                    <VBox alignment="CENTER" styleClass="stat-card"
+                          HBox.hgrow="ALWAYS" style="-fx-padding: 20;">
+                        <Label text="🎟️" style="-fx-font-size: 22px;" />
+                        <Label text="Total Billets"
+                               style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                        <Label fx:id="dashboardStatsTickets" text="0"
+                               style="-fx-font-size: 26px; -fx-font-weight: bold;
+                                      -fx-text-fill: #27ae60;" />
+                    </VBox>
+                    <VBox alignment="CENTER" styleClass="stat-card"
+                          HBox.hgrow="ALWAYS" style="-fx-padding: 20;">
+                        <Label text="💰" style="-fx-font-size: 22px;" />
+                        <Label text="Revenus Confirmés"
+                               style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                        <Label fx:id="dashboardStatsRevenue" text="0 DT"
+                               style="-fx-font-size: 26px; -fx-font-weight: bold;
+                                      -fx-text-fill: #D4AF37;" />
+                    </VBox>
+                </HBox>
+
+                <!-- Filtre + boutons -->
+                <HBox spacing="10.0" style="-fx-padding: 0 0 10 0;">
+                    <ComboBox fx:id="statusFilterCombo"
+                              prefWidth="160.0" prefHeight="36.0"
+                              promptText="Filtrer par statut" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button onAction="#handleAddReservation" prefHeight="36.0"
+                            styleClass="action-button-gold"
+                            text="➕ Nouvelle Réservation" />
+                    <Button onAction="#handleRefresh" prefHeight="36.0"
+                            styleClass="action-button-gold"
+                            text="🔄 Actualiser" />
+                </HBox>
+
+                <!-- Tableau -->
+                <TableView fx:id="reservationsTable" VBox.vgrow="ALWAYS"
+                           styleClass="enhanced-table">
+                    <columns>
+                        <TableColumn fx:id="idColumn"          prefWidth="45.0"  text="ID" />
+                        <TableColumn fx:id="clientNameColumn"  prefWidth="160.0" text="Client" />
+                        <TableColumn fx:id="clientEmailColumn" prefWidth="190.0" text="Email" />
+                        <TableColumn fx:id="ticketsColumn"     prefWidth="70.0"  text="Billets" />
+                        <TableColumn fx:id="totalColumn"       prefWidth="90.0"  text="Total" />
+                        <TableColumn fx:id="statusColumn"      prefWidth="110.0" text="Statut" />
+                        <TableColumn fx:id="dateColumn"        prefWidth="140.0" text="Date" />
+                    </columns>
+                </TableView>
+
+                <!-- Boutons actions -->
+                <HBox alignment="CENTER_RIGHT" spacing="8.0"
+                      style="-fx-padding: 10 0 0 0;">
+                    <Button onAction="#handleAcceptReservation" prefHeight="36.0"
+                            styleClass="action-button-gold" text="✅ Accepter" />
+                    <Button onAction="#handleRejectReservation" prefHeight="36.0"
+                            styleClass="action-button-gold" text="❌ Refuser" />
+                    <Button onAction="#handleExportPdf" prefHeight="36.0"
+                            styleClass="action-button-gold" text="📄 Export PDF" />
+                    <Button onAction="#handleCancelReservation" prefHeight="36.0"
+                            styleClass="action-button-gold" text="❌ Annuler" />
+                    <Button onAction="#handleDeleteReservation" prefHeight="36.0"
+                            styleClass="action-button-gold" text="🗑️ Supprimer" />
+                </HBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

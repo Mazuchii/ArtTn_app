@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.museum.controllers.PriceOptimizationController"
+      style="-fx-background-color: #f8f9fa;">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="🤖 Optimisation des Prix par IA"
+               style="-fx-font-size: 20px; -fx-font-weight: bold;
+                      -fx-text-fill: #1a1a2e;" />
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label text="✨ Powered by Gemini"
+               style="-fx-font-size: 11px; -fx-text-fill: #1a73e8;
+                      -fx-font-weight: bold; -fx-background-color: #e8f0fe;
+                      -fx-background-radius: 10; -fx-padding: 3 10;" />
+    </HBox>
+
+    <!-- Description -->
+    <Label wrapText="true" style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d;"
+           text="Gemini analyse le taux de remplissage, les tendances de réservation
+et propose des ajustements de prix optimaux pour maximiser les revenus du musée." />
+
+    <Separator />
+
+    <!-- Statut -->
+    <Label fx:id="statusLabel" text="" wrapText="true"
+           style="-fx-font-size: 12px; -fx-text-fill: #2c3e50;
+                  -fx-font-style: italic;" />
+
+    <!-- Loading -->
+    <VBox fx:id="loadingBox" alignment="CENTER" spacing="10">
+        <ProgressIndicator prefWidth="50" prefHeight="50" />
+        <Label text="Gemini analyse vos données, veuillez patienter..."
+               style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+    </VBox>
+
+    <!-- Résultats -->
+    <TextArea fx:id="resultArea"
+              promptText="📊 Les recommandations Gemini apparaîtront ici..."
+              VBox.vgrow="ALWAYS" prefHeight="420"
+              style="-fx-background-color: white; -fx-border-color: #ddd;
+                     -fx-border-radius: 8; -fx-background-radius: 8;
+                     -fx-font-size: 13px;" />
+
+    <!-- Boutons -->
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button fx:id="analyzeBtn" onAction="#handleAnalyze"
+                prefHeight="40" prefWidth="220"
+                text="🔍 Analyser et Optimiser"
+                style="-fx-background-color: #1a73e8; -fx-text-fill: white;
+                       -fx-font-weight: bold; -fx-font-size: 13px;
+                       -fx-background-radius: 8; -fx-cursor: hand;" />
+        <Button fx:id="closeBtn" onAction="#handleClose"
+                prefHeight="40" prefWidth="100"
+                text="✖ Fermer"
+                style="-fx-background-color: #e74c3c; -fx-text-fill: white;
+                       -fx-font-weight: bold; -fx-background-radius: 8;
+                       -fx-cursor: hand;" />
+    </HBox>
+
+</VBox>

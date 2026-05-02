@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane style="-fx-background-color: #e8eef2;"
+            stylesheets="@../css/style.css"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.museum.controllers.EventManagementController">
+
+    <left>
+        <VBox prefWidth="220.0"
+              style="-fx-background-color: #1a1a2e; -fx-min-width: 220px;">
+
+            <!-- Logo -->
+            <VBox alignment="CENTER" prefHeight="90.0" spacing="5.0"
+                  style="-fx-background-color: #16213e; -fx-padding: 20 10;">
+                <Label text="🏛️" style="-fx-font-size: 32px;" />
+                <Label text="MUSEUM DIGITAL"
+                       style="-fx-font-size: 11px; -fx-text-fill: #D4AF37;
+                              -fx-font-weight: bold; -fx-letter-spacing: 1;" />
+            </VBox>
+
+            <!-- Menu -->
+            <VBox spacing="5.0" VBox.vgrow="ALWAYS"
+                  style="-fx-padding: 15 10 10 10;">
+
+                <!-- Dashboard désactivé -->
+                <Button alignment="BASELINE_LEFT"
+                        maxWidth="1.7976931348623157E308"
+                        prefHeight="42.0" disable="true"
+                        text="📊  Dashboard"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #636e72;
+                               -fx-font-size: 13px; -fx-font-weight: bold;
+                               -fx-padding: 10 15; -fx-background-radius: 8;
+                               -fx-border-color: transparent;
+                               -fx-alignment: BASELINE_LEFT;" />
+
+                <!-- Événements - actif -->
+                <Button alignment="BASELINE_LEFT"
+                        maxWidth="1.7976931348623157E308"
+                        prefHeight="42.0" disable="true"
+                        text="📅  Événements"
+                        style="-fx-background-color: #D4AF37;
+                               -fx-text-fill: #1a1a2e;
+                               -fx-font-size: 13px; -fx-font-weight: bold;
+                               -fx-padding: 10 15; -fx-background-radius: 8;
+                               -fx-border-color: transparent;
+                               -fx-alignment: BASELINE_LEFT;" />
+
+                <!-- Réservations -->
+                <Button alignment="BASELINE_LEFT"
+                        maxWidth="1.7976931348623157E308"
+                        prefHeight="42.0"
+                        onAction="#handleShowReservations"
+                        text="🎟️  Réservations"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #b2bec3;
+                               -fx-font-size: 13px; -fx-font-weight: bold;
+                               -fx-padding: 10 15; -fx-background-radius: 8;
+                               -fx-border-color: transparent;
+                               -fx-alignment: BASELINE_LEFT;
+                               -fx-cursor: hand;" />
+            </VBox>
+
+            <!-- Logout -->
+            <VBox alignment="CENTER" prefHeight="75.0"
+                  style="-fx-background-color: #0d0d1a; -fx-padding: 10;">
+                <Button onAction="#handleLogout"
+                        prefWidth="170.0" prefHeight="38.0"
+                        text="🚪  Se Déconnecter"
+                        style="-fx-background-color: #e74c3c;
+                               -fx-text-fill: white;
+                               -fx-font-size: 12px; -fx-font-weight: bold;
+                               -fx-background-radius: 8; -fx-cursor: hand;" />
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true"
+                    style="-fx-background: #e8eef2; -fx-background-color: #e8eef2;
+                           -fx-border-color: transparent;">
+            <VBox style="-fx-padding: 20; -fx-background-color: #e8eef2;"
+                  VBox.vgrow="ALWAYS">
+
+                <!-- Header -->
+                <HBox alignment="CENTER_LEFT" spacing="10.0"
+                      style="-fx-padding: 0 0 15 0;">
+                    <Label text="Gestion des Événements"
+                           style="-fx-font-size: 22px; -fx-font-weight: bold;
+                                  -fx-text-fill: #2c3e50;" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button onAction="#handleOpenFront"
+                            style="-fx-background-color: #9b59b6; -fx-text-fill: white;
+                                   -fx-background-radius: 20; -fx-padding: 8 18;
+                                   -fx-cursor: hand; -fx-font-weight: bold;"
+                            text="🎟️ Catalogue (Front)" />
+                    <Circle fill="#D4AF37" radius="10.0"
+                            stroke="#c49b29" strokeWidth="2" />
+                    <Label text="Admin"
+                           style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                </HBox>
+
+                <!-- Stats -->
+                <HBox spacing="15.0" style="-fx-padding: 0 0 15 0;">
+                    <VBox alignment="CENTER" styleClass="stat-card"
+                          HBox.hgrow="ALWAYS" style="-fx-padding: 20;">
+                        <Label text="📊" style="-fx-font-size: 22px;" />
+                        <Label text="Total Événements"
+                               style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                        <Label fx:id="statsTotalEvents" text="0"
+                               style="-fx-font-size: 26px; -fx-font-weight: bold;
+                                      -fx-text-fill: #2c3e50;" />
+                    </VBox>
+                    <VBox alignment="CENTER" styleClass="stat-card"
+                          HBox.hgrow="ALWAYS" style="-fx-padding: 20;">
+                        <Label text="⏰" style="-fx-font-size: 22px;" />
+                        <Label text="À Venir"
+                               style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                        <Label fx:id="statsUpcomingEvents" text="0"
+                               style="-fx-font-size: 26px; -fx-font-weight: bold;
+                                      -fx-text-fill: #27ae60;" />
+                    </VBox>
+                    <VBox alignment="CENTER" styleClass="stat-card"
+                          HBox.hgrow="ALWAYS" style="-fx-padding: 20;">
+                        <Label text="💺" style="-fx-font-size: 22px;" />
+                        <Label text="Places Total"
+                               style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                        <Label fx:id="statsTotalCapacity" text="0"
+                               style="-fx-font-size: 26px; -fx-font-weight: bold;
+                                      -fx-text-fill: #2980b9;" />
+                    </VBox>
+                </HBox>
+
+                <!-- Recherche + filtres -->
+                <HBox spacing="10.0" style="-fx-padding: 0 0 10 0;">
+                    <TextField fx:id="searchField"
+                               promptText="🔍 Rechercher par titre ou lieu..."
+                               HBox.hgrow="ALWAYS" prefHeight="36.0" />
+                    <ComboBox fx:id="categoryFilterCombo"
+                              prefWidth="130.0" prefHeight="36.0" />
+                    <ComboBox fx:id="statusFilterCombo"
+                              prefWidth="120.0" prefHeight="36.0" />
+                    <Button onAction="#handleAddEvent" prefHeight="36.0"
+                            styleClass="action-button-gold"
+                            text="➕ Nouvel Événement" />
+                </HBox>
+
+                <!-- Tableau -->
+                <TableView fx:id="eventsTable" VBox.vgrow="ALWAYS"
+                           styleClass="enhanced-table">
+                    <columns>
+                        <TableColumn fx:id="idColumn"      prefWidth="45.0"  text="ID" />
+                        <TableColumn fx:id="titleColumn"   prefWidth="220.0" text="Titre" />
+                        <TableColumn fx:id="dateColumn"    prefWidth="90.0"  text="Date" />
+                        <TableColumn fx:id="locationColumn" prefWidth="150.0" text="Lieu" />
+                        <TableColumn fx:id="capacityColumn" prefWidth="75.0"  text="Capacité" />
+                        <TableColumn fx:id="priceColumn"   prefWidth="80.0"  text="Prix" />
+                        <TableColumn fx:id="statusColumn"  prefWidth="90.0"  text="Statut" />
+                        <TableColumn fx:id="imageColumn"   prefWidth="60.0"  text="Image" />
+                    </columns>
+                </TableView>
+
+                <!-- Boutons actions -->
+                <HBox alignment="CENTER_RIGHT" spacing="8.0"
+                      style="-fx-padding: 10 0 0 0;">
+                    <Button onAction="#handleExportPdf" prefHeight="36.0"
+                            style="-fx-background-color: #e74c3c; -fx-text-fill: white;
+                                   -fx-background-radius: 8; -fx-font-weight: bold;
+                                   -fx-cursor: hand; -fx-padding: 8 14;"
+                            text="📄 PDF" />
+                    <Button onAction="#handleOptimizePrices" prefHeight="36.0"
+                            style="-fx-background-color: #1a73e8; -fx-text-fill: white;
+                                   -fx-background-radius: 8; -fx-font-weight: bold;
+                                   -fx-cursor: hand; -fx-padding: 8 14;"
+                            text="🤖 Optimiser Prix (IA)" />
+                    <Button onAction="#handleOptimizeSingleEvent" prefHeight="36.0"
+                            style="-fx-background-color: #1a73e8; -fx-text-fill: white;
+                                   -fx-background-radius: 8; -fx-font-weight: bold;
+                                   -fx-cursor: hand; -fx-padding: 8 14;"
+                            text="🎯 Optimiser prix IA (sélection)" />
+                    <Button onAction="#handleEditEvent" prefHeight="36.0"
+                            styleClass="action-button-gold" text="✏️ Modifier" />
+                    <Button onAction="#handleDeleteEvent" prefHeight="36.0"
+                            styleClass="action-button-gold" text="🗑️ Supprimer" />
+                    <Button onAction="#handleViewReservations" prefHeight="36.0"
+                            styleClass="action-button-gold" text="🎟️ Réservations" />
+                </HBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

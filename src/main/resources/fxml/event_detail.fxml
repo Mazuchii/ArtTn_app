@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.museum.controllers.EventDetailController">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #1a1a2e; -fx-padding: 15 25;">
+            <Label text="🏛️ MUSEUM DIGITAL" textFill="white" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button onAction="#handleClose" text="✖ Fermer" style="-fx-background-color: transparent; -fx-text-fill: #ff6b6b;" />
+        </HBox>
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background: #f4f7f6; -fx-background-color: #f4f7f6;">
+            <content>
+                <VBox spacing="20.0" style="-fx-padding: 25;">
+                    <!-- Ligne image + infos principales -->
+                    <HBox spacing="25.0" VBox.vgrow="NEVER">
+                        <ImageView fx:id="eventImageView" fitHeight="200" fitWidth="250" preserveRatio="true" style="-fx-border-radius: 10; -fx-background-radius: 10;" />
+                        <VBox spacing="15.0" HBox.hgrow="ALWAYS">
+                            <Label fx:id="eventTitle" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                            <Label fx:id="eventDate" style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;" />
+                            <Label fx:id="eventLocation" style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;" />
+                            <Label fx:id="eventCategory" style="-fx-font-size: 14px; -fx-text-fill: #9b59b6;" />
+                            <Label fx:id="eventPrice" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #D4AF37;" />
+                            <Label fx:id="eventAvailability" style="-fx-font-size: 13px; -fx-text-fill: #27ae60;" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Description -->
+                    <VBox spacing="10.0">
+                        <Label text="Description" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                        <TextArea fx:id="eventDescription" editable="false" wrapText="true" prefHeight="100" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 8;" />
+                    </VBox>
+
+                    <!-- Section réservation -->
+                    <VBox spacing="15.0" style="-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-radius: 10; -fx-padding: 20;">
+                        <Label text="Formulaire de réservation" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                        <GridPane hgap="15.0" vgap="15.0">
+                            <padding><Insets top="10" bottom="10" /></padding>
+                            <Label text="Nom complet :" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <TextField fx:id="clientNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="250" promptText="Votre nom" />
+                            <Label text="Email :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <TextField fx:id="clientEmailField" GridPane.columnIndex="1" GridPane.rowIndex="1" promptText="Email" />
+                            <Label text="Téléphone :" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                            <TextField fx:id="clientPhoneField" GridPane.columnIndex="1" GridPane.rowIndex="2" promptText="Téléphone (optionnel)" />
+                            <Label text="Nombre de billets :" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                            <Spinner fx:id="ticketsSpinner" GridPane.columnIndex="1" GridPane.rowIndex="3" editable="false" prefWidth="100" />
+                        </GridPane>
+                        <HBox alignment="CENTER" spacing="20.0">
+                            <Button onAction="#handleReserve" text="Confirmer la réservation" style="-fx-background-color: #D4AF37; -fx-text-fill: #1a1a2e; -fx-font-weight: bold; -fx-padding: 8 20; -fx-background-radius: 25;" />
+                            <Button onAction="#handleClose" text="Annuler" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-padding: 8 20; -fx-background-radius: 25;" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>
