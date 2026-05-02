@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefWidth="700.0" prefHeight="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.museum.controllers.CartController">
+
+    <!-- TOP -->
+    <top>
+        <VBox style="-fx-background-color: #1a1a2e; -fx-padding: 15;">
+            <children>
+                <Label text="🛒 Mon Panier" textFill="white">
+                    <font>
+                        <Font name="System Bold" size="20.0" />
+                    </font>
+                </Label>
+            </children>
+        </VBox>
+    </top>
+
+    <!-- CENTER -->
+    <center>
+        <VBox spacing="15.0" style="-fx-padding: 20;">
+            <children>
+
+                <!-- Liste des produits -->
+                <Label text="Articles dans votre panier :" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                <ListView fx:id="cartListView" prefHeight="250.0" style="-fx-background-radius: 10;" />
+
+                <HBox spacing="10.0">
+                    <children>
+                        <Button onAction="#handleRemoveSelected" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5;" text="🗑️ Retirer sélection" />
+                        <Button onAction="#handleClearCart" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-background-radius: 5;" text="Vider le panier" />
+                    </children>
+                </HBox>
+
+                <Separator />
+
+                <!-- Adresse de livraison -->
+                <Label text="📍 Adresse de livraison" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                <TextArea fx:id="shippingAddressField" prefHeight="80.0" promptText="Entrez votre adresse complète..." style="-fx-background-radius: 10; -fx-border-radius: 10;" />
+
+                <!-- Mode de paiement -->
+                <Label text="💳 Mode de paiement" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                <ComboBox fx:id="paymentMethodCombo" prefWidth="250.0" prefHeight="35.0" style="-fx-background-radius: 20;" />
+
+                <Separator />
+
+                <!-- Total -->
+                <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                    <children>
+                        <Label text="Total :" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+                        <Label fx:id="totalPriceLabel" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #d4af37;" />
+                    </children>
+                </HBox>
+
+                <!-- Message erreur -->
+                <Label fx:id="errorLabel" style="-fx-text-fill: red;" visible="false" />
+
+                <!-- Bouton validation -->
+                <Button fx:id="validateButton" onAction="#handleValidateOrder" prefHeight="50.0" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; -fx-background-radius: 10;" text="✅ Valider la commande" />
+
+            </children>
+        </VBox>
+    </center>
+
+</BorderPane>
