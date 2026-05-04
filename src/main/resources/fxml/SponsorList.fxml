@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane maxHeight="Infinity" maxWidth="Infinity" prefHeight="-1.0" prefWidth="-1.0" style="-fx-background-color: #e8eef2;" stylesheets="@/css/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.museum.controllers.SponsorListController">
+
+    <left>
+        <VBox prefWidth="260.0" styleClass="sidebar">
+            <children>
+                <VBox alignment="CENTER" prefHeight="120.0" spacing="10.0">
+                    <children>
+                        <Label styleClass="logo-icon" text="🏛" />
+                        <Label styleClass="logo-text" text="MUSEUM DIGITAL" />
+                    </children>
+                </VBox>
+
+                <VBox spacing="8.0" VBox.vgrow="ALWAYS">
+                    <padding><Insets left="15.0" right="15.0" top="20.0" /></padding>
+                    <children>
+                        <Button onAction="#navigateToDashboard" alignment="BASELINE_LEFT" maxWidth="Infinity" prefHeight="50.0" styleClass="menu-button" text="⊞ Dashboard" />
+                        <Button onAction="#navigateToUsers" alignment="BASELINE_LEFT" maxWidth="Infinity" prefHeight="50.0" styleClass="menu-button" text="Utilisateurs" />
+                        <Button onAction="#navigateToProducts" alignment="BASELINE_LEFT" maxWidth="Infinity" prefHeight="50.0" styleClass="menu-button" text="Produits" />
+                        <Button onAction="#navigateToEvents" alignment="BASELINE_LEFT" maxWidth="Infinity" prefHeight="50.0" styleClass="menu-button" text="Événements" />
+                        <Button onAction="#navigateToReservations" alignment="BASELINE_LEFT" maxWidth="Infinity" prefHeight="50.0" styleClass="menu-button" text="🎟 Réservation" />
+                        <Button onAction="#navigateToSponsors" alignment="BASELINE_LEFT" maxWidth="Infinity" prefHeight="50.0" styleClass="menu-button-active" text="Sponsors" />
+                        <Button onAction="#navigateToOffers" alignment="BASELINE_LEFT" maxWidth="Infinity" prefHeight="50.0" styleClass="menu-button" text="Gestion des Offres" />
+                        <Button onAction="#navigateToDemandes" alignment="BASELINE_LEFT" maxWidth="Infinity" prefHeight="50.0" styleClass="menu-button" text="Candidatures" />
+                        <Button onAction="#navigateToForum" alignment="BASELINE_LEFT" maxWidth="Infinity" prefHeight="50.0" styleClass="menu-button" text="Forum" />
+                    </children>
+                </VBox>
+
+                <VBox alignment="CENTER" prefHeight="100.0" spacing="10.0" style="-fx-padding: 15;">
+                    <children>
+                        <Button onAction="#handleRefreshSidebar" prefWidth="180.0" prefHeight="40.0" styleClass="sidebar-action-button" text="↻ Actualiser" />
+                        <Button onAction="#handleLogoutSidebar" prefWidth="180.0" prefHeight="40.0" styleClass="sidebar-action-button" text="🚪 Se Déconnecter" />
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" spacing="20.0" style="-fx-padding: 20; -fx-background-color: #e8eef2;">
+            <children>
+                <HBox alignment="CENTER_LEFT">
+                    <children>
+                        <VBox>
+                            <Label styleClass="section-title" text="Nos Sponsors" />
+                            <Label styleClass="section-subtitle" text="Découvrez nos précieux partenaires" />
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <HBox alignment="CENTER" spacing="10.0">
+                            <children>
+                                <VBox alignment="CENTER_RIGHT">
+                                    <Label style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Admin" />
+                                    <Label style="-fx-font-size: 11; -fx-text-fill: #7f8c8d;" text="Administrator" />
+                                </VBox>
+                                <Circle fill="#D4AF37" radius="20.0" stroke="WHITE" strokeType="INSIDE" />
+                            </children>
+                        </HBox>
+                    </children>
+                </HBox>
+
+                <HBox spacing="20.0">
+                    <children>
+                        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label styleClass="stat-label" text="Total Sponsors" />
+                                <Label fx:id="nbTotalSponsors" styleClass="stat-value" text="0" />
+                            </children>
+                        </VBox>
+                        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label styleClass="stat-label" text="Sponsors Actifs" />
+                                <Label fx:id="nbSponsorsActifs" styleClass="stat-value" text="0" />
+                            </children>
+                        </VBox>
+                        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label styleClass="stat-label" text="Dons Totaux (DT)" />
+                                <Label fx:id="totalDons" styleClass="stat-value" text="0" />
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <VBox maxWidth="Infinity" spacing="15.0" styleClass="table-container" VBox.vgrow="ALWAYS">
+                    <padding><Insets bottom="18.0" left="18.0" right="18.0" top="18.0" /></padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="15.0">
+                            <children>
+                                <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Liste des partenaires" />
+                                <TextField fx:id="tfRecherche" prefHeight="40.0" prefWidth="300.0" promptText="Rechercher un sponsor par nom..." styleClass="search-bar-integrated" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button onAction="#handleExportPdf" prefHeight="40.0" styleClass="btn-action-outline" text="Exporter PDF" />
+                                <Button onAction="#navigateToPacks" prefHeight="40.0" styleClass="btn-action-primary" text="Voir les Packs" />
+                                <Button onAction="#ouvrirFormulaireAjout" prefHeight="40.0" styleClass="btn-ajouter-museum" text="+ Nouveau Sponsor" />
+                            </children>
+                        </HBox>
+
+                        <HBox alignment="CENTER_LEFT" spacing="12.0">
+                            <children>
+                                <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #7f8c8d;" text="Filtrer par statut :" />
+                                <Button fx:id="btnFiltreAccepte" onAction="#filtrerAcceptes" prefHeight="38.0" text="Accepte" />
+                                <Button fx:id="btnFiltreRefuse" onAction="#filtrerRefuses" prefHeight="38.0" text="Refuse" />
+                                <Button fx:id="btnFiltreEnAttente" onAction="#filtrerEnAttente" prefHeight="38.0" text="En attente" />
+                            </children>
+                        </HBox>
+
+                        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;" VBox.vgrow="ALWAYS">
+                            <content>
+                                <GridPane fx:id="cardsContainer" hgap="25.0" style="-fx-padding: 8;" vgap="25.0" />
+                            </content>
+                        </ScrollPane>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

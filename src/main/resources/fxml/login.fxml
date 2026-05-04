@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.museum.controllers.LoginController">
+    <children>
+        <SplitPane dividerPositions="0.4" orientation="HORIZONTAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" style="-fx-box-border: transparent; -fx-background-color: transparent;">
+            <items>
+
+                <!-- PARTIE GAUCHE (40%) - Image centrée -->
+                <StackPane style="-fx-background-color: #1a1a2e;">
+                    <children>
+                        <ImageView fx:id="loginImageView" fitHeight="500.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+                            <image>
+                                <Image url="@../images/login_image.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </StackPane>
+
+                <!-- PARTIE DROITE (60%) - Formulaire -->
+                <AnchorPane style="-fx-background-color: white;">
+                    <children>
+                        <VBox alignment="CENTER" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <padding>
+                                <Insets left="50.0" right="50.0" />
+                            </padding>
+                            <children>
+                                <Region VBox.vgrow="ALWAYS" />
+
+                                <Label text="Connexion" textFill="#2c3e50" style="-fx-font-size: 32px; -fx-font-weight: bold;" />
+
+                                <VBox maxWidth="380.0" spacing="8.0">
+                                    <children>
+                                        <Label text="Email/Username" textFill="#555555" style="-fx-font-weight: bold;" />
+                                        <TextField fx:id="usernameField" prefHeight="50.0" promptText="Entrez votre email ou nom d'utilisateur" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #ddd; -fx-border-width: 1.5; -fx-padding: 0 15;" />
+                                    </children>
+                                </VBox>
+
+                                <VBox maxWidth="380.0" spacing="8.0">
+                                    <children>
+                                        <Label text="Password" textFill="#555555" style="-fx-font-weight: bold;" />
+                                        <PasswordField fx:id="passwordField" prefHeight="50.0" promptText="Entrez votre mot de passe" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #ddd; -fx-border-width: 1.5; -fx-padding: 0 15;" />
+                                    </children>
+                                </VBox>
+
+                                <HBox alignment="CENTER_LEFT" maxWidth="380.0">
+                                    <children>
+                                        <CheckBox fx:id="rememberMeCheckbox" text="Remember Me" />
+                                        <Region HBox.hgrow="ALWAYS" />
+                                        <Hyperlink onAction="#handleForgotPassword" text="Forgot password?" style="-fx-text-fill: #d4af37;" />
+                                    </children>
+                                </HBox>
+
+                                <Label fx:id="errorLabel" style="-fx-text-fill: #e74c3c;" visible="false" />
+
+                                <Button onAction="#handleLogin" prefHeight="50.0" maxWidth="380.0" style="-fx-background-color: #d4af37; -fx-background-radius: 10; -fx-text-fill: #2c3e50; -fx-font-weight: bold; -fx-font-size: 14px;" text="Login" />
+                                <!-- Bouton Login Google -->
+
+                                <Button fx:id="googleLoginButton" onAction="#handleGoogleLogin" prefHeight="50.0" maxWidth="380.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #ddd; -fx-border-radius: 10; -fx-text-fill: #555; -fx-font-weight: bold;" text="🅶 Se connecter avec Google">
+                                    <VBox.margin><Insets top="10.0" /></VBox.margin>
+                                </Button>                                <HBox alignment="CENTER" spacing="5.0">
+                                    <children>
+                                        <Label text="Don't have an account?" textFill="#666666" />
+                                        <Hyperlink onAction="#handleSignup" text="Sign up now!" style="-fx-text-fill: #d4af37; -fx-font-weight: bold;" />
+                                    </children>
+                                </HBox>
+
+                                <Region VBox.vgrow="ALWAYS" />
+                            </children>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+
+            </items>
+        </SplitPane>
+    </children>
+</AnchorPane>

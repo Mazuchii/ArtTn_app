@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.Circle?>
+
+<SplitPane dividerPositions="0.4" prefHeight="750.0" prefWidth="1100.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.museum.controllers.RegisterController">
+    <items>
+        <AnchorPane styleClass="login-image-container">
+            <children>
+                <ImageView fitHeight="750.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <image>
+                        <Image url="@../images/login_image.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </AnchorPane>
+
+        <VBox alignment="CENTER" spacing="15.0" style="-fx-background-color: #F8F5F0;">
+            <padding>
+                <Insets left="50.0" right="50.0" top="20.0" bottom="20.0" />
+            </padding>
+            <children>
+                <VBox alignment="CENTER" spacing="5.0">
+                    <children>
+                        <Label styleClass="logo-icon-dark" text="🏛" />
+                        <Label styleClass="logo-text-dark" text="MUSEUM DIGITAL" />
+                        <Label style="-fx-font-size: 18; -fx-text-fill: #2D3436; -fx-font-weight: bold;" text="Create your account">
+                            <VBox.margin><Insets top="10.0" /></VBox.margin>
+                        </Label>
+                    </children>
+                </VBox>
+
+                <!-- Photo de profil - FORME CIRCULAIRE -->
+                <VBox alignment="CENTER" spacing="10.0">
+                    <children>
+                        <StackPane>
+                            <Circle radius="55.0" fill="#d4af37" />
+                            <Circle radius="52.0" fill="white" />
+                            <ImageView fx:id="profileImageView" fitHeight="100.0" fitWidth="100.0" preserveRatio="true">
+                                <clip>
+                                    <Circle radius="50.0" centerX="50.0" centerY="50.0" />
+                                </clip>
+                            </ImageView>
+                        </StackPane>
+                        <Button onAction="#handleChooseProfilePicture" style="-fx-background-color: #d4af37; -fx-background-radius: 20; -fx-text-fill: #2c3e50; -fx-font-weight: bold; -fx-font-size: 11px; -fx-cursor: hand;" text="📷 Choisir une photo" />
+                        <Label fx:id="photoLabel" text="Aucune photo choisie" style="-fx-text-fill: #999; -fx-font-size: 10px;" />
+                    </children>
+                </VBox>
+
+                <VBox maxWidth="400.0" spacing="10.0">
+                    <children>
+                        <!-- Full Name -->
+                        <VBox spacing="2.0">
+                            <TextField fx:id="fullNameField" prefHeight="45.0" promptText="Full Name" styleClass="login-input" />
+                        </VBox>
+
+                        <!-- Username avec validation format + unicité -->
+                        <VBox spacing="2.0">
+                            <TextField fx:id="usernameField" prefHeight="45.0" promptText="Username" styleClass="login-input" />
+                            <Label fx:id="usernameErrorLabel" text="⚠ 3-20 caractères (lettres, chiffres, _)" textFill="#E74C3C" style="-fx-font-size: 11px;" visible="false" />
+                            <Label fx:id="usernameTakenLabel" text="⚠ Ce nom d'utilisateur est déjà pris" textFill="#E74C3C" style="-fx-font-size: 11px;" visible="false" />
+                        </VBox>
+
+                        <!-- Email avec validation format + unicité -->
+                        <VBox spacing="2.0">
+                            <TextField fx:id="emailField" prefHeight="45.0" promptText="Email Address" styleClass="login-input" />
+                            <Label fx:id="emailErrorLabel" text="⚠ Format d'email invalide" textFill="#E74C3C" style="-fx-font-size: 11px;" visible="false" />
+                            <Label fx:id="emailTakenLabel" text="⚠ Cet email est déjà utilisé" textFill="#E74C3C" style="-fx-font-size: 11px;" visible="false" />
+                        </VBox>
+
+                        <!-- Password -->
+                        <VBox spacing="2.0">
+                            <PasswordField fx:id="passwordField" prefHeight="45.0" promptText="Password (min. 6 chars)" styleClass="login-input" />
+                            <Label fx:id="passwordErrorLabel" text="⚠ Minimum 6 caractères" textFill="#E74C3C" style="-fx-font-size: 11px;" visible="false" />
+                        </VBox>
+
+                        <!-- Confirm Password -->
+                        <VBox spacing="2.0">
+                            <PasswordField fx:id="confirmPasswordField" prefHeight="45.0" promptText="Confirm Password" styleClass="login-input" />
+                            <Label fx:id="matchErrorLabel" text="⚠ Les mots de passe ne correspondent pas" textFill="#E74C3C" style="-fx-font-size: 11px;" visible="false" />
+                        </VBox>
+
+                        <!-- Error général -->
+                        <Label fx:id="errorLabel" style="-fx-text-fill: #E74C3C; -fx-font-size: 12; -fx-font-weight: bold;" visible="false" wrapText="true" />
+
+                        <!-- Bouton d'inscription -->
+                        <Button fx:id="registerButton" onAction="#handleRegister" prefHeight="50.0" prefWidth="400.0" styleClass="action-button-gold" text="Sign Up">
+                            <VBox.margin><Insets top="10.0" /></VBox.margin>
+                        </Button>
+                    </children>
+                </VBox>
+
+                <!-- Lien vers login -->
+                <HBox alignment="CENTER" spacing="5.0">
+                    <children>
+                        <Label style="-fx-text-fill: #636E72;" text="Already have an account?" />
+                        <Hyperlink onAction="#handleLogin" style="-fx-text-fill: #B8860B; -fx-font-weight: bold;" text="Log In" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </items>
+</SplitPane>
