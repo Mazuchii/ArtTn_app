@@ -1,0 +1,23 @@
+{
+  "offer": {
+    "titre": "Développeur Python Backend",
+    "description": "Nous cherchons un développeur Python backend avec expérience en API REST, SQL, Git, tests unitaires et intégration de services IA."
+  },
+  "candidates": [
+    {
+      "candidat_id": "candidat_001",
+      "cv_text": "Développeur Python avec 3 ans d'expérience. Création d'API REST avec Flask et FastAPI. Bonne maîtrise SQL, Git, tests unitaires et Docker.",
+      "lettre_motivation": "Je souhaite rejoindre votre équipe backend Python et travailler sur des API robustes."
+    },
+    {
+      "candidat_id": "candidat_002",
+      "cv_text": "Développeur front-end React et JavaScript. Intégration HTML CSS, UX, composants web, notions d'API.",
+      "lettre_motivation": "Je suis motivé pour évoluer vers le développement full-stack."
+    },
+    {
+      "candidat_id": "candidat_003",
+      "cv_text": "Ingénieur logiciel Java et Spring Boot. Expérience SQL, Git, microservices, tests JUnit et consommation d'API.",
+      "lettre_motivation": "Mon profil backend peut répondre à votre besoin même si Python n'est pas ma stack principale."
+    }
+  ]
+}

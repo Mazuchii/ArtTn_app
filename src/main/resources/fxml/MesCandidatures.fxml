@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="mainContainer" prefHeight="700.0" prefWidth="1000.0"
+            style="-fx-background-color: #F8F5F0;"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.museum.controllers.MesCandidaturesController">
+
+    <top>
+        <HBox spacing="20" style="-fx-padding: 20; -fx-background-color: #1a1a2e;">
+            <Label text="MES CANDIDATURES" textFill="WHITE" style="-fx-font-weight: bold; -fx-font-size: 20px;" />
+            <Button text="Rafraîchir" onAction="#handleChargerMesCandidatures" />
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="10" style="-fx-padding: 20;">
+            <Label fx:id="lblInfo" text="Chargement..." />
+            <ListView fx:id="listMesCandidatures" VBox.vgrow="ALWAYS" />
+            <Button text="Analyser" onAction="#handleAnalyserMaCandidature" />
+            <TextArea fx:id="taAnalyseCandidature" prefHeight="100" visible="false" managed="false" />
+            
+            <VBox fx:id="scoreOverviewCard" visible="false" managed="false"><Label fx:id="lblScoreValue" /><Label fx:id="lblScoreBand" /><ProgressBar fx:id="scoreProgressBar" /></VBox>
+            <ScrollPane fx:id="analysisScrollPane" visible="false" managed="false"><VBox><VBox fx:id="strengthsSection"><VBox fx:id="strengthsContainer"/></VBox><VBox fx:id="improvementsSection"><VBox fx:id="improvementsContainer"/></VBox><VBox fx:id="skillsSection"><FlowPane fx:id="languagesFlowPane"/><FlowPane fx:id="certificationsFlowPane"/></VBox><VBox fx:id="profileSection"><Label fx:id="lblEducationLevel"/><ProgressBar fx:id="profileCompletenessBar"/><Label fx:id="lblProfileCompleteness"/></VBox><VBox fx:id="recommendationSection"><Label fx:id="lblRecommendation"/></VBox></VBox></ScrollPane>
+            <VBox fx:id="fallbackContainer" visible="false" managed="false" />
+        </VBox>
+    </center>
+
+</BorderPane>
+

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="15.0"
+      style="-fx-background-color: white; -fx-border-color: #CC9933; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.museum.controllers.PackController">
+
+    <children>
+        <Label text="Nouveau Pack Sponsoring" textFill="#CC9933">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+
+        <Separator />
+
+        <VBox spacing="5.0">
+            <children>
+                <Label style="-fx-font-weight: bold;" text="Nom du Pack" />
+                <TextField fx:id="nomTF" promptText="Ex: Pack Diamant, Pack Platine..." />
+            </children>
+        </VBox>
+
+        <VBox spacing="5.0">
+            <children>
+                <Label style="-fx-font-weight: bold;" text="Montant (DT)" />
+                <TextField fx:id="montantTF" promptText="Ex: 5000.0" />
+            </children>
+        </VBox>
+
+        <VBox spacing="5.0">
+            <children>
+                <Label style="-fx-font-weight: bold;" text="Event lie" />
+                <ComboBox fx:id="evenementCB" prefWidth="320.0" promptText="Selectionner un evenement" />
+                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                    <children>
+                        <Button fx:id="btnGenererIA" onAction="#handleGenererIA" style="-fx-background-color: #f3e2b5; -fx-text-fill: #7a5a00; -fx-font-weight: bold;" text="Generer avec IA" />
+                        <Label fx:id="aiHintLabel" style="-fx-text-fill: #8c7b52;" text="Choisissez d'abord un Event pour activer l'assistant IA." wrapText="true" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <VBox spacing="5.0">
+            <children>
+                <Label style="-fx-font-weight: bold;" text="Avantages inclus" />
+                <TextArea fx:id="avantagesTA" prefHeight="120.0"
+                          promptText="Détaillez les bénéfices (ex: Logo sur affiche, stands, accès VIP...)"
+                          wrapText="true" />
+            </children>
+        </VBox>
+
+        <HBox alignment="CENTER_RIGHT" spacing="15.0" style="-fx-padding: 10 0 0 0;">
+            <children>
+                <Button onAction="#retourListe" text="Annuler" />
+                <Button fx:id="btnValider" onAction="#handleAjouter" text="Créer le Pack" />
+            </children>
+        </HBox>
+    </children>
+
+    <padding>
+        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+    </padding>
+</VBox>
+
