@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+
+<BorderPane fx:id="mainContainer" prefHeight="800.0" prefWidth="1150.0"
+            style="-fx-background-color: #FDFBF8;"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.museum.controllers.MesCandidaturesController">
+
+    <!-- Header Style Museum -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 20; -fx-background-color: #1a1a2e;">
+            <Button text="← Retour" onAction="#handleShowJobFront"
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-cursor: hand;"/>
+            <Label text="MON TABLEAU DE BORD CANDIDAT" textFill="WHITE"
+                   style="-fx-font-weight: bold; -fx-font-size: 22px; -fx-font-family: 'System';" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="🔄 Actualiser" onAction="#handleChargerMesCandidatures"
+                    style="-fx-background-color: #CC9933; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <SplitPane dividerPositions="0.32" style="-fx-background-color: transparent;">
+            <items>
+                <!-- Section Gauche : Liste des candidatures -->
+                <VBox spacing="15" style="-fx-padding: 15; -fx-background-color: white;">
+                    <Label text="Mes Postulations" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1a1a2e;" />
+                    <Label fx:id="lblInfo" text="Sélectionnez une candidature pour voir les détails"
+                           wrapText="true" style="-fx-text-fill: #7f8c8d;" />
+                    <ListView fx:id="listMesCandidatures" VBox.vgrow="ALWAYS"
+                              style="-fx-background-radius: 10; -fx-border-color: #eee; -fx-border-radius: 10;" />
+                </VBox>
+
+                <!-- Section Droite : Analyse IA et État d'avancement -->
+                <ScrollPane fitToWidth="true" style="-fx-background-color: #FDFBF8;">
+                    <VBox spacing="20" style="-fx-padding: 25;">
+
+                        <!-- Statut de Traitement & QR Code -->
+                        <HBox spacing="15" alignment="TOP_RIGHT">
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label text="État du dossier" style="-fx-font-weight: bold; -fx-text-fill: #1a1a2e;" />
+                                <Label fx:id="lblStatutTraitement" text="⏳ Vérification du statut..."
+                                       style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+
+                                <!-- Lien Meet Dynamique -->
+                                <Hyperlink fx:id="linkMeet" text="🔗 Rejoindre l'entretien (Meet)"
+                                           style="-fx-font-size: 14px; -fx-text-fill: #CC9933; -fx-font-weight: bold;" />
+                            </VBox>
+
+                            <VBox alignment="CENTER" spacing="5" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);">
+                                <ImageView fx:id="qrCodeView" fitHeight="90.0" fitWidth="90.0" preserveRatio="true" />
+                                <Label text="Lien de l'offre" style="-fx-font-size: 9px; -fx-text-fill: #999;" />
+                            </VBox>
+                        </HBox>
+
+                        <!-- CARTE 1 : SCORE MATCHING (PYTHON) -->
+                        <VBox fx:id="scoreOverviewCard" spacing="10"
+                              style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+                            <Label text="Analyse de Correspondance IA" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
+                            <HBox alignment="CENTER_LEFT" spacing="15">
+                                <Label fx:id="lblScoreValue" text="--%" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #CC9933;" />
+                                <VBox HBox.hgrow="ALWAYS">
+                                    <Label fx:id="lblScoreBand" text="Calcul du score par l'IA..." />
+                                    <ProgressBar fx:id="scoreProgressBar" progress="0.0" maxWidth="Infinity"
+                                                 style="-fx-accent: #CC9933;" />
+                                </VBox>
+                            </HBox>
+                        </VBox>
+
+                        <!-- CARTE 2 : ÉTAT D'AVANCEMENT -->
+                        <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+                            <Label text="Rapport d'État d'Avancement" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
+                            <HBox alignment="CENTER_LEFT" spacing="15">
+                                <Label fx:id="lblProgressValue" text="0%" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #1a1a2e;" />
+                                <VBox HBox.hgrow="ALWAYS">
+                                    <Label text="Progression du traitement" style="-fx-text-fill: #7f8c8d;" />
+                                    <ProgressBar fx:id="progressStepBar" progress="0.0" maxWidth="Infinity" style="-fx-accent: #1a1a2e;" />
+                                </VBox>
+                            </HBox>
+                            <VBox fx:id="stepsContainer" spacing="5" style="-fx-padding: 10 0 0 0;" />
+                        </VBox>
+
+                        <!-- LA SECTION TEXTAREA ET POINTS FORTS A ÉTÉ SUPPRIMÉE ICI -->
+
+                    </VBox>
+                </ScrollPane>
+            </items>
+        </SplitPane>
+    </center>
+</BorderPane>

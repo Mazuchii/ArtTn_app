@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+<BorderPane fx:id="mainContainer" prefWidth="1200" prefHeight="800" stylesheets="@../css/forum_style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.museum.controllers.ForumPostsController">
+
+    <top>
+        <VBox spacing="10.0">
+            <children>
+                <!-- Boutons spécifiques au forum -->
+                <HBox spacing="15.0" alignment="CENTER_LEFT" styleClass="forum-toolbar">
+                    <children>
+                        <Button onAction="#handleBackToCategories" styleClass="btn-back-forum" text="← Retour aux catégories">
+                            <font>
+                                <Font size="13.0" />
+                            </font>
+                        </Button>
+
+                        <Button fx:id="sortAlphaBtn" onAction="#handleSortAlphabetical" styleClass="btn-sort-alpha" text="🔤 Trier A-Z" />
+                        <Button fx:id="sortDateBtn" onAction="#handleSortByDate" styleClass="btn-sort-date" text="📅 Plus récents" />
+
+                        <Region HBox.hgrow="ALWAYS" />
+
+                        <Button onAction="#handleAddPost" styleClass="btn-new-post" text="➕ Nouveau post" />
+                    </children>
+                </HBox>
+
+                <!-- Fil d'Ariane -->
+                <HBox spacing="5.0" alignment="CENTER_LEFT" style="-fx-padding: 0 20;">
+                    <Label text="📍" style="-fx-font-size: 14px;" />
+                    <Label fx:id="breadcrumbLabel" style="-fx-text-fill: #d4af37; -fx-font-size: 13px; -fx-font-weight: bold;" />
+                </HBox>
+
+                <!-- Search Bar -->
+                <HBox spacing="15.0" alignment="CENTER_LEFT" style="-fx-padding: 0 20 10 20;">
+                    <Label text="🔍" style="-fx-font-size: 18px;" />
+                    <TextField fx:id="searchField" promptText="Rechercher un post..." styleClass="search-field" />
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="15.0">
+            <children>
+                <!-- Posts List -->
+                <ListView fx:id="postsListView" VBox.vgrow="ALWAYS" style="-fx-padding: 0 20 20 20;" />
+                <!-- Message Label -->
+                <Label fx:id="messageLabel" style="-fx-padding: 0 20 20 20;" visible="false" />
+            </children>
+        </VBox>
+    </center>
+
+</BorderPane>

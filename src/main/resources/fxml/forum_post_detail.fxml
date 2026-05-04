@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15.0" prefWidth="900" prefHeight="700" stylesheets="@../css/forum_style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.museum.controllers.ForumPostDetailController">
+
+    <children>
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="header" style="-fx-padding: 15;">
+            <children>
+                <Label text="🏛️ MUSEUM DIGITAL" styleClass="header-title" />
+                <Label text="| Post" styleClass="header-subtitle" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button onAction="#handleBack" styleClass="btn-back" text="← Retour" />
+            </children>
+        </HBox>
+
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent; -fx-padding: 0 20 20 20;">
+            <content>
+                <VBox spacing="20.0">
+                    <children>
+                        <!-- Post Card -->
+                        <VBox spacing="10.0" styleClass="post-card">
+                            <children>
+                                <!-- Auteur et Date -->
+                                <HBox spacing="12">
+                                    <children>
+                                        <Label fx:id="postAuthorLabel" styleClass="post-author" />
+                                        <Label fx:id="postDateLabel" styleClass="post-date" />
+                                    </children>
+                                </HBox>
+
+                                <!-- Titre -->
+                                <Label fx:id="postTitleLabel" styleClass="post-title" />
+
+                                <!-- Image (optionnelle) -->
+                                <ImageView fx:id="postImageView" fitWidth="500" fitHeight="300" preserveRatio="true" visible="false" />
+
+                                <Separator />
+
+                                <!-- Contenu -->
+                                <Label fx:id="postContentLabel" styleClass="post-excerpt" wrapText="true" />
+
+                                <!-- Statistiques -->
+                                <HBox spacing="20.0" alignment="CENTER_LEFT">
+                                    <children>
+                                        <Label text="👁️ Vues :" style="-fx-text-fill: #7f8c8d;" />
+                                        <Label fx:id="viewsCountLabel" style="-fx-text-fill: #2c3e50; -fx-font-weight: bold;" />
+
+                                        <Region HBox.hgrow="ALWAYS" />
+
+                                        <Button fx:id="likeButton" onAction="#handleLike" style="-fx-background-color: transparent; -fx-text-fill: #3b82f6; -fx-font-size: 16px; -fx-cursor: hand;" text="👍" />
+                                        <Label fx:id="likesCountLabel" style="-fx-text-fill: #3b82f6; -fx-font-weight: bold;" />
+
+                                        <Button fx:id="dislikeButton" onAction="#handleDislike" style="-fx-background-color: transparent; -fx-text-fill: #ef4444; -fx-font-size: 16px; -fx-cursor: hand;" text="👎" />
+                                        <Label fx:id="dislikesCountLabel" style="-fx-text-fill: #ef4444; -fx-font-weight: bold;" />
+                                    </children>
+                                </HBox>
+
+                                <!-- Actions Modifier/Supprimer + Combo Langue -->
+                                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                    <children>
+                                        <Button onAction="#handleEditPost" styleClass="btn-edit" text="✏️ Modifier" />
+                                        <Button onAction="#handleDeletePost" styleClass="btn-delete" text="🗑️ Supprimer" />
+                                        <Button onAction="#handleSpeakPost" styleClass="btn-info" text="🔊 Lire le post" />
+                                        <ComboBox fx:id="languageCombo" prefWidth="130.0" promptText="🌐 Langue" />
+                                    </children>
+                                </HBox>
+
+                                <!-- BOUTONS DE TRADUCTION -->
+                                <HBox spacing="10.0" alignment="CENTER_RIGHT">
+                                    <children>
+                                        <Button fx:id="translateButton" onAction="#handleTranslateToArabic" styleClass="btn-info" text="🌐 ترجمة إلى العربية" />
+                                        <Button fx:id="originalButton" onAction="#handleShowOriginal" styleClass="btn-info" text="🔙 Version originale" visible="false" />
+                                    </children>
+                                </HBox>
+
+                            </children>
+                        </VBox>
+
+                        <!-- Comments Section -->
+                        <VBox spacing="10.0">
+                            <children>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <Label text="💬 Commentaires" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                                        <Region HBox.hgrow="ALWAYS" />
+                                        <Button onAction="#handleAddComment" styleClass="btn-success" text="➕ Ajouter un commentaire" />
+                                    </children>
+                                </HBox>
+                                <ListView fx:id="commentsListView" style="-fx-background-color: transparent;" />
+                            </children>
+                        </VBox>
+
+                        <Label fx:id="messageLabel" visible="false" />
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+
+    </children>
+</VBox>

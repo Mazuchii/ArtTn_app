@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="900.0" prefWidth="1200.0"
+            style="-fx-background-color: #F8F5F0;"
+            stylesheets="@../css/style.css"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.museum.controllers.FavoriteOffersController">
+
+    <top>
+        <VBox spacing="16.0" style="-fx-background-color: #1a1a2e; -fx-padding: 20 30;">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                    <children>
+                        <Label text="Mes favoris" textFill="#d4af37">
+                            <font>
+                                <Font name="System Bold" size="28.0" />
+                            </font>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button text="Retour aux offres"
+                                onAction="#handleRetourOffres"
+                                style="-fx-background-color: transparent; -fx-border-color: #d4af37; -fx-text-fill: #d4af37; -fx-border-radius: 5; -fx-cursor: hand;" />
+                    </children>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                    <children>
+                        <TextField fx:id="tfCandidatId"
+                                   prefWidth="320.0"
+                                   promptText="Entrez votre identifiant candidat"
+                                   styleClass="search-bar-light" />
+                        <Button text="Charger mes favoris"
+                                onAction="#handleChargerFavoris"
+                                styleClass="btn-action-yellow" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+            <content>
+                <VBox spacing="18.0" style="-fx-padding: 30 40;">
+                    <children>
+                        <Label fx:id="lblInfo"
+                               textFill="#8c7e5e"
+                               wrapText="true" />
+                        <FlowPane fx:id="flowPaneFavoris"
+                                  hgap="25.0"
+                                  vgap="25.0"
+                                  prefWrapLength="1120.0" />
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+</BorderPane>
+
