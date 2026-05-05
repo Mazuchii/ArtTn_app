@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+<BorderPane fx:id="mainContainer" prefWidth="1200" prefHeight="800"
+             stylesheets="@../css/front.css"
+             xmlns="http://javafx.com/javafx/17"
+             xmlns:fx="http://javafx.com/fxml/1"
+             fx:controller="tn.esprit.museum.controllers.ForumPostsController">
+
+    <top>
+        <VBox spacing="0">
+            <!-- Toolbar -->
+            <HBox spacing="12.0" alignment="CENTER_LEFT" styleClass="forum-toolbar">
+                <Button onAction="#handleBackToCategories" styleClass="btn-front-back"
+                        text="← Retour aux catégories" />
+                <Button fx:id="sortAlphaBtn" onAction="#handleSortAlphabetical"
+                        styleClass="btn-forum-sort" text="🔤 A-Z" />
+                <Button fx:id="sortDateBtn" onAction="#handleSortByDate"
+                        styleClass="btn-forum-sort" text="📅 Récents" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button onAction="#handleAddPost" styleClass="btn-forum-new"
+                        text="➕ Nouveau post" />
+            </HBox>
+            <!-- Fil d'Ariane + Recherche -->
+            <HBox spacing="5.0" alignment="CENTER_LEFT"
+                  style="-fx-padding: 8 20 0 20;">
+                <Label text="📍" style="-fx-font-size: 13px;" />
+                <Label fx:id="breadcrumbLabel"
+                       style="-fx-text-fill: #D4AF37; -fx-font-size: 13px; -fx-font-weight: bold;" />
+            </HBox>
+            <HBox spacing="12.0" alignment="CENTER_LEFT"
+                  style="-fx-padding: 8 20 12 20;">
+                <TextField fx:id="searchField" promptText="🔍 Rechercher un post..."
+                           styleClass="front-search" prefWidth="320" prefHeight="34" />
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="12.0" style="-fx-background-color: #F8F5F0;">
+            <ListView fx:id="postsListView" VBox.vgrow="ALWAYS"
+                      style="-fx-background-color: transparent; -fx-border-color: transparent;
+                             -fx-padding: 0 20 20 20;" />
+            <Label fx:id="messageLabel" style="-fx-padding: 0 20 20 20;" visible="false" />
+        </VBox>
+    </center>
+
+</BorderPane>

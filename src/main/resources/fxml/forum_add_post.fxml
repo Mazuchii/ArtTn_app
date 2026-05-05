@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="0" prefWidth="600" prefHeight="750"
+      stylesheets="@../css/front.css"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.museum.controllers.ForumAddPostController">
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="front-header">
+        <Label text="🏛️ MUSEUM DIGITAL" styleClass="front-header-logo" />
+        <Label text="| Nouveau post" styleClass="front-header-subtitle" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button onAction="#handleCancel" styleClass="btn-front-back" text="Annuler" />
+    </HBox>
+
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="front-scroll">
+        <content>
+            <VBox spacing="18.0" style="-fx-padding: 28; -fx-background-color: #F8F5F0;">
+
+                <Label text="✏️ Créer un nouveau post"
+                       style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1a1a2e;" />
+
+                <VBox spacing="6.0" styleClass="front-section-card">
+                    <!-- Titre -->
+                    <Label text="Titre du post *" styleClass="front-label-bold" />
+                    <TextField fx:id="titleField" promptText="Entrez le titre..."
+                               prefHeight="38.0" styleClass="front-input" />
+
+                    <!-- Contenu -->
+                    <Label text="Contenu *" styleClass="front-label-bold"
+                           style="-fx-padding: 10 0 0 0;" />
+                    <TextArea fx:id="contentArea" promptText="Écrivez votre message..."
+                              prefHeight="180.0"
+                              style="-fx-background-radius: 8; -fx-border-color: #dde1e8;
+                                     -fx-border-radius: 8; -fx-border-width: 1; -fx-padding: 10;" />
+
+                    <!-- Image -->
+                    <Label text="🖼️ Image (optionnel)" styleClass="front-label-bold"
+                           style="-fx-padding: 10 0 0 0;" />
+                    <HBox spacing="10.0">
+                        <Button onAction="#handleChooseImage" styleClass="btn-front-dark"
+                                text="📁 Choisir une image" />
+                        <Button fx:id="deleteImageBtn" onAction="#handleDeleteImage"
+                                styleClass="btn-front-danger" text="🗑️ Supprimer" disable="true" />
+                    </HBox>
+                    <VBox spacing="5.0" fx:id="imagePreviewContainer" visible="false" managed="false">
+                        <Label text="Aperçu :" styleClass="front-label-muted" />
+                        <ImageView fx:id="imagePreview" fitWidth="200" fitHeight="150"
+                                   preserveRatio="true" />
+                    </VBox>
+
+                    <Label fx:id="errorLabel"
+                           style="-fx-text-fill: #e74c3c; -fx-font-size: 12px;"
+                           visible="false" wrapText="true" />
+
+                    <HBox spacing="10.0" alignment="CENTER_RIGHT"
+                          style="-fx-padding: 10 0 0 0;">
+                        <Button onAction="#handleSave" styleClass="btn-front-primary"
+                                text="✅ Publier" prefHeight="38" prefWidth="130" />
+                    </HBox>
+                </VBox>
+
+            </VBox>
+        </content>
+    </ScrollPane>
+
+</VBox>

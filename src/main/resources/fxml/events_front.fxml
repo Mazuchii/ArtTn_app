@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane style="-fx-background-color: #F8F5F0;"
+            stylesheets="@../css/front.css"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.museum.controllers.EventFrontController">
+
+    <BorderPane AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+                AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+
+        <top>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="front-subheader">
+                <Label text="📅 Catalogue des Événements" styleClass="front-page-title" />
+                <Region HBox.hgrow="ALWAYS" />
+                <TextField fx:id="searchField"
+                           promptText="🔍 Rechercher un événement..."
+                           prefWidth="240" prefHeight="34"
+                           styleClass="front-search" />
+                <ComboBox fx:id="categoryFilter" prefWidth="145" prefHeight="34"
+                          styleClass="front-combo" />
+                <ComboBox fx:id="sortCombo" prefWidth="165" prefHeight="34"
+                          styleClass="front-combo" />
+                <Button onAction="#handleMyReservations" text="📋 Mes Réservations"
+                        prefHeight="34" styleClass="btn-front-primary" />
+                <Button onAction="#handleMyDonations" text="💝 Mes Donations"
+                        prefHeight="34" styleClass="btn-front-dark" />
+            </HBox>
+        </top>
+
+        <center>
+            <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="front-scroll">
+                <VBox fx:id="eventsContainer" spacing="20"
+                      style="-fx-padding: 25; -fx-background-color: #F8F5F0;" />
+            </ScrollPane>
+        </center>
+
+        <bottom>
+            <HBox alignment="CENTER" styleClass="front-footer">
+                <Label text="© 2026 Museum Digital — Tous droits réservés"
+                       styleClass="front-footer-text" />
+            </HBox>
+        </bottom>
+    </BorderPane>
+
+    <Button fx:id="chatbotButton" text="🤖"
+            onAction="#toggleChatbot"
+            style="-fx-background-color: #D4AF37; -fx-text-fill: #1a1a2e;
+                   -fx-font-size: 20px; -fx-font-weight: bold;
+                   -fx-background-radius: 30; -fx-padding: 15;
+                   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 5);
+                   -fx-cursor: hand;"
+            AnchorPane.bottomAnchor="20" AnchorPane.rightAnchor="20" />
+
+</AnchorPane>

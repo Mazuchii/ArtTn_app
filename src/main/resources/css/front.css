@@ -1,0 +1,779 @@
+/* ============================================================
+   FRONT.CSS — Museum Digital
+   Feuille de style unifiée pour toutes les pages utilisateur
+   Thème : Navy #1a1a2e | Or #D4AF37 | Fond #F8F5F0
+   ============================================================ */
+
+/* ── Variables de thème ─────────────────────────────────── */
+/* Couleurs principales */
+/* --navy   : #1a1a2e  (header, footer, accents foncés)     */
+/* --gold   : #D4AF37  (boutons primaires, accents dorés)   */
+/* --gold-h : #C49B24  (hover du doré)                      */
+/* --bg     : #F8F5F0  (fond général des pages)             */
+/* --white  : #ffffff  (cartes, panneaux)                   */
+/* --text   : #2c3e50  (texte principal)                    */
+/* --muted  : #7f8c8d  (texte secondaire)                   */
+/* --border : #e9ecef  (bordures légères)                   */
+
+/* ── Reset global ───────────────────────────────────────── */
+.root {
+    -fx-font-family: "Segoe UI", "System", sans-serif;
+    -fx-font-size: 13px;
+}
+
+/* ============================================================
+   1. LAYOUT — FOND & SCROLL
+   ============================================================ */
+.front-root {
+    -fx-background-color: #F8F5F0;
+}
+
+.front-scroll {
+    -fx-background: #F8F5F0;
+    -fx-background-color: #F8F5F0;
+    -fx-border-color: transparent;
+}
+
+.front-scroll .viewport {
+    -fx-background-color: #F8F5F0;
+}
+
+.front-scroll .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 7;
+}
+
+.front-scroll .scroll-bar:vertical .thumb {
+    -fx-background-color: #D4AF37;
+    -fx-background-radius: 10;
+}
+
+.front-scroll .scroll-bar:vertical .track {
+    -fx-background-color: #ede8e0;
+    -fx-background-radius: 10;
+}
+
+/* ============================================================
+   2. HEADER — BARRE DE NAVIGATION SUPÉRIEURE
+   ============================================================ */
+.front-header {
+    -fx-background-color: #1a1a2e;
+    -fx-padding: 14 28;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 8, 0, 0, 3);
+}
+
+.front-header-logo {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.front-header-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #D4AF37;
+    -fx-font-weight: bold;
+}
+
+/* Barre de sous-navigation (page title bar) */
+.front-subheader {
+    -fx-background-color: white;
+    -fx-padding: 11 28;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 5, 0, 0, 2);
+    -fx-border-color: #f0ebe3;
+    -fx-border-width: 0 0 1 0;
+}
+
+.front-page-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a2e;
+}
+
+/* ============================================================
+   3. FOOTER
+   ============================================================ */
+.front-footer {
+    -fx-background-color: #1a1a2e;
+    -fx-padding: 16 28;
+}
+
+.front-footer-text {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 12px;
+}
+
+/* ============================================================
+   4. BOUTONS
+   ============================================================ */
+
+/* Bouton primaire doré */
+.btn-front-primary {
+    -fx-background-color: #D4AF37;
+    -fx-text-fill: #1a1a2e;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 22;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(212,175,55,0.25), 6, 0, 0, 2);
+}
+
+.btn-front-primary:hover {
+    -fx-background-color: #C49B24;
+    -fx-effect: dropshadow(gaussian, rgba(212,175,55,0.45), 10, 0, 0, 3);
+}
+
+/* Bouton secondaire (contour doré) */
+.btn-front-secondary {
+    -fx-background-color: transparent;
+    -fx-text-fill: #D4AF37;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-border-color: #D4AF37;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 22;
+    -fx-background-radius: 22;
+    -fx-padding: 7 18;
+    -fx-cursor: hand;
+}
+
+.btn-front-secondary:hover {
+    -fx-background-color: #D4AF37;
+    -fx-text-fill: #1a1a2e;
+}
+
+/* Bouton navy (foncé) */
+.btn-front-dark {
+    -fx-background-color: #1a1a2e;
+    -fx-text-fill: #D4AF37;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 22;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+}
+
+.btn-front-dark:hover {
+    -fx-background-color: #252540;
+    -fx-effect: dropshadow(gaussian, rgba(26,26,46,0.3), 8, 0, 0, 2);
+}
+
+/* Bouton danger (rouge) */
+.btn-front-danger {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 22;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+}
+
+.btn-front-danger:hover {
+    -fx-background-color: #c0392b;
+}
+
+/* Bouton ghost (transparent) */
+.btn-front-ghost {
+    -fx-background-color: transparent;
+    -fx-text-fill: #D4AF37;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+    -fx-padding: 6 12;
+}
+
+.btn-front-ghost:hover {
+    -fx-text-fill: #C49B24;
+    -fx-underline: true;
+}
+
+/* Bouton retour */
+.btn-front-back {
+    -fx-background-color: #f1f5f9;
+    -fx-text-fill: #475569;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-padding: 7 16;
+    -fx-background-radius: 20;
+    -fx-cursor: hand;
+}
+
+.btn-front-back:hover {
+    -fx-background-color: #e2e8f0;
+    -fx-text-fill: #1e293b;
+}
+
+/* ============================================================
+   5. CHAMPS DE SAISIE
+   ============================================================ */
+.front-input {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #dde1e8;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 0 14;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2c3e50;
+}
+
+.front-input:focused {
+    -fx-border-color: #D4AF37;
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(gaussian, rgba(212,175,55,0.18), 6, 0, 0, 0);
+}
+
+.front-search {
+    -fx-background-color: #f8f5f0;
+    -fx-background-radius: 22;
+    -fx-border-color: #dde1e8;
+    -fx-border-radius: 22;
+    -fx-border-width: 1;
+    -fx-padding: 0 16;
+    -fx-font-size: 13px;
+}
+
+.front-search:focused {
+    -fx-background-color: white;
+    -fx-border-color: #D4AF37;
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(gaussian, rgba(212,175,55,0.15), 6, 0, 0, 0);
+}
+
+.front-combo {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #dde1e8;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 13px;
+}
+
+.front-combo:focused {
+    -fx-border-color: #D4AF37;
+}
+
+.front-combo .list-cell {
+    -fx-text-fill: #2c3e50;
+    -fx-background-color: white;
+}
+
+.front-combo-popup .list-view {
+    -fx-background-color: white;
+}
+
+.front-combo-popup .list-cell:hover {
+    -fx-background-color: #fff8e6;
+    -fx-text-fill: #1a1a2e;
+}
+
+/* ============================================================
+   6. CARTES GÉNÉRIQUES
+   ============================================================ */
+.front-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-color: #ede8e0;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 10, 0, 0, 3);
+    -fx-padding: 18;
+}
+
+.front-card:hover {
+    -fx-border-color: #D4AF37;
+    -fx-effect: dropshadow(gaussian, rgba(212,175,55,0.18), 14, 0, 0, 4);
+}
+
+/* Carte section (sans hover) */
+.front-section-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-color: #ede8e0;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 3);
+    -fx-padding: 20;
+}
+
+/* ============================================================
+   7. TITRES DE SECTION
+   ============================================================ */
+.front-section-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a2e;
+}
+
+.front-section-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.front-label-bold {
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 14px;
+}
+
+.front-label-muted {
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 12px;
+}
+
+.front-label-gold {
+    -fx-text-fill: #D4AF37;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+}
+
+/* ============================================================
+   8. BADGES DE STATUT
+   ============================================================ */
+.badge-pending {
+    -fx-background-color: #fff3cd;
+    -fx-text-fill: #856404;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 3 10;
+    -fx-border-color: #ffeaa7;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+
+.badge-confirmed {
+    -fx-background-color: #d4edda;
+    -fx-text-fill: #155724;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 3 10;
+    -fx-border-color: #c3e6cb;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+
+.badge-cancelled {
+    -fx-background-color: #f8d7da;
+    -fx-text-fill: #721c24;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 3 10;
+    -fx-border-color: #f5c6cb;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+
+.badge-category {
+    -fx-background-color: #D4AF37;
+    -fx-text-fill: #1a1a2e;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 3 10;
+}
+
+/* ============================================================
+   9. TABLEAU (MY RESERVATIONS)
+   ============================================================ */
+.front-table {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-color: #ede8e0;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 3);
+}
+
+.front-table .column-header-background {
+    -fx-background-color: #1a1a2e;
+    -fx-background-radius: 12 12 0 0;
+}
+
+.front-table .column-header {
+    -fx-background-color: transparent;
+    -fx-pref-height: 44;
+    -fx-border-color: transparent;
+}
+
+.front-table .column-header .label {
+    -fx-text-fill: #D4AF37;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 12;
+}
+
+.front-table .filler {
+    -fx-background-color: #1a1a2e;
+}
+
+.front-table .table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: #f0ebe3;
+    -fx-border-width: 0 0 1 0;
+    -fx-pref-height: 48;
+}
+
+.front-table .table-row-cell:odd {
+    -fx-background-color: #fdfaf6;
+}
+
+.front-table .table-row-cell:hover {
+    -fx-background-color: #fff8e6;
+    -fx-cursor: hand;
+}
+
+.front-table .table-row-cell:selected {
+    -fx-background-color: #D4AF37;
+}
+
+.front-table .table-row-cell:selected .text {
+    -fx-fill: #1a1a2e;
+}
+
+.front-table .table-cell {
+    -fx-padding: 8 14;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2c3e50;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.front-table .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 7;
+}
+
+.front-table .scroll-bar:vertical .thumb {
+    -fx-background-color: #D4AF37;
+    -fx-background-radius: 10;
+}
+
+/* ============================================================
+   10. FORUM — CARTES DE POSTS
+   ============================================================ */
+.forum-post-card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-border-color: #ede8e0;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 10, 0, 0, 3);
+    -fx-padding: 18;
+    -fx-cursor: hand;
+}
+
+.forum-post-card:hover {
+    -fx-border-color: #D4AF37;
+    -fx-effect: dropshadow(gaussian, rgba(212,175,55,0.2), 14, 0, 0, 4);
+}
+
+.forum-post-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a2e;
+}
+
+.forum-post-title:hover {
+    -fx-text-fill: #D4AF37;
+}
+
+.forum-post-excerpt {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 13px;
+    -fx-wrap-text: true;
+    -fx-line-spacing: 2;
+}
+
+.forum-post-author {
+    -fx-text-fill: #D4AF37;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.forum-post-date {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 11px;
+}
+
+.forum-category-card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-border-color: #ede8e0;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 10, 0, 0, 3);
+    -fx-padding: 18;
+    -fx-cursor: hand;
+}
+
+.forum-category-card:hover {
+    -fx-border-color: #D4AF37;
+    -fx-background-color: #fffdf7;
+    -fx-effect: dropshadow(gaussian, rgba(212,175,55,0.2), 14, 0, 0, 4);
+}
+
+/* Commentaires */
+.forum-comment-card {
+    -fx-background-color: #fdfaf6;
+    -fx-background-radius: 10;
+    -fx-border-color: #ede8e0;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 12;
+}
+
+.forum-comment-card:hover {
+    -fx-background-color: #fff8e6;
+    -fx-border-color: #D4AF37;
+}
+
+.forum-comment-text {
+    -fx-text-fill: #374151;
+    -fx-font-size: 13px;
+    -fx-wrap-text: true;
+    -fx-line-spacing: 2;
+}
+
+.forum-comment-author {
+    -fx-text-fill: #D4AF37;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+/* Toolbar forum */
+.forum-toolbar {
+    -fx-background-color: white;
+    -fx-padding: 12 20;
+    -fx-border-color: #ede8e0;
+    -fx-border-width: 0 0 1 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 4, 0, 0, 2);
+}
+
+/* Boutons forum */
+.btn-forum-sort {
+    -fx-background-color: #f8f5f0;
+    -fx-text-fill: #475569;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-padding: 7 14;
+    -fx-background-radius: 20;
+    -fx-cursor: hand;
+    -fx-border-color: #ede8e0;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+}
+
+.btn-forum-sort:hover {
+    -fx-background-color: #D4AF37;
+    -fx-text-fill: #1a1a2e;
+    -fx-border-color: #D4AF37;
+}
+
+.btn-forum-new {
+    -fx-background-color: #1a1a2e;
+    -fx-text-fill: #D4AF37;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 20;
+    -fx-background-radius: 22;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(26,26,46,0.2), 6, 0, 0, 2);
+}
+
+.btn-forum-new:hover {
+    -fx-background-color: #252540;
+    -fx-effect: dropshadow(gaussian, rgba(26,26,46,0.35), 10, 0, 0, 3);
+}
+
+/* ============================================================
+   11. OFFRES D'EMPLOI — CARTES
+   ============================================================ */
+.job-card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-border-color: #ede8e0;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 10, 0, 0, 3);
+    -fx-padding: 18;
+    -fx-cursor: hand;
+}
+
+.job-card:hover {
+    -fx-border-color: #D4AF37;
+    -fx-effect: dropshadow(gaussian, rgba(212,175,55,0.2), 14, 0, 0, 4);
+    -fx-background-color: #fffdf7;
+}
+
+.job-card-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a2e;
+    -fx-wrap-text: true;
+}
+
+.job-card-company {
+    -fx-font-size: 13px;
+    -fx-text-fill: #D4AF37;
+    -fx-font-weight: bold;
+}
+
+.job-card-meta {
+    -fx-font-size: 12px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.job-section-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a2e;
+}
+
+/* ============================================================
+   12. SÉLECTION DE SIÈGES
+   ============================================================ */
+.seat-info-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-color: #ede8e0;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 8, 0, 0, 3);
+    -fx-padding: 16;
+}
+
+.seat-map-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-color: #ede8e0;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 8, 0, 0, 3);
+    -fx-padding: 22;
+}
+
+.seat-scene-label {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a2e;
+    -fx-alignment: CENTER;
+}
+
+.seat-summary-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: #ede8e0;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 14;
+}
+
+.seat-total-label {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #D4AF37;
+}
+
+.seat-promo-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: #ede8e0;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 16;
+}
+
+/* ============================================================
+   13. MES CANDIDATURES
+   ============================================================ */
+.candidature-list-panel {
+    -fx-background-color: white;
+    -fx-padding: 18;
+    -fx-border-color: #ede8e0;
+    -fx-border-width: 0 1 0 0;
+}
+
+.candidature-detail-panel {
+    -fx-background-color: #F8F5F0;
+    -fx-padding: 22;
+}
+
+.candidature-score-card {
+    -fx-background-color: #1a1a2e;
+    -fx-background-radius: 14;
+    -fx-border-color: #D4AF37;
+    -fx-border-radius: 14;
+    -fx-border-width: 1.5;
+    -fx-padding: 22;
+    -fx-effect: dropshadow(gaussian, rgba(212,175,55,0.2), 14, 0, 0, 5);
+}
+
+.candidature-score-value {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #D4AF37;
+}
+
+.candidature-progress-card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-border-color: #ede8e0;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 3);
+}
+
+/* ============================================================
+   14. HYPERLINKS & CHECKBOX
+   ============================================================ */
+.hyperlink {
+    -fx-text-fill: #D4AF37;
+    -fx-underline: false;
+    -fx-font-weight: bold;
+}
+
+.hyperlink:hover {
+    -fx-text-fill: #C49B24;
+    -fx-underline: true;
+}
+
+.check-box .box {
+    -fx-background-color: white;
+    -fx-border-color: #dde1e8;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #D4AF37;
+}
+
+.check-box:selected .box {
+    -fx-background-color: white;
+    -fx-border-color: #D4AF37;
+}
+
+/* ============================================================
+   15. SCROLL PANE GLOBAL
+   ============================================================ */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/* ============================================================
+   16. SEPARATOR
+   ============================================================ */
+.separator .line {
+    -fx-border-color: #ede8e0;
+    -fx-border-width: 1 0 0 0;
+}

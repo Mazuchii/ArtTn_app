@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:id="mainContainer" prefHeight="900.0" prefWidth="1200.0"
+            style="-fx-background-color: #F8F5F0;"
+            stylesheets="@../css/front.css"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.museum.controllers.JobFrontController">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="front-header">
+            <Label text="🏛️ MUSEUM DIGITAL" styleClass="front-header-logo" />
+            <Region HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER" spacing="14.0">
+                <Hyperlink text="Offres d'Emploi"
+                           style="-fx-text-fill: #D4AF37; -fx-font-weight: bold; -fx-underline: false;" />
+                <Button text="Mes favoris" onAction="#openFavorisPage"
+                        styleClass="btn-front-secondary" />
+                <Button text="Mes candidatures" onAction="#openMesCandidaturesPage"
+                        styleClass="btn-front-secondary" />
+            </HBox>
+            <Region HBox.hgrow="ALWAYS" />
+            <TextField fx:id="tfRecherche" onKeyReleased="#handleRecherche"
+                       prefWidth="240.0" promptText="🔍 Rechercher..."
+                       styleClass="front-search" />
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="front-scroll">
+            <content>
+                <VBox spacing="28.0" style="-fx-padding: 28 40;">
+
+                    <!-- Section Opportunités -->
+                    <VBox spacing="10.0">
+                        <HBox alignment="BOTTOM_LEFT">
+                            <Label text="Opportunités à la une" styleClass="job-section-title" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Button text="⭐ Mes favoris" onAction="#openFavorisPage"
+                                    styleClass="btn-front-primary" />
+                        </HBox>
+                        <Separator />
+                    </VBox>
+
+                    <FlowPane fx:id="flowPane" hgap="22.0" vgap="22.0"
+                              prefWrapLength="1120.0" />
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER" styleClass="front-footer">
+            <Label text="© 2026 Museum Digital — Tous droits réservés"
+                   styleClass="front-footer-text" />
+        </HBox>
+    </bottom>
+
+</BorderPane>
+

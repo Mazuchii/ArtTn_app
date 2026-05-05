@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="15.0"
+      style="-fx-background-color: white; -fx-border-color: #CC9933; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;"
+      stylesheets="@/css/style.css"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.museum.controllers.SponsorController">
+
+    <children>
+        <Label fx:id="titreFormulaire" text="Nouveau Sponsor" textFill="#CC9933">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+
+        <Separator />
+
+        <HBox spacing="15.0">
+            <children>
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label style="-fx-font-weight: bold;" text="Nom du Sponsor" />
+                        <TextField fx:id="nomTF" promptText="Nom de l'entreprise" styleClass="search-bar-museum" />
+                    </children>
+                </VBox>
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label style="-fx-font-weight: bold;" text="Email de Contact" />
+                        <TextField fx:id="emailTF" promptText="exemple@domaine.com" styleClass="search-bar-museum" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <HBox spacing="15.0">
+            <children>
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label style="-fx-font-weight: bold;" text="Téléphone" />
+                        <TextField fx:id="telephoneTF" promptText="Numéro de téléphone" styleClass="search-bar-museum" />
+                    </children>
+                </VBox>
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label style="-fx-font-weight: bold;" text="Site Web" />
+                        <TextField fx:id="siteWebTF" promptText="https://www.exemple.com" styleClass="search-bar-museum" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <HBox spacing="15.0">
+            <children>
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label style="-fx-font-weight: bold;" text="Adresse" />
+                        <TextField fx:id="adresseTF" promptText="Adresse du siège" styleClass="search-bar-museum" />
+                    </children>
+                </VBox>
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label style="-fx-font-weight: bold;" text="URL du Logo" />
+                        <TextField fx:id="logoUrlTF" promptText="Lien vers l'image du logo" styleClass="search-bar-museum" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <VBox spacing="5.0">
+            <children>
+                <Label style="-fx-font-weight: bold;" text="Type de Sponsor" />
+                <TextField fx:id="typeTF" promptText="Ex: Pack Or, Argent, Partenaire Technique..." styleClass="search-bar-museum" />
+            </children>
+        </VBox>
+
+        <VBox spacing="5.0">
+            <children>
+                <Label style="-fx-font-weight: bold;" text="Description du partenariat" />
+                <TextArea fx:id="descriptionTA" prefHeight="80.0" promptText="Détails du contrat..." styleClass="museum-table" wrapText="true" />
+            </children>
+        </VBox>
+
+        <HBox alignment="CENTER_RIGHT" spacing="15.0" style="-fx-padding: 10 0 0 0;">
+            <children>
+                <Button onAction="#navigateToNavPage" styleClass="btn-action-outline" text="Annuler" />
+                <Button fx:id="btnValider" onAction="#handleAjouter" styleClass="btn-ajouter-museum" text="Enregistrer" />
+            </children>
+        </HBox>
+    </children>
+
+    <padding>
+        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+    </padding>
+</VBox>
+
