@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="0" prefWidth="900" prefHeight="700"
+      stylesheets="@../css/front.css"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.museum.controllers.ForumPostDetailController">
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="front-header">
+        <Label text="🏛️ MUSEUM DIGITAL" styleClass="front-header-logo" />
+        <Label text="| Post" styleClass="front-header-subtitle" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button onAction="#handleBack" styleClass="btn-front-back" text="← Retour" />
+    </HBox>
+
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="front-scroll">
+        <content>
+            <VBox spacing="18.0" style="-fx-padding: 24; -fx-background-color: #F8F5F0;">
+
+                <!-- Post Card -->
+                <VBox spacing="12.0" styleClass="front-section-card">
+                    <HBox spacing="12">
+                        <Label fx:id="postAuthorLabel" styleClass="forum-post-author" />
+                        <Label fx:id="postDateLabel"   styleClass="forum-post-date" />
+                    </HBox>
+                    <Label fx:id="postTitleLabel" styleClass="forum-post-title" />
+                    <ImageView fx:id="postImageView" fitWidth="500" fitHeight="280"
+                               preserveRatio="true" visible="false" />
+                    <Separator />
+                    <Label fx:id="postContentLabel" styleClass="forum-post-excerpt"
+                           wrapText="true" />
+
+                    <!-- Stats -->
+                    <HBox spacing="18.0" alignment="CENTER_LEFT">
+                        <Label text="👁️ Vues :" styleClass="front-label-muted" />
+                        <Label fx:id="viewsCountLabel" styleClass="front-label-bold" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="likeButton" onAction="#handleLike"
+                                style="-fx-background-color: transparent; -fx-text-fill: #3b82f6;
+                                       -fx-font-size: 16px; -fx-cursor: hand;" text="👍" />
+                        <Label fx:id="likesCountLabel"
+                               style="-fx-text-fill: #3b82f6; -fx-font-weight: bold;" />
+                        <Button fx:id="dislikeButton" onAction="#handleDislike"
+                                style="-fx-background-color: transparent; -fx-text-fill: #e74c3c;
+                                       -fx-font-size: 16px; -fx-cursor: hand;" text="👎" />
+                        <Label fx:id="dislikesCountLabel"
+                               style="-fx-text-fill: #e74c3c; -fx-font-weight: bold;" />
+                    </HBox>
+
+                    <!-- Actions -->
+                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                        <Button onAction="#handleEditPost"   styleClass="btn-front-primary"
+                                text="✏️ Modifier" />
+                        <Button onAction="#handleDeletePost" styleClass="btn-front-danger"
+                                text="🗑️ Supprimer" />
+                        <Button onAction="#handleSpeakPost"  styleClass="btn-front-dark"
+                                text="🔊 Lire" />
+                        <ComboBox fx:id="languageCombo" prefWidth="130.0"
+                                  promptText="🌐 Langue" styleClass="front-combo" />
+                    </HBox>
+
+                    <!-- Traduction -->
+                    <HBox spacing="10.0" alignment="CENTER_RIGHT">
+                        <Button fx:id="translateButton" onAction="#handleTranslateToArabic"
+                                styleClass="btn-front-dark" text="🌐 ترجمة إلى العربية" />
+                        <Button fx:id="originalButton" onAction="#handleShowOriginal"
+                                styleClass="btn-front-secondary" text="🔙 Version originale"
+                                visible="false" />
+                    </HBox>
+                </VBox>
+
+                <!-- Commentaires -->
+                <VBox spacing="10.0">
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <Label text="💬 Commentaires" styleClass="front-section-title" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button onAction="#handleAddComment" styleClass="btn-forum-new"
+                                text="➕ Ajouter un commentaire" />
+                    </HBox>
+                    <ListView fx:id="commentsListView"
+                              style="-fx-background-color: transparent;
+                                     -fx-border-color: transparent;" />
+                </VBox>
+
+                <Label fx:id="messageLabel" visible="false" />
+            </VBox>
+        </content>
+    </ScrollPane>
+
+</VBox>

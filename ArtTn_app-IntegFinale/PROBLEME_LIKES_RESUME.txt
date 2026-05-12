@@ -1,0 +1,59 @@
+═══════════════════════════════════════════════════════════════
+  🐛 PROBLÈME : LIKES ET DISLIKES NE SONT PAS SAUVEGARDÉS
+═══════════════════════════════════════════════════════════════
+
+ERREUR DANS LES LOGS :
+----------------------
+Erreur: Unknown column 'type' in 'field list'
+Erreur addReaction: Unknown column 'type' in 'field list'
+like and dislike are not being saved
+
+CAUSE :
+-------
+La table 'post_reactions' n'a pas de colonne 'type'
+
+SOLUTION RAPIDE :
+-----------------
+1. Ouvrir phpMyAdmin
+2. Sélectionner votre base de données
+3. Aller dans l'onglet SQL
+4. Copier-coller ce code :
+
+   ALTER TABLE post_reactions 
+   ADD COLUMN type VARCHAR(10) NOT NULL DEFAULT 'LIKE';
+
+5. Cliquer sur "Exécuter"
+6. Relancer votre application
+
+C'EST TOUT ! ✅
+
+═══════════════════════════════════════════════════════════════
+
+VÉRIFICATION :
+--------------
+Après avoir exécuté le script SQL :
+
+1. Dans phpMyAdmin, exécuter :
+   DESCRIBE post_reactions;
+
+2. Vous devriez voir la colonne 'type' dans la liste
+
+3. Relancer l'application et tester :
+   - Cliquer sur 👍 → Le compteur augmente
+   - Cliquer à nouveau → Le compteur diminue
+   - Pas d'erreur dans les logs
+
+═══════════════════════════════════════════════════════════════
+
+FICHIERS D'AIDE :
+-----------------
+📄 FIX_RAPIDE.sql
+   → Script SQL à copier-coller
+
+📄 GUIDE_CORRECTION_LIKES_DISLIKES.md
+   → Guide détaillé avec explications
+
+📄 SQL_FIX_POST_REACTIONS.sql
+   → Script SQL complet avec options
+
+═══════════════════════════════════════════════════════════════

@@ -1,0 +1,183 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    🚀 COMMENT EXÉCUTER LA MIGRATION                          ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+📋 OBJECTIF:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Migrer les données de la colonne 'type' vers 'reaction_type' dans la table 
+post_reactions pour résoudre le conflit entre Symfony et Java.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 MÉTHODE 1: SCRIPT AUTOMATIQUE (RECOMMANDÉ)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Option A: Avec le fichier .bat (Windows)
+───────────────────────────────────────────────────────────────────────────────
+1. Double-cliquer sur: EXECUTER_MIGRATION.bat
+2. Entrer le nom d'utilisateur MySQL (par défaut: root)
+3. Entrer le mot de passe MySQL
+4. Entrer le nom de la base de données (par défaut: museum_db)
+5. Attendre la fin de la migration
+6. Vérifier le message de succès
+
+Option B: Avec PowerShell
+───────────────────────────────────────────────────────────────────────────────
+1. Clic droit sur: EXECUTER_MIGRATION.ps1
+2. Choisir "Exécuter avec PowerShell"
+3. Suivre les instructions à l'écran
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 MÉTHODE 2: LIGNE DE COMMANDE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Ouvrir un terminal (CMD ou PowerShell)
+2. Naviguer vers le dossier du projet:
+   cd "c:\Users\moham\OneDrive\Bureau\ArtTn_app-IntegFinale"
+
+3. Exécuter la commande:
+   mysql -u root -p museum_db < MIGRATION_TYPE_TO_REACTION_TYPE.sql
+
+4. Entrer le mot de passe MySQL quand demandé
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 MÉTHODE 3: MYSQL WORKBENCH (INTERFACE GRAPHIQUE)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Ouvrir MySQL Workbench
+2. Se connecter à la base de données museum_db
+3. Ouvrir le fichier: MIGRATION_TYPE_TO_REACTION_TYPE.sql
+4. Cliquer sur l'icône "Execute" (éclair) ou appuyer sur Ctrl+Shift+Enter
+5. Vérifier les résultats dans l'onglet "Output"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 MÉTHODE 4: PHPMYADMIN (SI DISPONIBLE)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Ouvrir phpMyAdmin dans le navigateur
+2. Sélectionner la base de données museum_db
+3. Aller dans l'onglet "SQL"
+4. Copier-coller le contenu de MIGRATION_TYPE_TO_REACTION_TYPE.sql
+5. Cliquer sur "Exécuter"
+6. Vérifier les résultats
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ VÉRIFICATION APRÈS MIGRATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Exécuter cette requête pour vérifier que tout est OK:
+
+SELECT 
+    'Réactions avec reaction_type' as description,
+    COUNT(*) as count
+FROM post_reactions
+WHERE reaction_type IS NOT NULL AND reaction_type != '';
+
+Résultat attendu: Un nombre > 0
+
+───────────────────────────────────────────────────────────────────────────────
+
+Vérifier la cohérence des compteurs:
+
+SELECT 
+    p.post_id,
+    p.likes as compteur,
+    (SELECT COUNT(*) FROM post_reactions 
+     WHERE post_id = p.post_id AND reaction_type = 'LIKE') as reel,
+    CASE 
+        WHEN p.likes = (SELECT COUNT(*) FROM post_reactions 
+                        WHERE post_id = p.post_id AND reaction_type = 'LIKE')
+        THEN '✅ OK'
+        ELSE '❌ INCOHÉRENT'
+    END as status
+FROM post p
+LIMIT 10;
+
+Résultat attendu: Tous les posts avec status '✅ OK'
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️ EN CAS DE PROBLÈME
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Problème 1: "mysql: command not found"
+───────────────────────────────────────────────────────────────────────────────
+Solution: Ajouter MySQL au PATH ou utiliser le chemin complet:
+"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -p museum_db < MIGRATION_TYPE_TO_REACTION_TYPE.sql
+
+Problème 2: "Access denied for user"
+───────────────────────────────────────────────────────────────────────────────
+Solution: Vérifier le nom d'utilisateur et le mot de passe MySQL
+
+Problème 3: "Unknown database 'museum_db'"
+───────────────────────────────────────────────────────────────────────────────
+Solution: Vérifier le nom de la base de données ou la créer:
+CREATE DATABASE museum_db;
+
+Problème 4: "Unknown column 'reaction_type'"
+───────────────────────────────────────────────────────────────────────────────
+Solution: Ajouter la colonne manuellement:
+ALTER TABLE post_reactions 
+ADD COLUMN reaction_type VARCHAR(10) AFTER user_id;
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 APRÈS LA MIGRATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Compiler le projet Java:
+   mvn clean compile
+
+2. Lancer l'application:
+   mvn javafx:run
+
+3. Tester les réactions:
+   - Ouvrir un post
+   - Cliquer sur Like
+   - Cliquer sur Dislike
+   - Vérifier que les compteurs sont corrects
+
+4. Vérifier en base de données:
+   SELECT * FROM post_reactions ORDER BY created_at DESC LIMIT 10;
+   → Vérifier que reaction_type est rempli
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📞 BESOIN D'AIDE?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Consultez:
+- CORRECTION_CONFLIT_TYPE_REACTION_TYPE.md (documentation détaillée)
+- FIX_RAPIDE_TYPE_REACTION_TYPE.txt (guide rapide)
+- RESUME_COMPLET_TOUTES_CORRECTIONS.md (résumé complet)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ CHECKLIST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Avant:
+☐ MySQL est en cours d'exécution
+☐ Je connais le mot de passe MySQL
+☐ J'ai sauvegardé la base de données (recommandé)
+
+Pendant:
+☐ La migration s'exécute sans erreur
+☐ Je vois le rapport de migration
+
+Après:
+☐ Les compteurs sont cohérents
+☐ reaction_type est rempli pour toutes les réactions
+☐ L'application Java fonctionne
+☐ Les réactions Like/Dislike fonctionnent
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Date: 09/05/2026
+Développeur: Kiro AI Assistant
+
+╚══════════════════════════════════════════════════════════════════════════════╝

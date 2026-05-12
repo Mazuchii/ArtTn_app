@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+
+<VBox spacing="0"
+      style="-fx-background-color: #e8eef2;"
+      stylesheets="@../css/style.css, @../css/forum_style.css"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.museum.controllers.ForumDashboardController">
+
+    <!-- ==================== CONTENU PRINCIPAL ==================== -->
+    <VBox style="-fx-padding: 25 25 15 25; -fx-background-color: #e8eef2;"
+          VBox.vgrow="ALWAYS" spacing="18">
+
+        <!-- ── HEADER ── -->
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label text="💬 Gestion du Forum"
+                   style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Circle fill="#D4AF37" radius="10" stroke="#c49b29" strokeWidth="2" />
+            <Label fx:id="adminLabel" text="Administrateur"
+                   style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+        </HBox>
+
+        <!-- ── STATISTIQUES ── -->
+        <HBox spacing="15">
+
+            <!-- Posts -->
+            <VBox alignment="CENTER" styleClass="stat-card" HBox.hgrow="ALWAYS"
+                  style="-fx-padding: 20;">
+                <Label text="📝" style="-fx-font-size: 22px;" />
+                <Label text="Posts"
+                       style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d; -fx-font-weight: bold;" />
+                <Label fx:id="statsPosts" text="0"
+                       style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+            </VBox>
+
+            <!-- Commentaires -->
+            <VBox alignment="CENTER" styleClass="stat-card" HBox.hgrow="ALWAYS"
+                  style="-fx-padding: 20;">
+                <Label text="💬" style="-fx-font-size: 22px;" />
+                <Label text="Commentaires"
+                       style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d; -fx-font-weight: bold;" />
+                <Label fx:id="statsComments" text="0"
+                       style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+            </VBox>
+
+            <!-- Catégories -->
+            <VBox alignment="CENTER" styleClass="stat-card" HBox.hgrow="ALWAYS"
+                  style="-fx-padding: 20;">
+                <Label text="🏷️" style="-fx-font-size: 22px;" />
+                <Label text="Catégories"
+                       style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d; -fx-font-weight: bold;" />
+                <Label fx:id="statsCategories" text="0"
+                       style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+            </VBox>
+
+            <!-- Signalements -->
+            <VBox alignment="CENTER" styleClass="stat-card" HBox.hgrow="ALWAYS"
+                  style="-fx-padding: 20; -fx-border-color: #e74c3c; -fx-border-width: 0 0 3 0; -fx-border-radius: 0;">
+                <Label text="🚩" style="-fx-font-size: 22px;" />
+                <Label text="Signalements"
+                       style="-fx-font-size: 11px; -fx-text-fill: #e74c3c; -fx-font-weight: bold;" />
+                <Label fx:id="statsReports" text="0"
+                       style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #e74c3c;" />
+            </VBox>
+        </HBox>
+
+        <!-- ── ONGLETS ── -->
+        <TabPane VBox.vgrow="ALWAYS"
+                 style="-fx-background-color: transparent; -fx-border-width: 0;">
+            <tabs>
+
+                <!-- ===== TAB POSTS ===== -->
+                <Tab text="📝 Tous les posts" closable="false">
+                    <content>
+                        <VBox spacing="12" style="-fx-padding: 15 0 0 0;">
+
+                            <!-- Barre recherche + bouton -->
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <TextField fx:id="postSearchField"
+                                           promptText="🔍 Rechercher par titre ou contenu..."
+                                           prefHeight="36" HBox.hgrow="ALWAYS"
+                                           style="-fx-background-color: white;
+                                                  -fx-background-radius: 8;
+                                                  -fx-border-color: #dde1e7;
+                                                  -fx-border-radius: 8;
+                                                  -fx-padding: 0 12;
+                                                  -fx-font-size: 13px;" />
+                                <Button onAction="#handleRefreshPosts"
+                                        prefHeight="36"
+                                        styleClass="action-button-gold"
+                                        text="🔄 Actualiser" />
+                            </HBox>
+
+                            <!-- Tableau -->
+                            <TableView fx:id="postsTable" VBox.vgrow="ALWAYS"
+                                       styleClass="enhanced-table">
+                                <columns>
+                                    <TableColumn fx:id="postIdColumn"           prefWidth="55"  text="ID" />
+                                    <TableColumn fx:id="postTitleColumn"        prefWidth="210" text="Titre" />
+                                    <TableColumn fx:id="postContentColumn"      prefWidth="240" text="Contenu" />
+                                    <TableColumn fx:id="postDateColumn"         prefWidth="130" text="Date" />
+                                    <TableColumn fx:id="postCommentCountColumn" prefWidth="65"  text="💬" />
+                                    <TableColumn fx:id="postReportCountColumn"  prefWidth="65"  text="🚩" />
+                                    <TableColumn fx:id="postActionsColumn"      prefWidth="200" text="Actions" />
+                                </columns>
+                            </TableView>
+
+                        </VBox>
+                    </content>
+                </Tab>
+
+                <!-- ===== TAB COMMENTAIRES ===== -->
+                <Tab text="💬 Commentaires" closable="false">
+                    <content>
+                        <VBox spacing="12" style="-fx-padding: 15 0 0 0;">
+
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <TextField fx:id="commentSearchField"
+                                           promptText="🔍 Rechercher un commentaire..."
+                                           prefHeight="36" HBox.hgrow="ALWAYS"
+                                           style="-fx-background-color: white;
+                                                  -fx-background-radius: 8;
+                                                  -fx-border-color: #dde1e7;
+                                                  -fx-border-radius: 8;
+                                                  -fx-padding: 0 12;
+                                                  -fx-font-size: 13px;" />
+                                <Button onAction="#handleRefreshComments"
+                                        prefHeight="36"
+                                        styleClass="action-button-gold"
+                                        text="🔄 Actualiser" />
+                            </HBox>
+
+                            <TableView fx:id="commentsTable" VBox.vgrow="ALWAYS"
+                                       styleClass="enhanced-table">
+                                <columns>
+                                    <TableColumn fx:id="commentIdColumn"      prefWidth="55"  text="ID" />
+                                    <TableColumn fx:id="commentPostIdColumn"  prefWidth="80"  text="Post ID" />
+                                    <TableColumn fx:id="commentContentColumn" prefWidth="450" text="Contenu" />
+                                    <TableColumn fx:id="commentActionsColumn" prefWidth="200" text="Actions" />
+                                </columns>
+                            </TableView>
+
+                        </VBox>
+                    </content>
+                </Tab>
+
+                <!-- ===== TAB CATÉGORIES ===== -->
+                <Tab text="🏷️ Catégories" closable="false">
+                    <content>
+                        <VBox spacing="12" style="-fx-padding: 15 0 0 0;">
+
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <TextField fx:id="categorySearchField"
+                                           promptText="🔍 Rechercher une catégorie..."
+                                           prefHeight="36" HBox.hgrow="ALWAYS"
+                                           style="-fx-background-color: white;
+                                                  -fx-background-radius: 8;
+                                                  -fx-border-color: #dde1e7;
+                                                  -fx-border-radius: 8;
+                                                  -fx-padding: 0 12;
+                                                  -fx-font-size: 13px;" />
+                                <Button onAction="#handleAddCategory"
+                                        prefHeight="36"
+                                        styleClass="btn-add-category"
+                                        text="➕ Ajouter" />
+                                <Button onAction="#handleRefreshCategories"
+                                        prefHeight="36"
+                                        styleClass="action-button-gold"
+                                        text="🔄 Actualiser" />
+                            </HBox>
+
+                            <TableView fx:id="categoriesTable" VBox.vgrow="ALWAYS"
+                                       styleClass="enhanced-table">
+                                <columns>
+                                    <TableColumn fx:id="categoryIdColumn"   prefWidth="55"  text="ID" />
+                                    <TableColumn fx:id="categoryIconColumn" prefWidth="70"  text="Icône" />
+                                    <TableColumn fx:id="categoryNameColumn" prefWidth="200" text="Nom" />
+                                    <TableColumn fx:id="categoryDescColumn" prefWidth="310" text="Description" />
+                                    <TableColumn fx:id="categoryActionsColumn" prefWidth="200" text="Actions" />
+                                </columns>
+                            </TableView>
+
+                        </VBox>
+                    </content>
+                </Tab>
+
+                <!-- ===== TAB SIGNALEMENTS ===== -->
+                <Tab text="🚩 Signalements" closable="false">
+                    <content>
+                        <VBox spacing="12" style="-fx-padding: 15 0 0 0;">
+
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <TextField fx:id="reportSearchField"
+                                           promptText="🔍 Rechercher un signalement..."
+                                           prefHeight="36" HBox.hgrow="ALWAYS"
+                                           style="-fx-background-color: white;
+                                                  -fx-background-radius: 8;
+                                                  -fx-border-color: #dde1e7;
+                                                  -fx-border-radius: 8;
+                                                  -fx-padding: 0 12;
+                                                  -fx-font-size: 13px;" />
+                                <Button onAction="#handleRefreshReports"
+                                        prefHeight="36"
+                                        styleClass="action-button-gold"
+                                        text="🔄 Actualiser" />
+                            </HBox>
+
+                            <TableView fx:id="reportsTable" VBox.vgrow="ALWAYS"
+                                       styleClass="enhanced-table">
+                                <columns>
+                                    <TableColumn fx:id="reportIdColumn"        prefWidth="55"  text="ID" />
+                                    <TableColumn fx:id="reportPostIdColumn"    prefWidth="70"  text="Post ID" />
+                                    <TableColumn fx:id="reportPostTitleColumn" prefWidth="180" text="Titre du post" />
+                                    <TableColumn fx:id="reportReasonColumn"    prefWidth="130" text="Raison" />
+                                    <TableColumn fx:id="reportDetailsColumn"   prefWidth="170" text="Détails" />
+                                    <TableColumn fx:id="reportStatusColumn"    prefWidth="90"  text="Statut" />
+                                    <TableColumn fx:id="reportDateColumn"      prefWidth="120" text="Date" />
+                                    <TableColumn fx:id="reportActionsColumn"   prefWidth="200" text="Actions" />
+                                </columns>
+                            </TableView>
+
+                        </VBox>
+                    </content>
+                </Tab>
+
+            </tabs>
+        </TabPane>
+
+        <!-- Message de retour -->
+        <Label fx:id="messageLabel"
+               style="-fx-text-fill: #e74c3c; -fx-font-size: 13px;"
+               visible="false" managed="false" />
+
+    </VBox>
+</VBox>

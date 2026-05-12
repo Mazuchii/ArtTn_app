@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
+
+<BorderPane prefHeight="750.0" prefWidth="950.0"
+            stylesheets="@../css/front.css"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.museum.controllers.SeatSelectionController">
+
+    <top>
+        <VBox spacing="4.0" styleClass="front-header">
+            <Label text="🏛️ MUSEUM DIGITAL" styleClass="front-header-logo" />
+            <Label fx:id="eventTitleLabel" styleClass="front-header-subtitle" />
+        </VBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="front-scroll">
+            <VBox spacing="18.0" style="-fx-padding: 22;">
+
+                <!-- Infos événement -->
+                <HBox spacing="20.0" styleClass="seat-info-card">
+                    <ImageView fx:id="eventImageView"
+                               fitHeight="100" fitWidth="120" preserveRatio="true" />
+                    <VBox spacing="5.0">
+                        <Label fx:id="eventTitle"
+                               style="-fx-font-size: 17px; -fx-font-weight: bold; -fx-text-fill: #1a1a2e;" />
+                        <Label fx:id="eventLocation"  styleClass="front-label-muted" />
+                        <Label fx:id="eventDateTime"  styleClass="front-label-muted" />
+                        <Label fx:id="eventPricePerTicket" styleClass="front-label-gold" />
+                        <Label fx:id="availableSeatsLabel"
+                               style="-fx-font-size: 13px; -fx-text-fill: #27ae60; -fx-font-weight: bold;" />
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button text="✕ Fermer" onAction="#handleClose" styleClass="btn-front-ghost"
+                            style="-fx-text-fill: #e74c3c;" />
+                </HBox>
+
+                <!-- Plan de la salle -->
+                <VBox spacing="14.0" styleClass="seat-map-card">
+                    <Label text="🎭 Scène / Écran" styleClass="seat-scene-label"
+                           maxWidth="1.7976931348623157E308" />
+                    <Separator />
+                    <GridPane fx:id="seatsGrid" hgap="8.0" vgap="8.0" alignment="CENTER" />
+                </VBox>
+
+                <!-- Légende -->
+                <HBox spacing="22.0" alignment="CENTER">
+                    <HBox spacing="8.0" alignment="CENTER_LEFT">
+                        <Rectangle width="16" height="16" fill="#D4AF37" arcWidth="4" arcHeight="4"/>
+                        <Label text="Standard" styleClass="front-label-muted" />
+                    </HBox>
+                    <HBox spacing="8.0" alignment="CENTER_LEFT">
+                        <Rectangle width="16" height="16" fill="#4CAF50" arcWidth="4" arcHeight="4"/>
+                        <Label text="VIP (+10 DT)" styleClass="front-label-muted" />
+                    </HBox>
+                    <HBox spacing="8.0" alignment="CENTER_LEFT">
+                        <Rectangle width="16" height="16" fill="#2196F3" arcWidth="4" arcHeight="4"/>
+                        <Label text="Réservé" styleClass="front-label-muted" />
+                    </HBox>
+                    <HBox spacing="8.0" alignment="CENTER_LEFT">
+                        <Rectangle width="16" height="16" fill="#FF9800" arcWidth="4" arcHeight="4"/>
+                        <Label text="Sélectionné" styleClass="front-label-muted" />
+                    </HBox>
+                </HBox>
+
+                <!-- Récapitulatif -->
+                <VBox spacing="6.0" styleClass="seat-summary-card">
+                    <Label fx:id="selectedSeatsLabel" text="Aucun siège sélectionné"
+                           styleClass="front-label-muted" wrapText="true" />
+                    <Label fx:id="totalPriceLabel" text="Total : 0,00 DT"
+                           styleClass="seat-total-label" />
+                </VBox>
+
+                <!-- Code promo -->
+                <VBox spacing="8.0" styleClass="seat-promo-card">
+                    <Label text="🎟️ Code promo" styleClass="front-label-bold" />
+                    <TextField fx:id="promoCodeField"
+                               promptText="Entrez votre code (ex: ArtTn)" prefHeight="36"
+                               styleClass="front-input" />
+                    <Label fx:id="discountLabel" text=""
+                           style="-fx-font-size: 12px; -fx-text-fill: #27ae60; -fx-font-weight: bold;" />
+                </VBox>
+
+                <!-- Boutons -->
+                <HBox spacing="12.0" alignment="CENTER_RIGHT">
+                    <Button text="✅ Valider la Réservation" onAction="#handleConfirm"
+                            prefHeight="42" prefWidth="220" styleClass="btn-front-primary" />
+                    <Button text="❌ Annuler" onAction="#handleClose"
+                            prefHeight="42" prefWidth="110" styleClass="btn-front-danger" />
+                </HBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

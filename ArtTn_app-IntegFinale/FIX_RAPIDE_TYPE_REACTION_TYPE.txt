@@ -1,0 +1,144 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║              🔧 FIX RAPIDE: type vs reaction_type                            ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+🐛 PROBLÈME:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+La table post_reactions a DEUX colonnes:
+  - reaction_type (utilisée par Symfony)
+  - type (utilisée par Java)
+
+Résultat: Compteurs incohérents, confusion totale!
+
+Exemple:
+| id | post_id | user_id | reaction_type | type    |
+|----|---------|---------|---------------|---------|
+| 5  | 1       | 66      | DISLIKE       | LIKE    | ❌ INCOHÉRENT!
+| 43 | 6       | 60      | LIKE          | DISLIKE | ❌ INCOHÉRENT!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ SOLUTION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Java utilise maintenant "reaction_type" (comme Symfony)
+
+Fichier modifié: PostServices.java
+  - getUserReaction() → SELECT reaction_type
+  - addReaction() → INSERT INTO ... reaction_type
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 COMMENT APPLIQUER LE FIX:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ÉTAPE 1: Migrer les données existantes
+───────────────────────────────────────────────────────────────────────────────
+mysql -u root -p museum_db < MIGRATION_TYPE_TO_REACTION_TYPE.sql
+
+Ce script va:
+  ✅ Copier les données de 'type' vers 'reaction_type'
+  ✅ Recalculer tous les compteurs de likes/dislikes
+  ✅ Vérifier la cohérence
+
+ÉTAPE 2: Compiler et tester Java
+───────────────────────────────────────────────────────────────────────────────
+mvn clean compile
+mvn javafx:run
+
+ÉTAPE 3: Tester les réactions
+───────────────────────────────────────────────────────────────────────────────
+1. Ouvrir un post
+2. Cliquer sur Like → Vérifier que ça fonctionne
+3. Cliquer sur Dislike → Vérifier le switch
+4. Vérifier en BDD:
+   SELECT * FROM post_reactions ORDER BY created_at DESC LIMIT 5;
+   → Vérifier que reaction_type est rempli
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔍 VÉRIFICATION RAPIDE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+-- Vérifier la cohérence des compteurs
+SELECT 
+    p.post_id,
+    p.likes as compteur,
+    (SELECT COUNT(*) FROM post_reactions 
+     WHERE post_id = p.post_id AND reaction_type = 'LIKE') as reel,
+    CASE 
+        WHEN p.likes = (SELECT COUNT(*) FROM post_reactions 
+                        WHERE post_id = p.post_id AND reaction_type = 'LIKE')
+        THEN '✅ OK'
+        ELSE '❌ INCOHÉRENT'
+    END as status
+FROM post p
+LIMIT 10;
+
+Résultat attendu: Tous les posts avec status '✅ OK'
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📁 FICHIERS CRÉÉS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. MIGRATION_TYPE_TO_REACTION_TYPE.sql
+   → Script de migration complet avec diagnostic
+
+2. CORRECTION_CONFLIT_TYPE_REACTION_TYPE.md
+   → Documentation détaillée du problème et de la solution
+
+3. FIX_RAPIDE_TYPE_REACTION_TYPE.txt
+   → Ce fichier (guide rapide)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️ IMPORTANT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Sauvegarder la base de données AVANT la migration:
+   mysqldump -u root -p museum_db > backup_avant_migration.sql
+
+2. Exécuter la migration pendant une période de faible activité
+
+3. Tester dans Java ET Symfony après la migration
+
+4. Ne PAS supprimer la colonne 'type' avant validation complète
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ CHECKLIST:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Avant:
+☐ Sauvegarder la base de données
+☐ Vérifier que Symfony fonctionne
+
+Migration:
+☐ Exécuter MIGRATION_TYPE_TO_REACTION_TYPE.sql
+☐ Vérifier qu'il n'y a pas d'erreurs SQL
+☐ Vérifier les compteurs recalculés
+
+Après:
+☐ Compiler le projet Java
+☐ Tester les likes/dislikes dans Java
+☐ Tester les likes/dislikes dans Symfony
+☐ Vérifier la cohérence en BDD
+☐ Valider que tout fonctionne
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 RÉSUMÉ:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Problème: Conflit entre 'type' (Java) et 'reaction_type' (Symfony)
+Solution: Java utilise maintenant 'reaction_type'
+Action: Exécuter la migration SQL + Tester
+
+Status: ✅ CODE CORRIGÉ - MIGRATION À EXÉCUTER
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Date: 09/05/2026
+Développeur: Kiro AI Assistant
+
+╚══════════════════════════════════════════════════════════════════════════════╝

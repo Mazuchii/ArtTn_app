@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="800.0" prefWidth="1200.0"
+            style="-fx-background-color: #e8eef2;"
+            stylesheets="@../css/style.css"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.museum.controllers.DashboardProduitController">
+
+    <!-- ==================== TOP BAR ==================== -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20.0"
+              style="-fx-background-color: linear-gradient(to right, #1a1a2e, #16213e); -fx-padding: 15;">
+            <children>
+                <Label text="🏛️ MUSEUM DIGITAL" textFill="white">
+                    <font><Font name="System Bold" size="20.0" /></font>
+                </Label>
+                <Label text="| Administration Produits et Commandes" textFill="#d4af37">
+                    <font><Font size="14.0" /></font>
+                </Label>
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="welcomeLabel" text="Administrateur" textFill="white" />
+                <Button onAction="#handleLogout"
+                        styleClass="btn-action-yellow"
+                        text="🚪 Déconnexion" />
+            </children>
+        </HBox>
+    </top>
+
+    <!-- ==================== LEFT MENU ==================== -->
+    <left>
+        <VBox prefWidth="220.0" spacing="10.0"
+              style="-fx-background-color: #2c3e50; -fx-padding: 20 10;">
+            <children>
+                <!-- Statistiques rapides -->
+                <VBox spacing="8.0"
+                      style="-fx-padding: 15; -fx-background-color: #34495e; -fx-background-radius: 10;">
+                    <children>
+                        <Label text="📊 STATISTIQUES" textFill="#95a5a6"
+                               style="-fx-font-size: 11px; -fx-font-weight: bold;" />
+                        <Label fx:id="statsProducts" text="📦 Produits: 0" textFill="white"
+                               style="-fx-font-weight: bold; -fx-font-size: 13px;" />
+                        <Label fx:id="statsOrders" text="📋 Commandes: 0" textFill="white"
+                               style="-fx-font-weight: bold; -fx-font-size: 13px;" />
+                        <Label fx:id="statsPending" text="⏳ En attente: 0" textFill="#f39c12"
+                               style="-fx-font-size: 13px;" />
+                    </children>
+                </VBox>
+
+                <Separator />
+
+                <!-- Boutons de navigation -->
+                <Button onAction="#showProductsPanel" maxWidth="Infinity"
+                        styleClass="btn-ajouter-museum"
+                        text="🛍️ Produits" />
+                <Button onAction="#showOrdersPanel" maxWidth="Infinity"
+                        styleClass="btn-action-outline"
+                        text="📦 Commandes" />
+
+                <Region VBox.vgrow="ALWAYS" />
+
+                <Button onAction="#handleRefresh" maxWidth="Infinity"
+                        styleClass="btn-action-primary"
+                        text="🔄 Actualiser" />
+            </children>
+        </VBox>
+    </left>
+
+    <!-- ==================== CENTER - SCROLL GLOBAL ==================== -->
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="false"
+                    style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
+            <content>
+                <VBox spacing="20.0" maxWidth="Infinity"
+                      style="-fx-padding: 25; -fx-background-color: #e8eef2;">
+
+                    <!-- ==================== PANEL PRODUITS ==================== -->
+                    <VBox fx:id="productsPanel" spacing="15.0" maxWidth="Infinity"
+                          VBox.vgrow="ALWAYS">
+                        <children>
+
+                            <!-- Titre + bouton ajouter -->
+                            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                <children>
+                                    <Label text="🛍️ Gestion des Produits"
+                                           style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <Button onAction="#handleAddProduct"
+                                            styleClass="btn-ajouter-museum"
+                                            prefHeight="38.0"
+                                            text="➕ Ajouter un produit" />
+                                </children>
+                            </HBox>
+
+                            <!-- Filtres -->
+                            <HBox spacing="12.0" alignment="CENTER_LEFT">
+                                <children>
+                                    <TextField fx:id="productSearchField"
+                                               promptText="🔍 Rechercher un produit..."
+                                               prefHeight="38.0" prefWidth="280.0"
+                                               styleClass="search-bar-integrated" />
+                                    <ComboBox fx:id="categoryFilter"
+                                              prefWidth="160.0" prefHeight="38.0"
+                                              promptText="Toutes catégories"
+                                              style="-fx-background-radius: 8;" />
+                                </children>
+                            </HBox>
+
+                            <!-- Tableau des produits dans un container stylé -->
+                            <VBox spacing="12.0" maxWidth="Infinity"
+                                  styleClass="table-container"
+                                  style="-fx-padding: 18;">
+                                <children>
+                                    <TableView fx:id="productsTable"
+                                               maxWidth="Infinity"
+                                               maxHeight="Infinity"
+                                               prefHeight="420.0"
+                                               styleClass="museum-table"
+                                               VBox.vgrow="ALWAYS">
+                                        <columns>
+                                            <TableColumn fx:id="productIdColumn"
+                                                         prefWidth="55.0" minWidth="45.0" text="ID" />
+                                            <TableColumn fx:id="productNameColumn"
+                                                         prefWidth="180.0" minWidth="120.0" text="Nom" />
+                                            <TableColumn fx:id="productDescColumn"
+                                                         prefWidth="220.0" minWidth="150.0" text="Description" />
+                                            <TableColumn fx:id="productPriceColumn"
+                                                         prefWidth="90.0" minWidth="70.0" text="Prix" />
+                                            <TableColumn fx:id="productStockColumn"
+                                                         prefWidth="70.0" minWidth="55.0" text="Stock" />
+                                            <TableColumn fx:id="productCategoryColumn"
+                                                         prefWidth="120.0" minWidth="90.0" text="Catégorie" />
+                                            <TableColumn fx:id="productStatusColumn"
+                                                         prefWidth="110.0" minWidth="90.0" text="Statut" />
+                                        </columns>
+                                    </TableView>
+
+                                    <!-- Actions produits -->
+                                    <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                                        <children>
+                                            <Button onAction="#handleEditProduct"
+                                                    styleClass="btn-action-yellow"
+                                                    prefHeight="38.0" prefWidth="120.0"
+                                                    text="✏️ Modifier" />
+                                            <Button onAction="#handleDeleteProduct"
+                                                    styleClass="btn-action-outline"
+                                                    prefHeight="38.0" prefWidth="120.0"
+                                                    text="🗑️ Supprimer" />
+                                        </children>
+                                    </HBox>
+                                </children>
+                            </VBox>
+
+                        </children>
+                    </VBox>
+
+                    <!-- ==================== PANEL COMMANDES ==================== -->
+                    <VBox fx:id="ordersPanel" spacing="15.0" maxWidth="Infinity"
+                          VBox.vgrow="ALWAYS"
+                          visible="false" managed="false">
+                        <children>
+
+                            <!-- Titre -->
+                            <Label text="📦 Gestion des Commandes"
+                                   style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+                            <!-- Filtres -->
+                            <HBox spacing="12.0" alignment="CENTER_LEFT">
+                                <children>
+                                    <TextField fx:id="orderSearchField"
+                                               promptText="🔍 Rechercher par ID..."
+                                               prefHeight="38.0" prefWidth="280.0"
+                                               styleClass="search-bar-integrated" />
+                                    <ComboBox fx:id="statusFilter"
+                                              prefWidth="160.0" prefHeight="38.0"
+                                              promptText="Tous statuts"
+                                              style="-fx-background-radius: 8;" />
+                                </children>
+                            </HBox>
+
+                            <!-- Tableau des commandes dans un container stylé -->
+                            <VBox spacing="12.0" maxWidth="Infinity"
+                                  styleClass="table-container"
+                                  style="-fx-padding: 18;">
+                                <children>
+                                    <TableView fx:id="ordersTable"
+                                               maxWidth="Infinity"
+                                               maxHeight="Infinity"
+                                               prefHeight="380.0"
+                                               styleClass="museum-table"
+                                               VBox.vgrow="ALWAYS">
+                                        <columns>
+                                            <TableColumn fx:id="orderIdColumn"
+                                                         prefWidth="60.0" minWidth="50.0" text="N°" />
+                                            <TableColumn fx:id="orderUserIdColumn"
+                                                         prefWidth="70.0" minWidth="60.0" text="User ID" />
+                                            <TableColumn fx:id="orderDateColumn"
+                                                         prefWidth="160.0" minWidth="130.0" text="Date" />
+                                            <TableColumn fx:id="orderTotalColumn"
+                                                         prefWidth="90.0" minWidth="70.0" text="Total" />
+                                            <TableColumn fx:id="orderStatusColumn"
+                                                         prefWidth="120.0" minWidth="100.0" text="Statut" />
+                                            <TableColumn fx:id="orderAddressColumn"
+                                                         prefWidth="200.0" minWidth="140.0" text="Adresse" />
+                                            <TableColumn fx:id="orderPaymentColumn"
+                                                         prefWidth="110.0" minWidth="90.0" text="Paiement" />
+                                        </columns>
+                                    </TableView>
+
+                                    <!-- Détails commande -->
+                                    <TitledPane text="📋 Détails de la commande"
+                                                animated="true" expanded="false"
+                                                maxWidth="Infinity">
+                                        <content>
+                                            <VBox spacing="10.0" style="-fx-padding: 12;">
+                                                <children>
+                                                    <Label fx:id="orderDetailsLabel"
+                                                           text="Sélectionnez une commande pour voir les détails"
+                                                           style="-fx-text-fill: #7f8c8d;" />
+                                                    <ListView fx:id="orderItemsList"
+                                                              prefHeight="150.0"
+                                                              maxWidth="Infinity" />
+                                                </children>
+                                            </VBox>
+                                        </content>
+                                    </TitledPane>
+
+                                    <!-- Actions commandes -->
+                                    <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                                        <children>
+                                            <Button fx:id="confirmOrderBtn"
+                                                    onAction="#handleConfirmOrder"
+                                                    styleClass="btn-action-green"
+                                                    prefHeight="38.0"
+                                                    text="✅ Confirmer" />
+                                            <Button fx:id="shipOrderBtn"
+                                                    onAction="#handleShipOrder"
+                                                    styleClass="btn-action-primary"
+                                                    prefHeight="38.0"
+                                                    text="📦 Expédier" />
+                                            <Button fx:id="deliverOrderBtn"
+                                                    onAction="#handleDeliverOrder"
+                                                    styleClass="btn-action-yellow"
+                                                    prefHeight="38.0"
+                                                    text="🚚 Livrer" />
+                                            <Button fx:id="cancelOrderBtn"
+                                                    onAction="#handleCancelOrder"
+                                                    styleClass="btn-action-outline"
+                                                    prefHeight="38.0"
+                                                    text="❌ Annuler" />
+                                            <Button onAction="#handleDeleteOrder"
+                                                    styleClass="btn-action-outline"
+                                                    prefHeight="38.0"
+                                                    text="🗑️ Supprimer" />
+                                        </children>
+                                    </HBox>
+                                </children>
+                            </VBox>
+
+                        </children>
+                    </VBox>
+
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

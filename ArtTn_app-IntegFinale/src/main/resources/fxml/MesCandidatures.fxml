@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+
+<BorderPane fx:id="mainContainer" prefHeight="800.0" prefWidth="1150.0"
+            style="-fx-background-color: #F8F5F0;"
+            stylesheets="@../css/front.css"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.museum.controllers.MesCandidaturesController">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="front-header">
+            <Button text="← Retour" onAction="#handleShowJobFront"
+                    styleClass="btn-front-back" />
+            <Label text="MON TABLEAU DE BORD CANDIDAT"
+                   style="-fx-font-weight: bold; -fx-font-size: 18px; -fx-text-fill: white;" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="🔄 Actualiser" onAction="#handleChargerMesCandidatures"
+                    styleClass="btn-front-primary" />
+        </HBox>
+    </top>
+
+    <center>
+        <SplitPane dividerPositions="0.32"
+                   style="-fx-background-color: transparent; -fx-border-color: transparent;">
+            <items>
+                <!-- Gauche : Liste -->
+                <VBox spacing="12" styleClass="candidature-list-panel">
+                    <Label text="Mes Postulations"
+                           style="-fx-font-size: 17px; -fx-font-weight: bold; -fx-text-fill: #1a1a2e;" />
+                    <Label fx:id="lblInfo"
+                           text="Sélectionnez une candidature pour voir les détails"
+                           wrapText="true" styleClass="front-label-muted" />
+                    <ListView fx:id="listMesCandidatures" VBox.vgrow="ALWAYS"
+                              style="-fx-background-color: transparent;
+                                     -fx-border-color: #ede8e0; -fx-border-radius: 8;
+                                     -fx-background-radius: 8;" />
+                </VBox>
+
+                <!-- Droite : Analyse -->
+                <ScrollPane fitToWidth="true" styleClass="front-scroll">
+                    <VBox spacing="16" styleClass="candidature-detail-panel">
+
+                        <!-- Statut & QR -->
+                        <HBox spacing="14" alignment="TOP_RIGHT">
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label text="État du dossier" styleClass="front-label-bold" />
+                                <Label fx:id="lblStatutTraitement"
+                                       text="⏳ Vérification du statut..."
+                                       style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                                <Hyperlink fx:id="linkMeet"
+                                           text="🔗 Rejoindre l'entretien (Meet)"
+                                           style="-fx-font-size: 13px; -fx-text-fill: #D4AF37;
+                                                  -fx-font-weight: bold;" />
+                            </VBox>
+                            <VBox alignment="CENTER" spacing="5"
+                                  styleClass="front-section-card"
+                                  style="-fx-padding: 10;">
+                                <ImageView fx:id="qrCodeView" fitHeight="85.0" fitWidth="85.0"
+                                           preserveRatio="true" />
+                                <Label text="Lien de l'offre" styleClass="front-label-muted" />
+                            </VBox>
+                        </HBox>
+
+                        <!-- Score IA -->
+                        <VBox fx:id="scoreOverviewCard" spacing="10"
+                              styleClass="candidature-score-card">
+                            <Label text="Analyse de Correspondance IA"
+                                   style="-fx-font-weight: bold; -fx-font-size: 15px;
+                                          -fx-text-fill: #D4AF37;" />
+                            <HBox alignment="CENTER_LEFT" spacing="14">
+                                <Label fx:id="lblScoreValue" text="--%"
+                                       styleClass="candidature-score-value" />
+                                <VBox HBox.hgrow="ALWAYS">
+                                    <Label fx:id="lblScoreBand"
+                                           style="-fx-text-fill: #a0a4b8; -fx-font-size: 13px;" />
+                                    <ProgressBar fx:id="scoreProgressBar" progress="0.0"
+                                                 maxWidth="Infinity"
+                                                 style="-fx-accent: #D4AF37;" />
+                                </VBox>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Progression -->
+                        <VBox spacing="10" styleClass="candidature-progress-card">
+                            <Label text="Rapport d'État d'Avancement"
+                                   style="-fx-font-weight: bold; -fx-font-size: 15px;
+                                          -fx-text-fill: #1a1a2e;" />
+                            <HBox alignment="CENTER_LEFT" spacing="14">
+                                <Label fx:id="lblProgressValue" text="0%"
+                                       style="-fx-font-size: 30px; -fx-font-weight: bold;
+                                              -fx-text-fill: #1a1a2e;" />
+                                <VBox HBox.hgrow="ALWAYS">
+                                    <Label text="Progression du traitement"
+                                           styleClass="front-label-muted" />
+                                    <ProgressBar fx:id="progressStepBar" progress="0.0"
+                                                 maxWidth="Infinity"
+                                                 style="-fx-accent: #1a1a2e;" />
+                                </VBox>
+                            </HBox>
+                            <VBox fx:id="stepsContainer" spacing="5"
+                                  style="-fx-padding: 8 0 0 0;" />
+                        </VBox>
+
+                        <!-- Points faibles (visible uniquement si refusé) -->
+                        <VBox fx:id="weakPointsCard" spacing="10" managed="false" visible="false"
+                              style="-fx-background-color: #fff5f5;
+                                     -fx-border-color: #e74c3c;
+                                     -fx-border-radius: 10;
+                                     -fx-background-radius: 10;
+                                     -fx-padding: 14;">
+                            <Label text="❌ Candidature refusée — Points à améliorer"
+                                   style="-fx-font-weight: bold; -fx-font-size: 15px;
+                                          -fx-text-fill: #c0392b;" />
+                            <Label text="Voici les axes d'amélioration identifiés par notre IA pour renforcer votre profil :"
+                                   wrapText="true"
+                                   style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+                            <VBox fx:id="weakPointsContainer" spacing="8"
+                                  style="-fx-padding: 4 0 0 0;" />
+                        </VBox>
+
+                    </VBox>
+                </ScrollPane>
+            </items>
+        </SplitPane>
+    </center>
+</BorderPane>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #F8F5F0;" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.museum.controllers.ProfileController">
+    <children>
+        <VBox alignment="TOP_CENTER" maxWidth="500.0" spacing="25.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+            <padding>
+                <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+            </padding>
+            <children>
+                <Label text="👤 Mon Profil" textFill="#1a1a2e">
+                    <font> <Font name="System Bold" size="26.0" /> </font>
+                </Label>
+
+                <VBox spacing="15.0">
+                    <children>
+                        <VBox spacing="5.0">
+                            <Label text="Nom complet" style="-fx-font-weight: bold;" />
+                            <TextField fx:id="fullNameField" prefHeight="40.0" styleClass="login-input" />
+                        </VBox>
+                        <VBox spacing="5.0">
+                            <Label text="Nom d'utilisateur" style="-fx-font-weight: bold;" />
+                            <TextField fx:id="usernameField" prefHeight="40.0" styleClass="login-input" />
+                        </VBox>
+                        <VBox spacing="5.0">
+                            <Label text="Email" style="-fx-font-weight: bold;" />
+                            <TextField fx:id="emailField" prefHeight="40.0" styleClass="login-input" />
+                        </VBox>
+                        <VBox spacing="5.0">
+                            <Label text="Nouveau mot de passe" style="-fx-font-weight: bold;" />
+                            <PasswordField fx:id="newPasswordField" prefHeight="40.0" promptText="Laissez vide pour garder l'actuel" styleClass="login-input" />
+                        </VBox>
+                    </children>
+                </VBox>
+
+                <HBox alignment="CENTER" spacing="15.0">
+                    <children>
+                        <Button onAction="#handleCancel" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #f1f2f6; -fx-cursor: hand;" text="Annuler" />
+                        <Button onAction="#handleSave" prefHeight="40.0" prefWidth="180.0" styleClass="action-button-gold" text="Enregistrer" />
+                    </children>
+                </HBox>
+            </children>
+            <StackPane.margin> <Insets top="50.0" /> </StackPane.margin>
+        </VBox>
+    </children>
+</StackPane>

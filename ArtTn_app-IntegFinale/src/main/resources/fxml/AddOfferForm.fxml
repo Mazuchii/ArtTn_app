@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="15.0" style="-fx-background-color: white; -fx-border-color: #CC9933; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;"
+      stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+
+    <children>
+        <Label text="Gestion de l'Offre Artistique" textFill="#CC9933">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+
+        <Separator />
+
+        <VBox spacing="5.0">
+            <children>
+                <Label text="Titre de la mission" style="-fx-font-weight: bold;" />
+                <TextField fx:id="tfTitre" promptText="Ex: Developpeur Java Senior" styleClass="search-bar-museum" />
+            </children>
+        </VBox>
+
+        <VBox spacing="5.0">
+            <children>
+                <Label text="Prompt IA" style="-fx-font-weight: bold;" />
+                <TextArea fx:id="taPromptIa"
+                          prefHeight="120.0"
+                          promptText="Ex: Genere une offre claire pour un developpeur Java backend senior avec Spring Boot, SQL, microservices, API REST, Git, tests unitaires, travail en equipe, autonomie et communication."
+                          styleClass="museum-table"
+                          wrapText="true" />
+                <Button fx:id="btnGenerateIa"
+                        mnemonicParsing="false"
+                        onAction="#handleGenerateDescription"
+                        styleClass="btn-action-yellow"
+                        text="Generer l'offre avec IA" />
+            </children>
+        </VBox>
+
+        <VBox spacing="5.0">
+            <children>
+                <Label text="Description generee" style="-fx-font-weight: bold;" />
+                <TextArea fx:id="taDescription" prefHeight="180.0" promptText="Le contenu genere apparaitra ici..." styleClass="museum-table" wrapText="true" />
+            </children>
+        </VBox>
+
+        <VBox spacing="5.0">
+            <children>
+                <Label text="Salaire (DT)" style="-fx-font-weight: bold;" />
+                <TextField fx:id="tfSalaire" promptText="Ex: 1500" styleClass="search-bar-museum" />
+            </children>
+        </VBox>
+
+        <HBox alignment="CENTER_RIGHT" spacing="15.0" style="-fx-padding: 10 0 0 0;">
+            <children>
+                <Button onAction="#handleCancel"
+                        styleClass="btn-action-outline"
+                        text="Annuler" />
+
+                <Button onAction="#handleSave"
+                        styleClass="btn-ajouter-museum"
+                        text="Enregistrer" />
+            </children>
+        </HBox>
+    </children>
+    <padding>
+        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+    </padding>
+</VBox>
+
